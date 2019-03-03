@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+	<meta charset="utf8">
+    <link rel="stylesheet" href="{% static 'SuperY/css/login.css' %}">
+	<title>登录</title>
+</head>
+<body>
+    <div class="top">我是头部</div>
+	<div class="center">
+		<form class='login_form'>
+            <input name="number" placeholder="手机号/邮箱" class='login_input'>
+		    <input name="passwd" placeholder="密码" type="password"  class='login_input'>
+		    <input type="radio" name="identity" value='applicant'>我要求职
+		    <input type="radio" name="identity" value='company'>我是BOSS
+		    <input type="reset">
+		    <input type="button" name="login" value="登录">
+            <a href="{% url 'SuperY:register' %}">我要注册</a>
+		</form>
+    </div>
+    <div class="bottom">我是底部</div>
+	<div id="info" style='display:none;'>
+		弹窗
+	</div>
+<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
+<script>
+	document.querySelector('[name="login"]').onclick=function (){
+		var number=document.querySelector('[name="number"]');
+		var passwd=document.querySelector('[name="passwd"]');
+		var identity=document.querySelector('[name="identity"]:checked');
+		var dom=document.getElementById('info');
+		console.log(number,passwd,identity)
+		if (!number.value) {
+           dom.style.display = 'block';
+            return;
+        }
+        if (!passwd.value) {
+            alert('密码不能为空');
+            return;
+        }
+        if (!identity){
+        	alert('请选择身份');
+        	return;
+        }
+        $.ajax({
+        	url:'{% url "SuperY:login_ajax" %}',
+        	type:'post',
+        	data:{'number':number.value,'passwd':passwd.value,'identity':identity.value},
+        	success:function(data){
+        		if (data){
+        			alert(data);
+        		}
+        		else {
+        			window.location.replace('https://www.baidu.com')
+        		}
+        	}
+        })
+	};
+
+</script>
+</body>
+</html>

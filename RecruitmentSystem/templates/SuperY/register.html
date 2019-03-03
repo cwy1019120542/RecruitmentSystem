@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>注册</title>
+</head>
+<body>
+	<form>
+		<p>姓名</p>
+		<input name="person_name" placeholder="请输入您的真实姓名">
+		<p>手机号码</p>
+		<input name="phone_number" placeholder="请输入您的手机号，可用于登陆">
+		<p>邮箱</p>
+		<input name="mail" placeholder="请输入您的邮箱，可用于登陆，如无可不填">
+		<p>密码</p>
+		<input name="passwd1" placeholder="请您输入密码，6位-16位数字/字母/符号组合" type="password">
+		<p>确认密码</p>
+		<input name="passwd2" placeholder="请您输入和上面相同的密码" type="password">
+		<p>身份选择</p>
+		<input type="radio" name="identity" value='applicant'>我要求职
+		<input type="radio" name="identity" value='company'>我是BOSS
+		<input type="checkbox" name="is_read">我接受用户协议和隐私政策
+		<input type="button" name="register" value="注册">
+	</form>
+	<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
+	<script>
+		document.querySelector('[name="register"]').onclick=function() {
+		var person_name=document.querySelector('[name="person_name"]').value;
+		var phone_number=document.querySelector('[name="phone_number"]').value;
+		var mail=document.querySelector('[name="mail"]').value;
+		var passwd1=document.querySelector('[name="passwd1"]').value;
+		var passwd2=document.querySelector('[name="passwd2"]').value;
+		var identity=document.querySelector('[name="identity"]:checked');
+		var is_read=document.querySelector('[name="is_read"]:checked');
+		var is_post=true;
+		/*if (!person_name){
+			is_post=false;
+			alert('姓名不能为空');
+		}
+		if (!phone_number){
+			is_post=false;
+			alert('手机号不能为空');
+		}
+		if (passwd1.length<6 || passwd1.length>16){
+			is_post=false;
+			alert('密码格式不正确')
+		}
+		if (!passwd1){
+			is_post=false;
+			alert('请输入密码');
+		}
+		if (!passwd2){
+			is_post=false;
+			alert('请确认密码');
+		}
+		if (!identity){
+			is_post=false;
+			alert('请选择身份');
+		}
+		if (phone_number.charAt(0)!=1 || phone_number.length!=11){
+			is_post=false;
+			alert('请填写正确格式的手机号');
+		}
+		if (mail && mail.indexOf('@')==-1){
+			is_post=false;
+			alert('请输入正确的邮箱');
+		}
+		if (passwd1!=passwd2){
+			is_post=false;
+			alert('两次输入的密码不匹配');
+		}
+		if (!is_read){
+			is_post=false;
+			alert('请您接受用户协议和隐私政策')
+		}*/
+		console.log(person_name,phone_number,mail,passwd1,identity.value)
+		if (is_post){
+			$.ajax({
+				type:'post',
+				url:'{% url "SuperY:register_ajax" %}',
+				data:{'person_name':person_name,'phone_number':phone_number,'mail':mail,'passwd':passwd1,'identity':identity.value},
+				success:function(data) {
+					if (data){
+						alert(data);
+					}
+					else {
+						window.location.replace('https://www.baidu.com');
+					}
+				}
+			}) 
+		}
+	};
+	</script>
+</body>
+</html>

@@ -9,7 +9,6 @@ def md5_passwd(phone_number,passwd):
 	m.update(deal_text.encode('utf8'))
 	return m.hexdigest()
 
-
 def login(request):
 	return render(request,'SuperY/login.html')
 	

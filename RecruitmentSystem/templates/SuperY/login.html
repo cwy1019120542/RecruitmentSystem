@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<!--{% load staticfiles %}-->
+{% load staticfiles %}
 <html lang="en">
 <head>
 	<meta charset="utf8">
-    <!--<link rel="stylesheet" href="{% static 'SuperY/css/login.css' %}">-->
+    <link rel="stylesheet" href="{% static 'SuperY/css/login.css' %}">
     <link rel="stylesheet" href="css/main.css">
 	<title>登录</title>
 </head>
@@ -18,12 +18,14 @@
 	</div>
 	<div class="center">
 		<form class='login_form'>
-            <input name="number" placeholder="手机号/邮箱" class='login_input'>
+            <input type='text' name="number" placeholder="手机号/邮箱" class='login_input'>
+			<p></p>
 		    <input name="passwd" placeholder="密码" type="password"  class='login_input'>
+			<p></p>
 		    <input type="radio" name="identity" value='applicant'>我要求职
-		    <input type="radio" name="identity" value='company'>我是BOSS
-		    <input type="reset">
-			<button>登录</button>
+		    <input type="radio" name="identity" value='company' class='bossRadio'>我是BOSS
+		    <input type="reset"><br/>
+			<button>登 录</button>
             <a href="{% url 'SuperY:register' %}">我要注册</a>
 		</form>
     </div>

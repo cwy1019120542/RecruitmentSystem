@@ -26,34 +26,33 @@
 <script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
 <script>
 	document.querySelector('[name="login"]').onclick=function (){
-		var number=document.querySelector('[name="number"]');
-		var passwd=document.querySelector('[name="passwd"]');
+		var number=document.querySelector('[name="number"]').value;
+		var passwd=document.querySelector('[name="passwd"]').value;
 		var identity=document.querySelector('[name="identity"]:checked');
 		var dom=document.getElementById('info');
 		console.log(number,passwd,identity)
-		if (!number.value) {
+		if (!number) {
            dom.style.display = 'block';
-            return;
         }
-        if (!passwd.value) {
+        if (!passwd) {
             alert('密码不能为空');
-            return;
         }
         if (!identity){
         	alert('请选择身份');
-        	return;
         }
         $.ajax({
         	url:'{% url "SuperY:login_ajax" %}',
         	type:'post',
-        	data:{'number':number.value,'passwd':passwd.value,'identity':identity.value},
+        	data:{'number':number,'passwd':passwd,'identity':identity.value},
         	success:function(data){
-        		if (data){
-        			alert(data);
-        		}
-        		else {
-        			window.location.replace('https://www.baidu.com')
-        		}
+                console.log(data)
+                data=JSON.parse(data)
+        		if (data.error){
+                    alert(data.error)
+                }
+                else {
+                    window.location.replace(data.url)
+                }
         	}
         })
 	};

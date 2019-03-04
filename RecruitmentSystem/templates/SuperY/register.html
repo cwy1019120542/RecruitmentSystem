@@ -11,8 +11,6 @@
 		<input name="person_name" placeholder="请输入您的真实姓名，不可超过20位">
 		<p>手机号码</p>
 		<input name="phone_number" placeholder="请输入您的手机号">
-		<p>邮箱</p>
-		<input name="mail" placeholder="请输入您的邮箱，选填">
 		<p>密码</p>
 		<input name="passwd1" placeholder="请您输入密码，6位-16位数字/字母/符号组合" type="password">
 		<p>确认密码</p>
@@ -28,7 +26,6 @@
 		document.querySelector('[name="register"]').onclick=function() {
 		var person_name=document.querySelector('[name="person_name"]').value;
 		var phone_number=document.querySelector('[name="phone_number"]').value;
-		var mail=document.querySelector('[name="mail"]').value;
 		var passwd1=document.querySelector('[name="passwd1"]').value;
 		var passwd2=document.querySelector('[name="passwd2"]').value;
 		var identity=document.querySelector('[name="identity"]:checked');
@@ -41,10 +38,6 @@
 		if (!phone_number || phone_number.charAt(0)!=1 || phone_number.length!=11){
 			is_post=false;
 			alert('请您填写正确格式的手机号');
-		}
-		if (mail && mail.indexOf('@')==-1){
-			is_post=false;
-			alert('请您输入正确的邮箱');
 		}
 		if (!passwd1 || passwd1.length<6 || passwd1.length>16){
 			is_post=false;
@@ -67,7 +60,7 @@
 			$.ajax({
 				type:'post',
 				url:'{% url "SuperY:register_ajax" %}',
-				data:{'person_name':person_name,'phone_number':phone_number,'mail':mail,'passwd':passwd1,'identity':identity.value},
+				data:{'person_name':person_name,'phone_number':phone_number,'passwd':passwd1,'identity':identity.value},
 				success:function(data) {
 					if (data){
 						alert(data);

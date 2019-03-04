@@ -1,0 +1,19 @@
+*{margin:0;padding:0;}
+body {font-family: "Microsoft YaHei","微软雅黑", "PingFang SC", "Hiragino Sans GB", "Heiti SC","WenQuanYi Micro Hei", sans-serif;color: #333333;font-size: 15px;font-weight: 400;font-variant: normal;-webkit-font-smoothing: antialiased;  }
+h3, ul, li {  padding: 0px;  margin: 0px;  }
+table {  width: 100%;  }
+img {  border: none;  }
+a {-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;text-decoration: none;  }
+a:focus, input:focus, button:focus {outline: 0;}
+.clearfix:before,
+.clearfix:after {content: "";display: table;}
+.clearfix:after {clear: both;  }
+.clearfix {zoom: 1; /* IE <8 */  }
+.top{background:#fff;border-bottom: 1px solid #e8e8e8;height:60px;}
+.top .logoTell {width:70%;margin: 0 auto;overflow: hidden;}
+.top .logoTell a{}
+.top .logoTell img{width:97px;height:47px;margin-top: 8px;float: left;}
+.top .tell{float: right;font-size: 14px;color:#333;margin-top: 20px;}
+.center{background: #fefefe; overflow: hidden;margin-top: 80px;}
+.login_form{width:50%;margin:0 auto;padding:30px;border-top: 5px solid #ffc666;}
+.login_form input{display: block;width:100%;border-radius: 5px;padding:5px;font-size: 14px;background: none;}

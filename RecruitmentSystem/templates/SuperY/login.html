@@ -1,13 +1,21 @@
 <!DOCTYPE html>
-{% load staticfiles %}
+<!--{% load staticfiles %}-->
 <html lang="en">
 <head>
 	<meta charset="utf8">
-    <link rel="stylesheet" href="{% static 'SuperY/css/login.css' %}">
+    <!--<link rel="stylesheet" href="{% static 'SuperY/css/login.css' %}">-->
+    <link rel="stylesheet" href="css/main.css">
 	<title>登录</title>
 </head>
 <body>
-    <div class="top">我是头部</div>
+    <div class="top">
+		<div class="logoTell">
+			<a href="#">
+				<img src="images/logo_blue.png">
+			</a>
+			<div class="tell">电话：<span>138562286</span></div>
+		</div>
+	</div>
 	<div class="center">
 		<form class='login_form'>
             <input name="number" placeholder="手机号/邮箱" class='login_input'>
@@ -15,7 +23,7 @@
 		    <input type="radio" name="identity" value='applicant'>我要求职
 		    <input type="radio" name="identity" value='company'>我是BOSS
 		    <input type="reset">
-		    <input type="button" name="login" value="登录">
+			<button>登录</button>
             <a href="{% url 'SuperY:register' %}">我要注册</a>
 		</form>
     </div>

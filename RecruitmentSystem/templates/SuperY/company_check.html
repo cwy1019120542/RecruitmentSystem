@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>企业验证</title>
+</head>
+<body>
+<p>营业执照</p>
+<input type="file" name="business_licence">
+<p>公司名称</p>
+<input name="company_name" placeholder="请输入您的公司名称，50个字符以内">
+<p>公司类型</p>
+<select name='company_type'>
+	<option value="合资企业">合资企业</option>
+	<option value="独资企业">独资企业</option>
+	<option value="国有企业">国有企业</option>
+	<option value="私营企业">私营企业</option>
+	<option value="股份有限公司">股份有限公司</option>
+	<option value="有限责任公司">有限责任公司</option>
+</select>
+<p>主营产品</p>
+<input name="main_product" placeholder="主营产品">
+<p>员工人数</p>
+<input name="staff_number" placeholder="员工人数">
+<p>公司地址</p>
+<input name="address" placeholder="公司地址">
+<input type="button" name="check_btn" value="确认提交">
+<script>
+	document.querySelector('[name="check_btn"]').onclick=function() {
+		var formData=new FormData();
+		formData.append('business_licence',document.querySelector('[name="business_licence"]').files[0])
+		var company_name=document.querySelector('[name="company_name"]').value
+		var company_type=document.querySelector('[name="company_type"]').value
+		var main_product=document.querySelector('[name="main_product"]').value
+		var staff_number=document.querySelector('[name="staff_number"]').value
+		var address=document.querySelector('[name="address"]').value
+		console.log(company_name,company_type,main_product,staff_number,address)
+	};
+</script>
+</body>
+</html>

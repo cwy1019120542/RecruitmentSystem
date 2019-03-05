@@ -17,7 +17,6 @@ def login(request):
 	return render(request,'SuperY/login.html')
 	
 def login_ajax(request):
-	print(request.POST)
 	number=request.POST['number']
 	passwd=request.POST['passwd']
 	identity=request.POST['identity']
@@ -39,7 +38,6 @@ def register(request):
 	return render(request,'SuperY/register.html')
 
 def register_ajax(request):
-	print(request.POST)
 	person_name=request.POST['person_name']
 	phone_number=request.POST['phone_number']
 	passwd=request.POST['passwd']
@@ -51,14 +49,20 @@ def register_ajax(request):
 	eval(f'models.{identity.capitalize()}.objects.create(person_name=person_name,phone_number=phone_number,passwd=passwd)')
 	return HttpResponse()
 
-def is_login(request):
-	identity=request.session.get('identity','')
-	phone_number=request.session.get('phone_number','')
-	if not identity or not phone_number:
-		return redirect(reverse('SuperY:login')) 
+def is_login(request,identity,phone_number):
+	identity_judge=request.session.get('identity','')
+	phone_number_judge=request.session.get('phone_number','')
+	if identity_judge != identity or phone_number_judge != phone_number: 
+		return redirect(reverse('SuperY:login'))
+
+def logout(request,identity,phone_number):
+	is_login(request,identity,phone_number)
+	session['identity']=''
+	session['phone_number']=''
+	return redirect(reverse('SuperY:login'))
 
 def applicant_index(request,phone_number):
-	is_login(request)
+	is_login(request,'applicant',phone_number)
 	applicant=models.Applicant.objects.get(phone_number=phone_number)
 	if request.method == 'POST':
 		search_word=request.POST['search_word']
@@ -82,7 +86,6 @@ def applicant_index(request,phone_number):
 	return render(request,'SuperY/applicant_index.html',context_dict)
 
 def applicant_search_ajax(request):
-	is_login(request)
 	search_word=request.POST['search_word']
 	url=reverse('SuperY:applicant_search',kwargs={'phone_number':request.session['phone_number'],'search_word':search_word,'page':1})
 	return HttpResponse(demjson.encode({'url':url}))
@@ -94,7 +97,7 @@ def my_paginator(data_all,page_data_number,aim_page):
 
 
 def applicant_search(request,phone_number,search_word,page):
-	is_login(request)
+	is_login(request,'applicant',phone_number)
 	applicant=models.Applicant.objects.get(phone_number=phone_number)
 	post_all=models.Post.objects.filter(Q(company__company_name__icontains=search_word)|Q(post_name__icontains=search_word)|Q(work_place__icontains=search_word))
 	if post_all:
@@ -104,11 +107,31 @@ def applicant_search(request,phone_number,search_word,page):
 	return render(request,'SuperY/applicant_search.html',context_dict)
 
 def post_detail(request,phone_number,post_id):
-	is_login()
+	is_login(request,'applicant',phone_number)
 	applicant=models.Applicant.objects.get(phone_number=phone_number)
 	post=models.Post.objects.get(id=post_id)
 	context_dict={'applicant':applicant,'post':post}
 	return render(request,'SuperY/post_detail',context_dict)
 
 def company_index(request,phone_number):
+	is_login(request,'company',phone_number)
+	company=models.Company.objects.get(phone_number=phone_number)
+	if not company.is_check:
+		return redirect(reverse('SuperY:company_check',kwargs={'phone_number':phone_number}))
 	return render(request,'SuperY/company_index.html')
+
+def company_check(request,phone_number):
+	is_login(request,'company',phone_number)
+	return render(request,'SuperY/company_check.html')
+
+def company_check_ajax(request):
+	company_name=request.POST['company_name']
+	company_type=request.POST['company_type']
+	main_product=request.POST['main_product']
+	staff_number=request.POST['staff_number']
+	address=request.POST['address']
+	phone_number=request.POST['phone_number']
+	company_same=models.Company.objects.filter(company_name=company_name)
+	if company_same:
+		return HttpResponse(demjson.encode({'error':'该公司已被注册'}))
+	models.Company.objects.get(phone_number=phone_number).update(company_name=company_name,company_type=company_type,main_product=main_product,staff_number=staff_number,address=address,is_check=True)

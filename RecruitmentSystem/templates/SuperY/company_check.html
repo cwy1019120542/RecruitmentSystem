@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html>
+{% load staticfiles %}
+<html lang="en">
 <head>
+	<meta charset="utf8">
 	<title>企业验证</title>
 </head>
 <body>
 <p>营业执照</p>
-<input type="file" name="business_licence">
+<input type="file" name="business_licence" enctype='multipart/form-data'>
 <p>公司名称</p>
 <input name="company_name" placeholder="请输入您的公司名称，50个字符以内">
 <p>公司类型</p>
@@ -24,16 +26,57 @@
 <p>公司地址</p>
 <input name="address" placeholder="公司地址">
 <input type="button" name="check_btn" value="确认提交">
+<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
 <script>
 	document.querySelector('[name="check_btn"]').onclick=function() {
 		var formData=new FormData();
-		formData.append('business_licence',document.querySelector('[name="business_licence"]').files[0])
+		var business_licence=document.querySelector('[name="business_licence"]').files[0];
 		var company_name=document.querySelector('[name="company_name"]').value
 		var company_type=document.querySelector('[name="company_type"]').value
 		var main_product=document.querySelector('[name="main_product"]').value
 		var staff_number=document.querySelector('[name="staff_number"]').value
 		var address=document.querySelector('[name="address"]').value
-		console.log(company_name,company_type,main_product,staff_number,address)
+		if (!business_licence){
+			alert('请您上传营业执照');
+		}
+		if (!company_name){
+
+		}
+		if (!company_type){
+
+		}
+		if (!main_product){
+
+		}
+		if (!staff_number){
+
+		}
+		if (!address){
+
+		}
+		formData.append('business_licence',business_licence);
+		formData.append('company_name',company_name);
+		formData.append('company_type',company_type);
+		formData.append('main_product',main_product);
+		formData.append('staff_number',staff_number);
+		formData.append('address',address);
+		console.log(business_licence,company_name,company_type,main_product,staff_number,address)
+		 $.ajax({
+        	url:'{% url "SuperY:company_check_ajax" %}',
+        	type:'post',
+        	processData:false,
+        	contentType: false,  
+        	data:formData,
+        	success:function(data){
+               data=JSON.parse(data)
+               if (data.error) {
+               	alert(data.error)
+               }
+               else {
+               	window.location.assign(data.url);
+               }
+        	}
+        })
 	};
 </script>
 </body>

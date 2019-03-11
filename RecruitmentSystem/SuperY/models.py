@@ -5,6 +5,7 @@ class Applicant(models.Model):
 	mail=models.CharField(max_length=255,help_text='电子邮箱',null=True)
 	person_name=models.CharField(max_length=255,help_text='注册人姓名')
 	passwd=models.CharField(max_length=255,help_text='密码')
+	head_pic=models.ImageField(upload_to='applicant',null=True)
 	register_datetime=models.DateTimeField(auto_now_add=True,help_text='注册时间')
 	class Meta:
 		db_table='applicant'
@@ -17,7 +18,7 @@ class Company(models.Model):
 	mail=models.CharField(max_length=255,help_text='电子邮箱')
 	person_name=models.CharField(max_length=255,help_text='注册人姓名')
 	passwd=models.CharField(max_length=255,help_text='密码')
-	business_licence=models.ImageField(upload_to='company')
+	business_licence=models.ImageField(upload_to='company',null=True,help_text='营业执照')
 	company_name=models.CharField(max_length=255,help_text='公司名称',null=True)
 	register_datetime=models.DateTimeField(auto_now_add=True,help_text='注册时间')
 	is_check=models.BooleanField(default=False,help_text='是否验证')
@@ -45,6 +46,7 @@ class ApplicantSearch(models.Model):
 class Resume(models.Model):
 	applicant=models.ForeignKey(Applicant,on_delete=models.CASCADE,help_text='所属求职者')
 	resume_name=models.CharField(max_length=255,help_text='简历名称')
+	head_pic=models.ImageField(upload_to='resume',null=True)
 	applicant_name=models.CharField(max_length=255,help_text='求职者名称')
 	sex=models.CharField(max_length=255,help_text='性别')
 	age=models.CharField(max_length=255,help_text='年龄')

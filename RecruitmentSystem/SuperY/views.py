@@ -6,6 +6,8 @@ import demjson
 import random
 from itertools import chain
 from django.core.paginator import Paginator
+from django.conf import settings
+import os
 
 def md5_passwd(phone_number,passwd):
 	deal_text=phone_number[:5]+passwd+phone_number[6:]
@@ -122,16 +124,28 @@ def company_index(request,phone_number):
 
 def company_check(request,phone_number):
 	is_login(request,'company',phone_number)
+	company=models.Company.objects.get(phone_number=phone_number)
+	if company.is_check:
+		return redirect(reverse('SuperY:company_index',kwargs={'phone_number':phone_number}))
 	return render(request,'SuperY/company_check.html')
 
 def company_check_ajax(request):
+	business_licence=request.FILES['business_licence']
 	company_name=request.POST['company_name']
 	company_type=request.POST['company_type']
 	main_product=request.POST['main_product']
 	staff_number=request.POST['staff_number']
 	address=request.POST['address']
-	phone_number=request.POST['phone_number']
+	phone_number=request.session['phone_number']
 	company_same=models.Company.objects.filter(company_name=company_name)
 	if company_same:
 		return HttpResponse(demjson.encode({'error':'该公司已被注册'}))
-	models.Company.objects.get(phone_number=phone_number).update(company_name=company_name,company_type=company_type,main_product=main_product,staff_number=staff_number,address=address,is_check=True)
+	models.Company.objects.filter(phone_number=phone_number).update(company_name=company_name,company_type=company_type,main_product=main_product,staff_number=staff_number,address=address,is_check=True,business_licence=business_licence)
+	pic_path=settings.MEDIA_ROOT+r'\company\business_licence'+'\\'+company_name
+	if not os.path.exists(pic_path):
+		os.mkdir(pic_path)
+	pic=pic_path+'\\'+business_licence.name
+	with open(pic,'wb') as f:
+		for chunk in business_licence.chunks():
+			f.write(chunk)
+	return HttpResponse(demjson.encode({'url':reverse('SuperY:company_index',kwargs={'phone_number':phone_number})}))

@@ -19,6 +19,7 @@ def login(request):
 	return render(request,'SuperY/login.html')
 	
 def login_ajax(request):
+	print(request.POST)
 	number=request.POST['number']
 	passwd=request.POST['passwd']
 	identity=request.POST['identity']
@@ -32,35 +33,39 @@ def login_ajax(request):
 	passwd=md5_passwd(phone_number,passwd)
 	if passwd != same_user[0].passwd:
 		return HttpResponse(demjson.encode({'error':'密码不正确'}))
-	request.session['identity']=identity
-	request.session['phone_number']=phone_number
+	request.session[phone_number]=identity+'-'+str(same_user[0].id)
 	return HttpResponse(demjson.encode({'url':reverse(f'SuperY:{identity}_index',kwargs={'phone_number':phone_number})}))
 
 def register(request):
 	return render(request,'SuperY/register.html')
 
 def register_ajax(request):
-	person_name=request.POST['person_name']
-	phone_number=request.POST['phone_number']
-	passwd=request.POST['passwd']
+	print(request.POST)
+	data=request.POST.copy()
+	phone_number=data['phone_number']
+	passwd=data['passwd']
 	passwd=md5_passwd(phone_number,passwd)
-	identity=request.POST['identity']
+	identity=data.pop('identity')[0]
+	print(identity)
 	same_phone=eval(f'models.{identity.capitalize()}.objects.filter(phone_number=phone_number)')
 	if same_phone:
 		return HttpResponse(demjson.encode({'error':'该手机号已被注册'}))
-	eval(f'models.{identity.capitalize()}.objects.create(person_name=person_name,phone_number=phone_number,passwd=passwd)')
-	return HttpResponse()
+	eval(f'models.{identity.capitalize()}.objects.create(**data)')
+	url=reverse('SuperY:login')
+	return HttpResponse(demjson.encode({'url':url}))
 
 def is_login(request,identity,phone_number):
-	identity_judge=request.session.get('identity','')
-	phone_number_judge=request.session.get('phone_number','')
-	if identity_judge != identity or phone_number_judge != phone_number: 
+	user=eval(f'models.{identity.capitalize()}.objects.get(phone_number=phone_number)')
+	if phone_number not in request.session:
 		return redirect(reverse('SuperY:login'))
+	else:
+		if request.session[phone_number] != identity+'-'+str(user.id):
+			return redirect(reverse('SuperY:login'))
+
 
 def logout(request,identity,phone_number):
 	is_login(request,identity,phone_number)
-	session['identity']=''
-	session['phone_number']=''
+	request.session.pop(phone_number)
 	return redirect(reverse('SuperY:login'))
 
 def applicant_index(request,phone_number):
@@ -149,3 +154,18 @@ def company_check_ajax(request):
 		for chunk in business_licence.chunks():
 			f.write(chunk)
 	return HttpResponse(demjson.encode({'url':reverse('SuperY:company_index',kwargs={'phone_number':phone_number})}))
+
+def resume_index(request,phone_number):
+	is_login(request,'applicant',phone_number)
+	applicant=models.Applicant.objects.get(phone_number=phone_number)
+	resume=applicant.resume
+	context_dict={'applicant':applicant,'resume':resume}
+	return render(request,'SuperY/resume_index.html',context_dict)
+
+def resume_ajax(request):
+	data=request.POST.copy()
+	phone_number=data.pop('phone_number')[0]
+	is_login(request,'applicant',phone_number)
+	applicant=models.Applicant.objects.get(phone_number=phone_number)
+	models.Resume.objects.filter(applicant=applicant,)
+

@@ -14,4 +14,6 @@ url(r'^company/(?P<phone_number>\w+)/$',views.company_index,name='company_index'
 url(r'^company/(?P<phone_number>\w+)/company_check/$',views.company_check,name='company_check'),
 url(r'^company_check_ajax/$',views.company_check_ajax,name='company_check_ajax'),
 url(r'^(?P<identity>\w+)/(?P<phone_number>\w+)/logout/$',views.logout,name='logout'),
+url(r'^applicant/(?P<phone_number>\w+)/resume/$',views.resume_index,name='resume_index'),
+
 ]

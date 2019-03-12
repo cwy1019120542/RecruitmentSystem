@@ -62,11 +62,12 @@
 				url:'{% url "SuperY:register_ajax" %}',
 				data:{'person_name':person_name,'phone_number':phone_number,'passwd':passwd1,'identity':identity.value},
 				success:function(data) {
-					if (data){
-						alert(data);
+					data=JSON.parse(data)
+					if (data.error){
+						alert(data.error);
 					}
 					else {
-						window.location.replace('https://www.baidu.com');
+						window.location.replace(data.url);
 					}
 				}
 			}) 

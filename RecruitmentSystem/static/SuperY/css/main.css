@@ -1,0 +1,72 @@
+*{margin:0;padding:0;}
+body {font-family: "Microsoft YaHei","微软雅黑", "PingFang SC", "Hiragino Sans GB", "Heiti SC","WenQuanYi Micro Hei", sans-serif;color: #333333;font-size: 15px;font-weight: 400;font-variant: normal;-webkit-font-smoothing: antialiased;  }
+h3, ul, li {  padding: 0px;  margin: 0px;  }
+table {  width: 100%;  }
+img {  border: none;  }
+a {-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;text-decoration: none;  }
+a:focus, input:focus, button:focus {outline: 0;}
+ul,ol{list-style: none;}
+.clearfix:before,
+.clearfix:after {content: "";display: table;}
+.clearfix:after {clear: both;  }
+.clearfix {zoom: 1; /* IE <8 */  }
+/*登录*/
+.top{background:#fff;border-bottom: 1px solid #e8e8e8;height:60px;}
+.top .logoTell {width:60%;margin: 0 auto;overflow: hidden;}
+.top .logoTell img{width:97px;height:47px;margin-top: 8px;float: left;}
+.top .tell{float: right;font-size: 14px;color:#333;margin-top: 20px;}
+.center,.indexContent{background: #fefefe; overflow: hidden;padding: 5% 0;position:relative;}
+.login_form{width:25%;margin:0 auto;padding:4% 7%;border:1px solid #ddd;border-top: 10px solid #ffc666;min-width:335px;font-size: 14px;color:#333;background: #fff;}
+.login_form input[type='text'],.login_form input[type='password'],.login_form input[type='reset'],.login_form input[type='number'],.top .search input,.top .search button{display: block;width:96%;border-radius: 5px;padding:12px 2%;font-size: 14px;background: none;border:1px solid #ddd;}
+.login_form input[type='reset']{display: inline-block;width:50px;padding:5px 0;margin-left:60px;border-radius: 5px;background: none;cursor: pointer;color:#333;}
+.login_form input[type='radio']{display: inline-block;vertical-align: middle;margin:0 3px 0 10px;}
+.login_form input.bossRadio{margin-left:50px;}
+.login_form button{background: #ff6000;border-radius: 5px;width:100%;text-align: center;border:none;color:#fff;font-size: 16px;padding:10px 0;cursor:pointer;margin-top:10%;}
+.login_form a{display: block;text-align: right;padding-top:15px;font-size: 14px;}
+.login_form P{font-size: 14px;color:red;padding:5px;height:15px;}
+.bottom{font-size: 14px;color:#999;text-align: center;height:40px;line-height: 40px;border-top:1px solid #f8f8f8;}
+/*注册*/
+.register_form h4{color:#333;padding-bottom:10px;position:relative;}
+.register_form input{margin-bottom: 15px;}
+.register_form .protocolInfo{margin-top: 40px;color:#999;}
+.register_form .protocol{margin:0 5px 0 0;display: inline-block;vertical-align: middle;}
+.register_form span{display:inline-block;position:absolute;top:5px;right:10px;z-index:1;color:red;font-weight: 200;}
+.register_form input.applicant{margin-left:0;padding-left:0;}
+.register_form button{margin-top:5%;}
+/*index*/
+.topNav{heigt:30px;background: #f8f8f8;line-height: 30px;font-size: 12px;coor:#333;}
+.topNav .topNav_c{width:80%;margin:0 auto;}
+.topNav .topNav_c span{display: inline-block;float: left;}
+.topNav .topNav_c ul{float: right;}
+.topNav .topNav_c ul li{float: left;padding:0 15px;cursor: pointer;position: relative;}
+.topNav .topNav_c ul li dl{background:#fff;display:none;width:100%;line-height:30px;border: 1px solid #eee;position:absolute;top:30px;left:0;z-index: 1;box-shadow: 1px 1px 4px 1px #eee;}
+.topNav .topNav_c ul li dl dd{text-align: center;}
+.topNav .topNav_c ul li:nth-child(2):hover dl{display: block;}
+.topNav .topNav_c ul li:nth-child(2):hover dl dd:hover{background: #f8f8f8;}
+.indexTop{height:inherit;}
+.indexTop .logoTell img{margin-top: 18px;}
+.indexTop .indexSearch {width:78%;padding:0 0 20px 2%;}
+.indexTop .search{width:80%;}
+.indexTop .search input{border-radius:5px 0 0 5px;width:65%;display: inline-block;vertical-align: middle;border-right:0;padding:15px 2%;}
+.indexTop .search button{width:80px;display:inline-block;background: #ff6000;color:#fff;font-size: 14px;border-radius: 0 5px 5px 0;border:none;padding:15px 0;vertical-align: middle;}
+.indexContent .C_model{width:80%;margin:0 auto;}
+.indexContent .C_model .model_left{width:73%;float: left;}
+.indexContent .C_model .model_left ul li{float: left;width:27.3333%;box-shadow: 0 2px 4px 1px #efefef;margin:0 1% 2.5% 1%;background: #fff;padding:2%;}
+.indexContent .C_model .model_left ul li h4:first-child{color:#333;width:100%;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;}
+.indexContent .C_model .model_left ul li strong{display: inline-block;font-weight: 100;font-size: 13px;color:#999;margin-right: 5px;}
+.indexContent .C_model .model_left ul li p{font-size: 12px;color:#666;border-top: 1px solid #eee;padding:8px 0 0px 0;margin-top: 8px;width:100%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+.indexContent .C_model .model_left ul li span{font-size: 12px;color:#999;padding:2px 0 6px 0;display: inline-block;}
+.indexContent .C_model .model_left ul li h4{color:red;}
+.indexContent .C_model .model_right{width:22%;float:right;min-width: 200px;font-size: 12px;color:#999;padding:3% 2%;background: #fff;box-shadow: 0 2px 4px 1px #efefef;}
+.indexContent .C_model .model_right .userInfo img{width:20%;float:left;min-width:40px;margin-right: 10px;display: inline-block;border-radius: 50%;border:1px solid #eee;}
+.indexContent .C_model .model_right h2{margin-bottom:5px;font-weight: 300;color:#333;}
+.indexContent .C_model .model_right ol{width:80%;margin:6% auto;}
+.indexContent .C_model .model_right ol li,.indexContent .C_model .model_right ul li{width:50%;float: left;color:#333;text-align: center;}
+.indexContent .C_model .model_right ol li span{color:#ff6000;font-size: 30px;}
+.indexContent .C_model .model_right ol li h4,.indexContent .C_model .model_right ul li h4{font-weight: 200;margin:2% 0;color:#000;}
+.indexContent .C_model .model_right ul{padding:4% 0;}
+.indexContent .C_model .model_right ul li{width:33.3333%;text-align: center;}
+.indexContent .C_model .model_right ul li img{display: inline-block;width:60%;}
+.indexContent .C_model .model_right dl{margin-top:5%;}
+.indexContent .C_model .model_right dl dt{color:#ff6000;font-weight: bold;font-size: 14px;border-bottom: 1px solid #eee;padding-bottom:5px;margin-bottom:10px;}
+.indexContent .C_model .model_right dl dd{color:#999;font-size: 12px;padding:3px 0;}

@@ -4,24 +4,94 @@
 <head>
 	<meta charset="utf8">
 	<title>求职者主页</title>
+	 <link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
 </head>
 <body>
-	<div>
-		<p>欢迎回来  {{applicant.name}}</p>
-		<ul>
-			<li>个人中心</li>
-			<li>我的简历</li>
-			<li>注销</li>
-		</ul>
+	<div class='topNav'>
+		<div class="topNav_c clearfix">
+			<span>欢迎回来  {{user.person_name}}</span>
+			<ul>
+				<li>{{user.phone_number}}</li>
+				<li>
+					个人中心
+					<dl>
+						<dd>我的简历</dd>
+						<dd>账号信息</dd>
+						<dd>修改密码</dd>
+					</dl>
+				</li>
+				<a href="{% url 'SuperY:logout' 'applicant' user.phone_number %}"><li>注销</li></a>
+			</ul>
+		</div>
 	</div>
-	<div>
-		<input name="search_word" placeholder="请您输入关键词，公司名/工作地点/职位信息，20个字符以内">
-		<input type="button" name="search_btn" value="搜索">
+	<div class="top indexTop">
+		<div class="logoTell indexSearch">
+			<a href="applicant_index.html">
+				<img src="{% static 'SuperY/images/logo_blue.png' %}">
+			</a>
+			<div class="tell search">
+				<input type="text" name="search_word" placeholder="请您输入关键词，公司名/工作地点/职位信息，20个字符以内"><button>搜索</button>
+			</div>
+		</div>
 	</div>
-	<div>
-		{% for post in post_list %}
-		<div>{{post.post_name}}</div>
-		{% endfor %}
+	<div class='indexContent'>
+		<div class="C_model clearfix">
+			<div class="model_left">
+				<ul class='clearfix'>
+					{% for post in post_list %}
+					<li>
+						<a href="#" target="_blank">
+							<h4>{{post.post_name}}</h4>
+							<strong>{{post.work_place}}</strong>
+							<strong>{{post.experience_require}}</strong>
+							<strong>{{post.graduate_require}}</strong>
+							<p>{{post.company.company_name}}</p>
+							<span>{{post.company.company_type}}</span>
+							<span>{{post.company.staff_number}}</span>
+							<h4>{{post.salary}}</h4>
+						</a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="model_right">
+				<div class="userInfo clearfix">
+					<img src="{% static 'SuperY/images/photoshopImg.png' %}" >
+					<h2>Hi，<span>{{user.person_name}}</span></h2>
+					欢迎回来！
+				</div>
+				<ol class="clearfix">
+					<li>
+						<span>{{company_look}}</span>家
+						<h4>企业看过</h4>
+					</li>
+					<li>
+						<span>{{deliver_post}}</span>家
+						<h4>职位投递</h4>
+					</li>
+				</ol>
+				<ul class="clearfix">
+					<li>
+						<img src="{% static 'SuperY/images/top_resume_hover.gif' %}">
+						<h4>个人中心</h4>
+					</li>
+					<li>
+						<img src="{% static 'SuperY/images/resume_hover.gif' %}">
+						<h4>我的简历</h4>
+					</li>
+					<li>
+						<img src="{% static 'SuperY/images/refresh_resume_hover.png' %}">
+						<h4>刷新</h4>
+					</li>
+				</ul>
+				<dl class="hotNews">
+					<dt>职场热点</dt>
+					<dd>离职，是检验企业的最好标准</dd>
+					<dd>选择做销售这个职业，你后悔了吗？</dd>
+					<dd>新型雇佣关系</dd>
+				</dl>
+			</div>
+		</div>
 	</div>
 	<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
 	<script>

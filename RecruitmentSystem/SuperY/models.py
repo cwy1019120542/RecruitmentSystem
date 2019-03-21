@@ -7,6 +7,7 @@ class Applicant(models.Model):
 	passwd=models.CharField(max_length=255,help_text='密码')
 	head_pic=models.ImageField(upload_to='applicant',null=True)
 	register_datetime=models.DateTimeField(auto_now_add=True,help_text='注册时间')
+	login_random=models.CharField(max_length=255,help_text='登陆号',null=True)
 	class Meta:
 		db_table='applicant'
 		ordering=['register_datetime']
@@ -24,9 +25,9 @@ class Company(models.Model):
 	is_check=models.BooleanField(default=False,help_text='是否验证')
 	company_info=models.TextField(null=True,help_text='公司简介')
 	company_type=models.CharField(null=True,max_length=255,help_text='公司类型')
-	main_product=models.CharField(null=True,max_length=255,help_text='主营产品')
 	staff_number=models.CharField(null=True,max_length=255,help_text='员工数')
 	address=models.CharField(null=True,max_length=255,help_text='公司地址')
+	login_random=models.CharField(max_length=255,help_text='登陆号',null=True)
 	class Meta:
 		db_table='company'
 		ordering=['register_datetime']
@@ -39,6 +40,16 @@ class ApplicantSearch(models.Model):
 	search_datetime=models.DateTimeField(auto_now_add=True,help_text='搜索时间')
 	class Meta:
 		db_table='applicant_search'
+		ordering=['search_datetime']
+	def __str__(self):
+		return self.search_word
+
+class CompanySearch(models.Model):
+	company=models.ForeignKey(Company,on_delete=models.CASCADE,help_text='搜索人')
+	search_word=models.CharField(max_length=255,help_text='搜索关键词')
+	search_datetime=models.DateTimeField(auto_now_add=True,help_text='搜索时间')
+	class Meta:
+		db_table='company_search'
 		ordering=['search_datetime']
 	def __str__(self):
 		return self.search_word
@@ -63,12 +74,19 @@ class Resume(models.Model):
 	self_judge=models.TextField(help_text='自我评价',null=True)
 	update_datetime=models.DateTimeField(auto_now=True,help_text='更新时间')
 	company_look=models.ManyToManyField(Company)
+	is_useful=models.BooleanField(default=False,help_text='是否可用')
 	class Meta:
 		db_table='resume'
 		ordering=['update_datetime']
 	def __str__(self):
 		return self.resume_name
 
+class Tag(models.Model):
+	tag_name=models.CharField(max_length=255,help_text='标签名称')
+	class Meta:
+		db_table='tag'
+	def __str__(self):
+		return self.tag_name
 
 class Post(models.Model):
 	resume=models.ManyToManyField(Resume,help_text='投递的简历')
@@ -81,19 +99,12 @@ class Post(models.Model):
 	recruit_number=models.CharField(max_length=255,help_text='招聘人数')
 	post_info=models.TextField(help_text='岗位介绍')
 	update_datetime=models.DateTimeField(auto_now=True,help_text='发布时间')
+	tag=models.ManyToManyField(Tag)
 	class Meta:
 		db_table='post'
 		ordering=['update_datetime']
 	def __str__(self):
 		return self.post_name
-
-class PostTag(models.Model):
-	post=models.ForeignKey(Post, on_delete=models.CASCADE,help_text='所属岗位')
-	tag_name=models.CharField(max_length=255,help_text='标签名称')
-	class Meta:
-		db_table='post_tag'
-	def __str__(self):
-		return self.tag_name
 
 class WorkExperience(models.Model):
 	resume=models.ForeignKey(Resume,on_delete=models.CASCADE,help_text='所属简历')

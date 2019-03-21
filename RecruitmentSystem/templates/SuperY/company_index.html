@@ -1,9 +1,119 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html>
 <head>
-	<title></title>
+	<meta charset="utf8">
+	<title>企业主页</title>
+	 <link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
 </head>
 <body>
-<p>公司</p>
+	<div class='topNav'>
+		<div class="topNav_c clearfix">
+			<span>欢迎回来  {{user.person_name}}</span>
+			<ul>
+				<li>{{user.phone_number}}</li>
+				<li>
+					{{user.company_name}}
+					<dl>
+						<dd>企业职位</dd>
+						<dd>企业信息</dd>
+						<dd>修改密码</dd>
+					</dl>
+				</li>
+				<a href=""><li>注销</li></a>
+			</ul>
+		</div>
+	</div>
+	<div class="top indexTop">
+		<div class="logoTell indexSearch">
+			<a href="applicant_index.html">
+				<img src="{% static 'SuperY/images/logo_blue.png' %}">
+			</a>
+			<div class="tell search">
+				<input type="text" name="search_word" placeholder="请您输入关键词，求职者职位/技能，20个字符以内"><button>搜索</button>
+			</div>
+		</div>
+	</div>
+	<div class='indexContent'>
+		<div class="C_model clearfix">
+			<div class="model_left">
+				<ul class='clearfix'>
+					{% for resume in resume_list %}
+					<li>
+						<a href="#" target="_blank">
+							<h4>{{resume.applicant.person_name}}</h4>
+							<strong>{{resume.work_place}}</strong>
+							<strong>{{resume.experience}}</strong>
+							<strong>{{post.graduate_require}}</strong>
+							<p>{{post.company.company_name}}</p>
+							<span>{{post.company.company_type}}</span>
+							<span>{{post.company.staff_number}}</span>
+							<h4>{{post.salary}}</h4>
+						</a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="model_right">
+				<div class="userInfo clearfix">
+					<img src="{% static 'SuperY/images/photoshopImg.png' %}" >
+					<h2>Hi，<span>{{user.person_name}}</span></h2>
+					欢迎回来！
+				</div>
+				<ol class="clearfix">
+					<li>
+						<span>{{company_look}}</span>条
+						<h4>看过的简历</h4>
+					</li>
+					<li>
+						<span>{{receive_resume}}</span>条
+						<h4>收到的简历</h4>
+					</li>
+				</ol>
+				<ul class="clearfix">
+					<li>
+						<img src="{% static 'SuperY/images/top_resume_hover.gif' %}">
+						<h4>企业信息</h4>
+					</li>
+					<li>
+						<img src="{% static 'SuperY/images/resume_hover.gif' %}">
+						<h4>公司职位</h4>
+					</li>
+					<li>
+						<img src="{% static 'SuperY/images/refresh_resume_hover.png' %}">
+						<h4>刷新</h4>
+					</li>
+				</ul>
+				<dl class="hotNews">
+					<dt>职场热点</dt>
+					<dd>离职，是检验企业的最好标准</dd>
+					<dd>选择做销售这个职业，你后悔了吗？</dd>
+					<dd>新型雇佣关系</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+	<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
+	<script>
+	document.querySelector('[name="search_btn"]').onclick=function() {
+		var search_word=document.querySelector('[name="search_word"]').value;
+		var is_search=true;
+		if (!search_word || search_word.length>20) {
+			is_search=false;
+			alert('请输入正确格式的关键词')
+		}
+		if (is_search) {
+			$.ajax({
+				type:'post',
+				url:'{% url "SuperY:applicant_search_ajax" %}',
+				data:{'search_word':search_word},
+				success:function(data) {
+					url=JSON.parse(data).url
+					window.open(url)
+				}
+			})
+		}
+	};
+	</script>
 </body>
 </html>

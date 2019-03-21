@@ -3,58 +3,76 @@
 <html lang="en">
 <head>
 	<meta charset="utf8">
-    <link rel="stylesheet" href="{% static 'SuperY/css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
 	<title>登录</title>
 </head>
 <body>
-    <div class="top">我是头部</div>
+    <div class="top">
+		<div class="logoTell">
+			<a href="applicant_index.html">
+				<img src="{% static 'SuperY/images/logo_blue.png' %}">
+			</a>
+			<div class="tell">电话：<span>13155291086</span></div>
+		</div>
+	</div>
 	<div class="center">
-		<form class='login_form'>
-            <input name="number" placeholder="手机号/邮箱" class='login_input'>
+		<div class='login_form'>
+            <input type='text' name="number" placeholder="手机号/邮箱" class='login_input'>
+			<p name="number_info"></p>
 		    <input name="passwd" placeholder="密码" type="password"  class='login_input'>
+			<p name="passwd_info"></p>
 		    <input type="radio" name="identity" value='applicant'>我要求职
-		    <input type="radio" name="identity" value='company'>我是BOSS
-		    <input type="reset">
-		    <input type="button" name="login" value="登录">
+		    <input type="radio" name="identity" value='company' class='bossRadio'>我是BOSS
+		    <p name="identity_info"></p>
+			<button name="login_btn">登 录</button>
             <a href="{% url 'SuperY:register' %}">我要注册</a>
-		</form>
+		</div>
     </div>
     <div class="bottom">我是底部</div>
-	<div id="info" style='display:none;'>
-		弹窗
-	</div>
 <script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
 <script>
-	document.querySelector('[name="login"]').onclick=function (){
+	document.querySelector('[name="login_btn"]').onclick=function (){
 		var number=document.querySelector('[name="number"]').value;
 		var passwd=document.querySelector('[name="passwd"]').value;
 		var identity=document.querySelector('[name="identity"]:checked');
-		var dom=document.getElementById('info');
-		console.log(number,passwd,identity)
-		if (!number) {
-           dom.style.display = 'block';
+		var number_info=document.querySelector('[name="number_info"]');
+		var passwd_info=document.querySelector('[name="passwd_info"]');
+		var identity_info=document.querySelector('[name="identity_info"]');
+		var is_login=true;
+		if (!number || number.length>30 || number.length<11) {
+           number_info.innerHTML='请填写正确格式的手机号或邮箱';
+           is_login=false;
         }
-        if (!passwd) {
-            alert('密码不能为空');
+        if (!passwd || number.length>16 || number.length<6) {
+            passwd_info.innerHTML='请填写正确格式的密码';
+            is_login=false;
         }
         if (!identity){
-        	alert('请选择身份');
+        	identity_info.innerHTML='请选择身份';
+        	is_login=false;
         }
-        $.ajax({
+        if (is_login) {
+        	 number_info.innerHTML='';
+        	 passwd_info.innerHTML='';
+        	 identity_info.innerHTML='';
+        	$.ajax({
         	url:'{% url "SuperY:login_ajax" %}',
         	type:'post',
         	data:{'number':number,'passwd':passwd,'identity':identity.value},
         	success:function(data){
-                console.log(data)
                 data=JSON.parse(data)
-        		if (data.error){
-                    alert(data.error)
+        		if (data.number_error){
+                   number_info.innerHTML=data.number_error;
                 }
-                else {
+                else if (data.passwd_error){
+                	 passwd_info.innerHTML=data.passwd_error;
+                }
+                else if (data.url){
                     window.location.replace(data.url)
                 }
         	}
         })
+        }
 	};
 
 </script>

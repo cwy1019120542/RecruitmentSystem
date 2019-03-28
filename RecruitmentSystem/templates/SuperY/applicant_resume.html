@@ -1,9 +1,190 @@
 <!DOCTYPE html>
-<html>
+{% load staticfiles %}
+<html lang="cn">
 <head>
-	<title>简历主页</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <title>求职者简历</title>
+    <link rel="stylesheet" href="{% static 'SuperY/css/resume.css' %}">
 </head>
 <body>
-这里是简历主页
+<div id="root" class="zp">
+    <div class="zp-main-center clearfix">
+        <div class="resume-tabs-wrapper clearfix zp-tabs">
+            <span title="WEB前端开发 安庆" class="resume-tabs-item fl resume-tabs-item-active">WEB前端开发 安庆</span>
+        </div>
+        <div class="zp-left-container">
+            <div>
+                <div class="profile-pre jump-to" number="0">
+                    <div class="profile-pre-wrapper">
+                        <img src="images/82f5c177-5df9-4eb5-ada6-3543d0ecdcb9.jpg" class="profile-pre-head">
+                        <p class="profile-pre-name clearfix">
+                            <span title="程汪洋" class="fl">程汪洋</span>
+                            <span class="profile-pre-name__update-time">更新时间：2019-03-05</span>
+                        </p>
+                        <p class="profile-pre-info">
+                            <span class="profile-pre-info-txt">男</span>
+                            <span class="profile-pre-info-txt">21岁</span>
+                            <span class="profile-pre-info-txt">合肥</span>
+                            <span class="profile-pre-info-txt">无工作经验</span>
+                        </p>
+                        <p class="profile-pre-contact clearfix">
+                            <i class="iconfont icon-resume-phone fl profile-pre-contact-phone"></i>
+                            <span class="fl profile-pre-contact-phoneT">131****1086</span>
+                            <i class="iconfont icon-resume-email fl profile-pre-contact-phone"></i>
+                            <span class="fl">101912****@qq.com</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="resume-wanna-wrapper jump-to" number="1">
+                    <p class="wanna-title clearfix">求职意向</p>
+                    <div class="wanna-pre-wrapper clearfix" style="">
+                        <div class="clearfix">
+                            <div class="wanna-pre-item fl">
+                                <label class="fl">求职状态:</label>
+                                <p title="在职，可一个月内到岗">在职，可一个月内到岗</p>
+                            </div>
+                            <div class="wanna-pre-item fl">
+                                <label class="fl">期望工作地点:</label>
+                                <p title="合肥,安庆">合肥,安庆</p>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <div class="wanna-pre-item fl clearfix">
+                                <label class="fl">期望从事行业:</label>
+                                <p title="计算机软件">计算机软件</p>
+                                <p title="互联网/电子商务">互联网/电子商务</p>
+                            </div>
+                            <div class="wanna-pre-item fl clearfix">
+                                <label class="fl">期望从事职业:</label>
+                                <p title="IT运维/技术支持">IT运维/技术支持</p>
+                                <p title="软件/互联网开发/系统集成">软件/互联网开发/系统集成</p>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <div class="wanna-pre-item fl">
+                                <label class="fl">税前期望月薪:</label>
+                                <p title="4001-6000元/月">4001-6000元/月</p>
+                            </div>
+                            <div class="wanna-pre-item fl">
+                                <label class="fl">期望工作性质:</label>
+                                <p title="全职">全职</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resume-job-exp-wrapper jump-to" number="2">
+                    <p class="job-exp-title clearfix">
+                        工作经验
+                        <span onselectstart="return false;" class="job-exp-add fr">
+                            <i class="iconfont icon-resume-add"></i>
+                            添加工作经验
+                        </span>
+                    </p>
+                    <div onselectstart="return false;" class="job-exp-add-null" style="display: none;">
+                        <i class="iconfont icon-resume-add"></i> 添加工作经验
+                    </div> <!---->
+                    <div class="job-exp-pre-wrapper">
+                        <div class="job-exp-pre-item">
+                            <p class="job-exp-pre-item-title">
+                                <span title="中国移动公司">中国移动公司</span>
+                                <span class="job-exp-pre-item-time fr">2018.7-至今</span>
+                            </p>
+                            <p class="job-exp-pre-item-salary">
+                                <span title="网管中心" class="fl">网管中心</span>
+                                4001-6000元/月
+                            </p>
+                            <div class="job-exp-pre-item-detail">
+                                <pre>
+                                    1.将django，selenium结合，并在其他各种包的辅助下独立编写出可视自动化框架，快捷高效的帮助公司完成一系列日常工作的自动化操作。
+                                    2.运用selenium，requests，pyuserinput，pyperclip等工具包完成各种信息的爬取。
+                                    3.运用django搭建项目网站。
+                                    4.编写项目文档。
+                                    5.维护代码，解决问题
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resume-project-exp-wrapper jump-to" number="3">
+                    <p class="project-exp-title clearfix">
+                        项目经验
+                        <span onselectstart="return false;" class="project-exp-add fr">
+                            <i class="iconfont icon-resume-add"></i>
+                            添加项目经验
+                        </span>
+                    </p>
+                    <div onselectstart="return false;" class="project-exp-add-null" style="display: none;">
+                        <i class="iconfont icon-resume-add"></i> 添加项目经验
+                    </div>
+                    <div class="project-exp-pre-wrapper">
+                        <div class="project-exp-pre-item">
+                            <p class="project-exp-pre-item-title">
+                                <span title="可视自动化框架">可视自动化框架</span>
+                                <span class="project-exp-pre-item-time fr">2018.8-2018.9</span>
+                            </p>
+                            <p class="project-exp-pre-item-salary">项目描述</p>
+                            <div class="project-exp-pre-item-detail">
+                                <pre>
+                                    将django，selenium结合，并在其他各种包的辅助下独立编写出可视自动化框架，快捷高效的帮助公司完成一系列日常工作的自动化操作。
+                                </pre>
+                            </div>
+                        </div>
+                        <div class="project-exp-pre-item">
+                            <p class="project-exp-pre-item-title">
+                                <span title="爬虫">爬虫</span>
+                                <span class="project-exp-pre-item-time fr">2018.7-2018.12</span>
+                            </p>
+                            <p class="project-exp-pre-item-salary">项目描述</p>
+                            <div class="project-exp-pre-item-detail">
+                                <pre>运用selenium，requests，pyuserinput，pyperclip等工具包完成各种信息的爬取。</pre>
+                            </div> <!---->
+                        </div>
+                    </div>
+                </div>
+                <div class="resume-job-exp-wrapper jump-to" number="4">
+                    <p class="edu-title-container clearfix">
+                        <span class="edu-experience">教育经历</span>
+                        <span onselectstart="return false " class="edu-experience-add-right fr">
+                            <i class="iconfont icon-resume-add"></i> 添加教育经历
+                        </span>
+                    </p>
+                    <ul class="edu-ul">
+                        <li class="clearfix">
+                            <span class="edu-ul-title">安徽财经大学</span>
+                            <span class="edu-ul-name">计算机科学与技术</span>
+                            <span class="edu-ul-qualification">本科</span>
+                            <span class="edu-ul-timerange">2015.9-2019.7</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="professional-skills jump-to" number="11">
+                    <ul class="professional-skills-wrap">
+                        <li class="clearfix professional-skills-wrap-item">
+                            <span class="professional-skills-wrap-title">python</span>
+                            <span class="professional-skills-wrap-name">精通</span>
+                            <span class="professional-skills-wrap-qualification">使用时长:10月</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="zp-evalution jump-to" module-num="9" number="9">
+                    <div class="zp-evalution-title clearfix">
+                        <span class="fl">自我评价</span>
+                    </div>
+                    <div class="zp-evalution-content">
+                        <pre>
+                            1.	学习能力强，因为语言基础比较扎实，所以对很多知识的学习效率比较高，能快速融入项目。
+                            2.	对知识的嗅觉比较敏锐，勤于做笔记，对不会的问题会主动寻找方式解决并记录。
+                            3.	性格良好，乐观开朗，兴趣广泛。
+                            简历附件
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

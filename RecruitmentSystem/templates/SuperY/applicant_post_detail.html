@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <title>职位信息</title>
+    <link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'SuperY/css/vendors.css' %}">
+    <link rel="stylesheet" href="{% static 'SuperY/css/positionInfo.css' %}">
+</head>
+<body>
+<div class='topNav'>
+        <div class="topNav_c clearfix">
+            <span>求职者  {{user.person_name}}</span>
+            <ul>
+                <li data-user-id={{user.id}} name='phone_number'>{{user.phone_number}}</li>
+                <li>
+                    个人中心
+                    <dl>
+                        <dd>我的简历</dd>
+                        <dd>账号信息</dd>
+                        <dd>修改密码</dd>
+                    </dl>
+                </li>
+                <a href="{% url 'SuperY:logout' 'applicant' user.id %}"><li>注销</li></a>
+            </ul>
+        </div>
+    </div>
+<div id="listContent" class="contentpile__content a-center-layout__content">
+    <div class="job-summary">
+        <div class="summary-plane">
+            <div class="summary-plane__content"><!---->
+                <div class="summary-plane__top"></div>
+                <h3 class="summary-plane__title" data-post-id={{post.id}}>{{post.post_name}}</h3>
+                <div class="summary-plane__bottom">
+                    <div class="summary-plane__left">
+                        <span class="summary-plane__salary">{{post.salary}}</span>
+                        <ul class="summary-plane__info">
+                            <li>
+                                <a href="" target="_blank">{{post.work_place}}</a>
+                            </li>
+                            <li>{{post.experience_require}}</li>
+                            <li>{{post.graduate_require}}</li>
+                            <li>{{post.recruit_number}}</li>
+                        </ul>
+                    </div>
+                    <div class="summary-plane__right">
+                        <div class="a-job-apply-button summary-plane__action">
+                            <button type="button" class="a-button a--bordered a--filled" name="deliver_btn">申请职位</button><!---->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="contentpile__content__wrapper app">
+        <div class="app-main__left">
+            <div class="job-detail">
+                <div class="highlights">
+                    <h2 class="highlights__title">职位亮点</h2>
+                    <div class="highlights__content">
+                        {% for tag in post.tag.all %}
+                        <span class="highlights__content-item">{{tag.tag_name}}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="describtion">
+                    <h2 class="describtion__title">职位描述</h2>
+                    <div class="describtion__detail-content">
+                       {{post.post_info}}
+                    </div>
+                </div>
+                <div class="job-address">
+                    <h2 class="job-address__title">公司地点</h2>
+                    <div class="job-address__content">
+                        <span class="job-address__content-text">
+                            <i class="iconfont icon-locate"></i>
+                            {{post.company.address}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="app-main__right">
+            <div class="publisher">
+                <div class="manager">
+                    <h2 class="manager__title">职位发布者</h2>
+                    <div class="manager__detail">
+                        <h3 class="manager__detail-name">{{post.company.person_name}}</h3>
+                        <span class="manager__detail-label">刚刚在线</span>
+                        <span class="manager__detail-label">处理简历快</span>
+                    </div>
+                </div>
+                <div class="company">
+                    <img src="images/66453804451_100x100.png"alt="公司Logo" title="公Logo" class="company__avatar">
+                    <span class="company__title">{{post.company.company_name}}</span>
+                    <div class="company__detail">
+                        <button class="company__industry">
+                            <i class="iconfont icon-industry"></i>{{post.company.company_type}}
+                        </button>
+                        <button class="company__size">
+                            <i class="company__size-icon"></i>{{post.company.staff_number}}
+                        </button>
+                    </div>
+                    <div class="company__description">
+                        {{post.company.company_info}}
+                    </div>
+                    <a href="" class="company__page-site">该公司其他职位</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bottom">我是底部</div>
+<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
+<script>
+    document.querySelector('[name="deliver_btn"]').onclick=function() {
+        var post_id=document.querySelector('[class="summary-plane__title"]').getAttribute('data-post-id');
+        $.ajax({
+            type:'post',
+            url:'{% url "SuperY:deliver" %}',
+        })
+    };
+</script>
+</body>
+</html>

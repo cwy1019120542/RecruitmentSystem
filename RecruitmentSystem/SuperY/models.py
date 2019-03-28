@@ -1,11 +1,10 @@
 from django.db import models
 
 class Applicant(models.Model):
-	phone_number=models.CharField(max_length=255,help_text='手机号码')
-	mail=models.CharField(max_length=255,help_text='电子邮箱',null=True)
-	person_name=models.CharField(max_length=255,help_text='注册人姓名')
-	passwd=models.CharField(max_length=255,help_text='密码')						#删除了头像字段，主页显示直接调用简历中的头像即可
-	register_datetime=models.DateTimeField(auto_now_add=True,help_text='注册时间')
+	phone_number=models.CharField(max_length=255,help_text='手机号码',unique=True)
+	person_name=models.CharField(max_length=255,help_text='注册人姓名',null=True)
+	passwd=models.CharField(max_length=255,help_text='密码',null=True)						#删除了头像字段，主页显示直接调用简历中的头像即可
+	register_datetime=models.DateTimeField(auto_now_add=True,help_text='注册时间',null=True)
 	login_random=models.CharField(max_length=255,help_text='登陆号',null=True)
 	class Meta:
 		db_table='applicant'
@@ -14,10 +13,9 @@ class Applicant(models.Model):
 		return self.phone_number+'['+self.person_name+']'
 
 class Company(models.Model):
-	phone_number=models.CharField(max_length=255,help_text='手机号码')
-	mail=models.CharField(max_length=255,help_text='电子邮箱')
-	person_name=models.CharField(max_length=255,help_text='注册人姓名')
-	passwd=models.CharField(max_length=255,help_text='密码')
+	phone_number=models.CharField(max_length=255,help_text='手机号码',unique=True)			#手机号都设置唯一，索引查询更快
+	person_name=models.CharField(max_length=255,help_text='注册人姓名',null=True)
+	passwd=models.CharField(max_length=255,help_text='密码',null=True)
 	business_licence=models.ImageField(upload_to='company',null=True,help_text='营业执照')
 	company_name=models.CharField(max_length=255,help_text='公司名称',null=True)
 	register_datetime=models.DateTimeField(auto_now_add=True,help_text='注册时间')
@@ -34,8 +32,8 @@ class Company(models.Model):
 		return self.company_name
 
 class ApplicantSearch(models.Model):
-	applicant=models.ForeignKey(Applicant,on_delete=models.CASCADE,help_text='搜索人')
-	search_word=models.CharField(max_length=255,help_text='搜索关键词')
+	applicant=models.ForeignKey(Applicant,on_delete=models.CASCADE,help_text='搜索人',null=True)
+	search_word=models.CharField(max_length=255,help_text='搜索关键词',null=True)
 	search_datetime=models.DateTimeField(auto_now_add=True,help_text='搜索时间')
 	class Meta:
 		db_table='applicant_search'
@@ -44,8 +42,8 @@ class ApplicantSearch(models.Model):
 		return self.search_word
 
 class CompanySearch(models.Model):
-	company=models.ForeignKey(Company,on_delete=models.CASCADE,help_text='搜索人')
-	search_word=models.CharField(max_length=255,help_text='搜索关键词')
+	company=models.ForeignKey(Company,on_delete=models.CASCADE,help_text='搜索人',null=True)
+	search_word=models.CharField(max_length=255,help_text='搜索关键词',null=True)
 	search_datetime=models.DateTimeField(auto_now_add=True,help_text='搜索时间')
 	class Meta:
 		db_table='company_search'
@@ -54,7 +52,7 @@ class CompanySearch(models.Model):
 		return self.search_word
 
 class Resume(models.Model):
-	applicant=models.OneToOneField(Applicant,on_delete=models.CASCADE,help_text='所属求职者')
+	applicant=models.OneToOneField(Applicant,on_delete=models.CASCADE,help_text='所属求职者',null=True)
 	resume_name=models.CharField(max_length=255,help_text='简历名称',null=True)
 	head_pic=models.ImageField(upload_to='resume',null=True)
 	applicant_name=models.CharField(max_length=255,help_text='求职者名称',null=True)
@@ -72,7 +70,7 @@ class Resume(models.Model):
 	work_nature=models.CharField(max_length=255,help_text='工作性质',null=True)
 	self_judge=models.TextField(help_text='自我评价',null=True)
 	update_datetime=models.DateTimeField(auto_now=True,help_text='更新时间')
-	company_look=models.ForeignKey(Company)						#企业的观看这里改成了一对多，比较平衡和合理
+	company_look=models.ManyToManyField(Company,help_text='浏览的企业',null=True)
 	is_useful=models.BooleanField(default=False,help_text='是否可用')
 	class Meta:
 		db_table='resume'

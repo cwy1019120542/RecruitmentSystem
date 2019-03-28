@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>注册</title>
+	<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div class="top">
+	<div class="logoTell">
+		<a href="applicant_index.html">
+			<img src="images/logo_blue.png">
+		</a>
+		<div class="tell">电话：<span>138562286</span></div>
+	</div>
+</div>
+<div class="center">
+	<form class='login_form register_form'>
+		<h4>姓名 <span></span></h4>
+		<input type='text' name="person_name" placeholder="请输入您的真实姓名，不可超过20位">
+		<h4>手机号码 <span></span></h4>
+		<input type='number' name="phone_number" placeholder="请输入您的手机号">
+		<h4>密码 <span></span></h4>
+		<input name="passwd1" placeholder="请您输入密码，6位-16位数字/字母/符号组合" type="password">
+		<h4>确认密码 <span></span></h4>
+		<input name="passwd2" placeholder="请您确认密码" type="password">
+		<h4>身份选择 <span></span></h4>
+		<input type="radio" name="identity" value='applicant' class='applicant'>我要求职
+		<input type="radio" name="identity" value='company'class='bossRadio'>我是BOSS
+		<div class='protocolInfo'><input type="checkbox" name="is_read" class='protocol'>我接受用户协议和隐私政策</div>
+		<button>注 册</button>
+	</form>
+</div>
+<div class="bottom">我是底部</div>
+	<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
+	<script>
+		document.querySelector('[name="register"]').onclick=function() {
+		var person_name=document.querySelector('[name="person_name"]').value;
+		var phone_number=document.querySelector('[name="phone_number"]').value;
+		var passwd1=document.querySelector('[name="passwd1"]').value;
+		var passwd2=document.querySelector('[name="passwd2"]').value;
+		var identity=document.querySelector('[name="identity"]:checked');
+		var is_read=document.querySelector('[name="is_read"]:checked');
+		var is_post=true;
+		if (!person_name || person_name.length>20){
+			is_post=false;
+			alert('请您填写正确格式的姓名');
+		}
+		if (!phone_number || phone_number.charAt(0)!=1 || phone_number.length!=11){
+			is_post=false;
+			alert('请您填写正确格式的手机号');
+		}
+		if (!passwd1 || passwd1.length<6 || passwd1.length>16){
+			is_post=false;
+			alert('请您填写正确格式的密码')
+		}
+		if (passwd1!=passwd2){
+			is_post=false;
+			alert('两次输入的密码不匹配');
+		}
+		if (!identity){
+			is_post=false;
+			alert('请您选择身份');
+		}
+		if (!is_read){
+			is_post=false;
+			alert('请您接受用户协议和隐私政策')
+		}
+		//console.log(person_name,phone_number,mail,passwd1,identity.value)
+		if (is_post){
+			$.ajax({
+				type:'post',
+				url:'{% url "SuperY:register_ajax" %}',
+				data:{'person_name':person_name,'phone_number':phone_number,'passwd':passwd1,'identity':identity.value},
+				success:function(data) {
+					if (data){
+						alert(data);
+					}
+					else {
+						window.location.replace('https://www.baidu.com');
+					}
+				}
+			}) 
+		}
+	};
+	</script>
+</body>
+</html>

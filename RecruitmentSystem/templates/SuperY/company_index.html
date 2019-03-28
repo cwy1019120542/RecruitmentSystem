@@ -40,7 +40,7 @@
 				<ul class='clearfix'>
 					{% for resume in resume_list %}
 					<li>
-						<a href="#" target="_blank">
+						<a href="{% url 'SuperY:applicant_post_detail' user.id post.id %}" target="_blank">
 							<h4>{{resume.applicant.person_name}}</h4>
 							<strong>{{resume.work_place}}</strong>
 							<strong>{{resume.experience}}</strong>

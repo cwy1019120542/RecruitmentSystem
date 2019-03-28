@@ -17,8 +17,8 @@
 	</div>
 	<div class="center">
 		<div class='login_form'>
-            <input type='text' name="number" placeholder="手机号/邮箱" class='login_input'>
-			<p name="number_info"></p>
+            <input type='text' name="phone_number" placeholder="手机号" class='login_input'>
+			<p name="phone_number_info"></p>
 		    <input name="passwd" placeholder="密码" type="password"  class='login_input'>
 			<p name="passwd_info"></p>
 		    <input type="radio" name="identity" value='applicant'>我要求职
@@ -32,18 +32,19 @@
 <script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
 <script>
 	document.querySelector('[name="login_btn"]').onclick=function (){
-		var number=document.querySelector('[name="number"]').value;
+		var phone_number=document.querySelector('[name="phone_number"]').value;
 		var passwd=document.querySelector('[name="passwd"]').value;
 		var identity=document.querySelector('[name="identity"]:checked');
-		var number_info=document.querySelector('[name="number_info"]');
+		var phone_number_info=document.querySelector('[name="phone_number_info"]');
 		var passwd_info=document.querySelector('[name="passwd_info"]');
 		var identity_info=document.querySelector('[name="identity_info"]');
 		var is_login=true;
-		if (!number || number.length>30 || number.length<11) {
-           number_info.innerHTML='请填写正确格式的手机号或邮箱';
+        console.log(phone_number,passwd)
+		if (!phone_number || phone_number.length>30 || phone_number.length<11) {
+           phone_number_info.innerHTML='请填写正确格式的手机号';
            is_login=false;
         }
-        if (!passwd || number.length>16 || number.length<6) {
+        if (!passwd || passwd.length>16 || passwd.length<6) {
             passwd_info.innerHTML='请填写正确格式的密码';
             is_login=false;
         }
@@ -52,17 +53,17 @@
         	is_login=false;
         }
         if (is_login) {
-        	 number_info.innerHTML='';
+        	 phone_number_info.innerHTML='';
         	 passwd_info.innerHTML='';
         	 identity_info.innerHTML='';
         	$.ajax({
         	url:'{% url "SuperY:login_ajax" %}',
         	type:'post',
-        	data:{'number':number,'passwd':passwd,'identity':identity.value},
+        	data:{'phone_number':phone_number,'passwd':passwd,'identity':identity.value},
         	success:function(data){
                 data=JSON.parse(data)
-        		if (data.number_error){
-                   number_info.innerHTML=data.number_error;
+        		if (data.phone_number_error){
+                   phone_number_info.innerHTML=data.phone_number_error;
                 }
                 else if (data.passwd_error){
                 	 passwd_info.innerHTML=data.passwd_error;

@@ -4,8 +4,7 @@ class Applicant(models.Model):
 	phone_number=models.CharField(max_length=255,help_text='手机号码')
 	mail=models.CharField(max_length=255,help_text='电子邮箱',null=True)
 	person_name=models.CharField(max_length=255,help_text='注册人姓名')
-	passwd=models.CharField(max_length=255,help_text='密码')
-	head_pic=models.ImageField(upload_to='applicant',null=True)
+	passwd=models.CharField(max_length=255,help_text='密码')						#删除了头像字段，主页显示直接调用简历中的头像即可
 	register_datetime=models.DateTimeField(auto_now_add=True,help_text='注册时间')
 	login_random=models.CharField(max_length=255,help_text='登陆号',null=True)
 	class Meta:
@@ -73,7 +72,7 @@ class Resume(models.Model):
 	work_nature=models.CharField(max_length=255,help_text='工作性质',null=True)
 	self_judge=models.TextField(help_text='自我评价',null=True)
 	update_datetime=models.DateTimeField(auto_now=True,help_text='更新时间')
-	company_look=models.ManyToManyField(Company)
+	company_look=models.ForeignKey(Company)						#企业的观看这里改成了一对多，比较平衡和合理
 	is_useful=models.BooleanField(default=False,help_text='是否可用')
 	class Meta:
 		db_table='resume'

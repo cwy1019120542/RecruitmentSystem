@@ -103,6 +103,11 @@ def applicant_search_ajax(request):
 
 def my_paginator(data_all,page_data_number,aim_page):
 	paginator=Paginator(data_all,page_data_number)
+	all_page_number=paginator.num_pages
+	if aim_page<1:
+		aim_page=1
+	elif aim_page>all_page_number:
+		aim_page=all_page_number
 	data_list=paginator.page(aim_page)
 	return paginator.count,paginator.num_pages,data_list
 
@@ -123,6 +128,37 @@ def applicant_post_detail(request,phone_number,post_id):
 	post=models.Post.objects.get(id=post_id)
 	context_dict={'applicant':applicant,'post':post}
 	return render(request,'SuperY/post_detail',context_dict)
+
+def applicant_company(request,phone_number,page):
+	is_login(request,'applicant',phone_number)
+	applicant=models.Applicant.objects.get(phone_number=phone_number)
+	resume=models.Resume.objects.filter(applicant=applicant)
+	if not resume:
+		company_list=[]
+	else:
+		company_all=resume[0].company_look.all()
+		post_number,page_all,post_list=my_paginator(company_all,5,page)
+	context_dict={'user':applicant,'company_look':company_look}
+	return render(request,'Super/applicant_company.html',context_dict)
+
+def applicant_company_post(request,phone_number,company_id,page):
+	is_login(request,'applicant',phone_number)
+	applicant=models.Applicant.objects.get(phone_number=phone_number)
+	company=models.Company.objects.get(id=comppany_id)
+	post_all=models.Post.objects.filter(company=company)
+	post_list=my_paginator(post_all,5,page)
+	context_dict={'user':applicant,'post_list':post_list}
+	return render(request,'Super/applicant_company_post.html',context_dict)
+
+def deliver_post(request,phone_number):
+	is_login(request,'applicant',phone_number)
+	applicant=models.Applicant.objects.get(phone_number=phone_number)
+	resume=models.Resume.objects.get(applicant=applicant)
+	post_all=models.Post.objects.filter(resume=resume)
+	post_list=my_paginator(post_all,5,page)
+	context_dict={'user':applicant,'post_list':post_list}
+	return render(request,'Super/applicant_company_post.html',context_dict)
+
 
 def company_index(request,phone_number):
 	is_login(request,'company',phone_number)
@@ -265,10 +301,11 @@ def company_resume_detail(request,phone_number,resume_id):
 	context_dict={'user':company,'resume':resume}
 	return render(request,'SuperY/company_resume.html',context_dict)
 
-def company_post_list(request,phone_number):
+def company_post_list(request,phone_number,page):
 	is_login(request,'company',phone_number)
 	company=models.Company.objects.get(phone_number=phone_number)
-	post_list=models.Post.objects.filter(company=company)
+	post_all=models.Post.objects.filter(company=company)
+	post_list=my_paginator(post_all,5,page)
 	context_dict={'user':company,'post_list':post_list}
 	return render(request,'SuperY/company_post_list.html',context_dict)
 
@@ -279,8 +316,14 @@ def company_post_detail(request,phone_number,post_id):
 	context_dict={'user':company,'post':post_id}
 	return render(request,'SuperY/company_post_detail.html',context_dict)
 
-# def company_post_detail_ajax(request):
-# 	data=request.POST().copy()
-# 	phone_number=data.pop('phone_number')
-# 	is_login(request,'company',phone_number)
-# 	post_tag_list=data
+def company_post_detail_ajax(request):
+	data=request.POST().copy()
+	phone_number=data.pop('phone_number')[0]
+	is_login(request,'company',phone_number)
+	post_id=data.pop('post_id')[0]
+	post=models.Post.objects.get(id=post_id)
+	tag_id_list=data.pop('tag_id_list')
+	post.tag.clear()
+	for tag_id in tag_id_list:
+		tag=models.Tag.objects.get(id=tag_id)
+		post.tag.add(tag)

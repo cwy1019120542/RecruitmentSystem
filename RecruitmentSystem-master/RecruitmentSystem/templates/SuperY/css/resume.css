@@ -1,0 +1,1292 @@
+
+.profile-pre {
+    padding: 40px 25px 42px;
+    background: #fff;
+    border-bottom: 1px solid #eaedf1
+}
+.profile-pre-wrapper {
+    position: relative;
+    color: #333
+}
+.profile-pre-wrapper > p {
+    margin-left: 135px
+}
+.profile-pre-name {
+    margin-bottom: 24px;
+    font-size: 32px;
+    line-height: 32px
+}
+.profile-pre-name span:first-of-type {
+    display: inline-block;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    max-width: 10em;
+    overflow: hidden;
+    white-space: nowrap;
+    height: 35px
+}
+.profile-pre-name__update-time {
+    font-size: 14px;
+    color: #999;
+    vertical-align: top;
+    margin-left: 12px
+}
+.profile-pre-edit {
+    cursor: pointer;
+    font-size: 14px;
+    letter-spacing: 1.21px;
+    position: absolute;
+    top: 0;
+    right: 0
+}
+.profile-pre-edit-resume {
+    margin-right: 5px
+}.profile-pre-info {
+    margin-bottom: 16px;
+    font-size: 16px;
+    line-height: 14px
+}
+.profile-pre-info-txt {
+    position: relative;
+    padding: 0 24px
+}
+.profile-pre-info-txt:not(:first-of-type):before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 1px;
+    height: 12px;
+    background: #dcdcdc
+}
+.profile-pre-info-txt:first-of-type {
+    padding: 0 24px 0 0
+}
+.profile-pre-contact {
+    font-size: 16px;
+    letter-spacing: .97px;
+    line-height: 14px
+}
+.profile-pre-contact span {
+    margin-right: 16px
+}
+.profile-pre-contact i {
+    margin-right: 14px
+}
+.profile-pre-contact i.icon-resume-email {
+    font-size: 14px
+}
+.profile-pre-head {
+    position: absolute;
+    width: 116px;
+    height: 116px;
+    top: -7px;
+    left: 0;
+    border: 1px solid #eaedf1
+}
+.profile-pre .profile-edit-select-short {
+    width: 264px
+}
+.profile-pre .profile-edit-status {
+    position: relative;
+    width: auto
+}
+.profile-pre .profile-edit-status .ivu-select-selection {
+    width: 264px
+}
+.profile-pre .profile-edit-status .ivu-select-dropdown {
+    width: auto !important;
+    left: 0 !important;
+    min-width: 264px
+}
+.profile-pre .profile-edit-wrapper .cascade-select-arr {
+    display: inline-block
+}
+.profile-pre .profile-edit-wrapper .cascade-select-arr .cascader-select-wrapper {
+    width: 182px;
+    margin-right: 8px
+}
+.profile-pre .profile-edit-wrapper .zpfe-iview-checkbox.ivu-checkbox-wrapper {
+    font-size: 14px;
+    color: #333;
+    letter-spacing: 1.21px
+}
+.profile-pre .profile-edit-wrapper .form-error-tip {
+    font-size: 12px;
+    color: #ff5c56;
+    line-height: 20px
+}
+.profile-pre .profile-edit-wrapper .ivu-select-placeholder, .profile-pre .profile-edit-wrapper .ivu-select-selected-value {
+    height: 36px !important;
+    line-height: 36px !important
+}
+.profile-pre .profile-edit-title {
+    margin-top: -40px;
+    font-size: 24px;
+    color: #333;
+    letter-spacing: 0;
+    line-height: 96px
+}
+.profile-pre .profile-edit-form {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 40px 0 40px 24px;
+    background: #f8f8f8
+}
+.profile-pre .profile-edit-item {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-left: 122px;
+    height: 60px
+}
+.profile-pre .profile-edit-item:last-of-type {
+    height: auto
+}
+.profile-pre .profile-edit-item-label, .profile-pre .profile-edit-item-label2 {
+    margin-left: -122px;
+    letter-spacing: 1.39px;
+    line-height: 36px;
+    font-size: 16px;
+    color: #999
+}
+.profile-pre .profile-edit-item-label2 {
+    width: 122px;
+    height: 36px
+}
+.profile-pre .profile-edit-item-modify {
+    line-height: 36px;
+    font-size: 14px;
+    color: #333;
+    letter-spacing: 1.21px
+}
+.profile-pre .profile-edit-item-modify-edit {
+    margin-left: 8px
+}
+.profile-pre .profile-edit-item input[type=text] {
+    height: 36px;
+    width: 264px
+}
+.profile-pre .profile-edit-item-sexs {
+    line-height: 36px
+}
+.profile-pre .profile-edit-item-sexs label {
+    margin-right: 24px;
+    font-size: 16px;
+    color: #333;
+    letter-spacing: 1.39px;
+    cursor: pointer
+}
+.profile-pre .profile-edit-item .ivu-select-single .ivu-select-selection {
+    height: auto
+}
+.profile-pre .profile-edit-nowork-label {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    letter-spacing: 1.21px
+}
+.profile-pre .profile-edit-crop {
+    position: absolute;
+    top: 40px;
+    right: 25px;
+    width: 186px
+}
+.profile-pre .profile-edit-crop label {
+    width: 86px;
+    margin-top: 76px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 12px;
+    color: #1787fb;
+    letter-spacing: .95px
+}
+.profile-pre .profile-edit-crop-image {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 5px
+}
+.profile-pre .profile-edit-crop-photo {
+    text-align: right;
+    font-size: 12px;
+    color: #999;
+    letter-spacing: 0;
+    line-height: 20px
+}
+.profile-pre .profile-edit-crop-photo:first-of-type {
+    height: 124px
+}
+.profile-pre .profile-edit-cropper {
+    position: fixed;
+    z-index: 987654321;
+    top: 50%;
+    left: 50%;
+    width: 560px;
+    height: 482px;
+    padding: 30px 20px 0;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border-radius: 2px;
+    -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .3);
+    box-shadow: 0 0 1px rgba(0, 0, 0, .3)
+}
+.profile-pre .profile-edit-cropper-title {
+    padding-bottom: 40px;
+    font-size: 16px;
+    color: #333;
+    line-height: 16px
+}
+.profile-pre .profile-edit-cropper-panel {
+    height: 300px
+}
+.profile-pre .profile-edit-cropper-btns {
+    line-height: 96px;
+    text-align: center
+}
+.profile-pre .profile-edit-cropper-btns-sure {
+    margin-right: 32px;
+    color: #fff;
+    background: #1787fb;
+    border-radius: 96px
+}
+.profile-pre .profile-edit-cropper-btns-cancel {
+    color: #999
+}
+.profile-pre .profile-edit-cropper-btn {
+    display: inline-block;
+    width: 72px;
+    line-height: 32px;
+    text-align: center;
+    border-radius: 96px;
+    font-size: 16px;
+    cursor: pointer
+}
+.profile-pre .profile-edit-btns-sure {
+    margin: 32px 44px 0 167px;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #1787fb;
+    color: #fff;
+    border-radius: -webkit-calc(1em + 16px);
+    border-radius: calc(1em + 16px);
+    border: 1px solid #1787fb;
+    padding: 8px 16px;
+    -webkit-transition: all .1s;
+    -o-transition: all .1s;
+    transition: all .1s;
+    line-height: 1;
+    outline: none;
+    text-align: center
+}.profile-pre .profile-edit-btns-cancel {
+    color: #999;
+    margin-top: 32px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-size: 14px;
+    background-color: transparent;
+    padding: 8px 16px;
+    -webkit-transition: all .1s;
+    -o-transition: all .1s;
+    transition: all .1s;
+    line-height: 1;
+    outline: none;
+    text-align: center
+}
+.resume-wanna-wrapper {
+    padding: 32px 25px 0;
+    background: #fff
+}
+.resume-wanna-wrapper:after {
+    content: "";
+    display: block;
+    margin: 42px auto 0;
+    width: 830px;
+    border-bottom: 1px solid #eaedf1
+}
+.resume-wanna-wrapper .wanna-title {
+    margin-bottom: 29px;
+    font-size: 24px;
+    color: #333;
+    letter-spacing: 1.21px
+}
+.resume-wanna-wrapper .wanna-title i {
+    color: inherit
+}
+.resume-wanna-wrapper .wanna-edit {
+    font-size: 14px;
+    letter-spacing: 1.21px;
+    cursor: pointer
+}.resume-wanna-wrapper .wanna-pre-wrapper {
+    margin-bottom: 20px;
+    color: #333;
+    letter-spacing: 1.21px
+}
+.resume-wanna-wrapper .wanna-pre-item {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0 10px 0 137px;
+    width: 50%
+}
+.resume-wanna-wrapper .wanna-pre-item.lang-en {
+    padding-left: 160px
+}
+.resume-wanna-wrapper .wanna-pre-item.lang-en label {
+    margin-left: -160px
+}
+.resume-wanna-wrapper .wanna-pre-item label {
+    margin-left: -137px;
+    font-size: 14px;
+    color: #666;
+    letter-spacing: 1.21px
+}
+.resume-wanna-wrapper .wanna-pre-item p {
+    margin-bottom: 11px;
+    font-size: 14px;
+    color: #333;
+    letter-spacing: 1.21px;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap
+}
+.resume-wanna-wrapper .wanna-edit-wrapper .ivu-select-selection {
+    height: 36px
+}
+.resume-wanna-wrapper .wanna-edit-wrapper .ivu-select-selection .ivu-tag {
+    margin: 6px 4px 2px 0
+}
+.resume-wanna-wrapper .wanna-edit-wrapper .ivu-tag-checked .ivu-tag-text {
+    width: 140px;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block
+}
+.resume-wanna-wrapper .wanna-edit-wrapper .ivu-tag-checked .ivu-icon-ios-close-empty {
+    top: -5px
+}
+.resume-wanna-wrapper .wanna-edit-wrapper .ivu-tag-checked .ivu-select-selected-value {
+    line-height: 34px !important
+}
+.resume-wanna-wrapper .wanna-edit-wrapper .form-error-tip {
+    font-size: 12px;
+    color: #ff5c56
+}
+.resume-wanna-wrapper .wanna-edit-wrapper .wanna-edit-select-short {
+    width: 264px
+}
+.resume-wanna-wrapper .wanna-edit-wrapper .wanna-edit-status {
+    position: relative;
+    width: auto
+}
+.resume-wanna-wrapper .wanna-edit-wrapper .wanna-edit-status .ivu-select-selection {
+    width: 264px
+}
+.resume-wanna-wrapper .wanna-edit-wrapper .wanna-edit-status .ivu-select-dropdown {
+    width: auto !important;
+    left: 0 !important;
+    min-width: 264px
+}
+.resume-wanna-wrapper .wanna-edit-wrapper .wanna-edit-select-long {
+    width: 592px
+}
+.resume-wanna-wrapper .wanna-edit-wrapper .preferred-location-wrapper .ivu-checkbox-wrapper {
+    font-size: 14px
+}
+.resume-wanna-wrapper .wanna-edit-wrapper .preferred-location-label {
+    height: 36px;
+    padding-left: 8px;
+    width: 592px;
+    line-height: 36px;
+    background: #fff;
+    cursor: pointer;
+    border: 1px solid #dddee1;
+    -webkit-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out
+}
+.resume-wanna-wrapper .wanna-edit-wrapper .preferred-location-label span {
+    margin-right: 1em
+}
+.resume-wanna-wrapper .wanna-edit-wrapper .preferred-location-content {
+    position: relative;
+    padding: 0 12px;
+    width: 592px
+}
+.resume-wanna-wrapper .wanna-edit-wrapper .preferred-location-title {
+    padding-bottom: 5px;
+    line-height: 26px;
+    font-size: 14px;
+    color: #666;
+    letter-spacing: 1.21px
+}
+.resume-wanna-wrapper .wanna-edit-wrapper .preferred-location-item {
+    width: 20%;
+    margin: 4px 0
+}
+.resume-wanna-wrapper .wanna-edit-wrapper .preferred-location-item-industry {
+    width: 50%;
+    margin: 2px 0;
+    float: left
+}
+.resume-wanna-wrapper .wanna-edit-form {
+    padding: 40px 0 0 25px;
+    background: #f8f8f8
+}
+.resume-wanna-wrapper .wanna-edit-item {
+    height: 60px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-left: 142px
+}
+.resume-wanna-wrapper .wanna-edit-item.lang-en {
+    padding-left: 175px
+}
+.resume-wanna-wrapper .wanna-edit-item-label {
+    line-height: 36px;
+    margin-left: -142px;
+    font-size: 16px;
+    color: #999;
+    letter-spacing: 1.39px
+}
+.resume-wanna-wrapper .wanna-edit-item-label.lang-en {
+    margin-left: -175px
+}
+.resume-wanna-wrapper .wanna-edit-item-content {
+    line-height: 36px
+}
+.resume-wanna-wrapper .wanna-edit-item-content label {
+    margin-right: 24px;
+    font-size: 16px;
+    color: #333;
+    letter-spacing: 1.39px;
+    cursor: pointer
+}.resume-wanna-wrapper .wanna-edit-btns-sure {
+    margin: 12px 44px 40px 167px;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #1787fb;
+    color: #fff;
+    border-radius: -webkit-calc(1em + 16px);
+    border-radius: calc(1em + 16px);
+    border: 1px solid #1787fb;
+    padding: 8px 16px;
+    -webkit-transition: all .1s;
+    -o-transition: all .1s;
+    transition: all .1s;
+    line-height: 1;
+    outline: none;
+    text-align: center
+}.resume-wanna-wrapper .wanna-edit-btns-sure:hover {
+    background-color: #1479e1
+}.resume-wanna-wrapper .wanna-edit-btns-cancel {
+    color: #999;
+    margin-top: 12px;
+    font-size: 14px;
+    background-color: transparent;
+    padding: 8px 16px;
+    -webkit-transition: all .1s;
+    -o-transition: all .1s;
+    transition: all .1s;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    line-height: 1;
+    outline: none;
+    text-align: center
+}.resume-project-exp-wrapper {
+    padding: 32px 25px 0;
+    background: #fff
+}.resume-project-exp-wrapper:after {
+    content: "";
+    display: block;
+    margin: 0 auto;
+    width: 830px;
+    border-bottom: 1px dashed #eaedf1
+}.resume-project-exp-wrapper .project-exp-title {
+    margin-bottom: 40px;
+    font-size: 24px;
+    color: #333;
+    letter-spacing: 1.21px
+}.resume-project-exp-wrapper .project-exp-add {
+    padding: 0 10px;
+    line-height: 26px;
+    border: 1px solid #eaedf1;
+    border-radius: 100px;
+    text-align: center;
+    font-size: 14px;
+    color: #999;
+    letter-spacing: .74px;
+    cursor: pointer
+}.resume-project-exp-wrapper .project-exp-add i {
+    color: #1787fb;
+    font-size: 14px
+}.resume-project-exp-wrapper .project-exp-add:hover {
+    color: #fff;
+    background: #1787fb
+}.resume-project-exp-wrapper .project-exp-add-null {
+    margin: 0 auto 40px;
+    width: 830px;
+    line-height: 52px;
+    background: #f9f9f9;
+    border: 1px dashed #dcdcdc;
+    border-radius: 2px;
+    font-size: 14px;
+    text-align: center;
+    color: #999;
+    letter-spacing: 1.11px;
+    cursor: pointer
+}.resume-project-exp-wrapper .project-exp-add-null i {
+    font-size: 14px
+}
+.resume-project-exp-wrapper .show-all {
+    margin-bottom: 24px;
+    font-size: 14px;
+    color: #1787fb;
+    letter-spacing: 0;
+    cursor: pointer
+}
+.resume-project-exp-wrapper .show-all .iconfont {
+    display: inline-block;
+    -webkit-transform: scale(.3);
+    -ms-transform: scale(.3);
+    transform: scale(.3)
+}
+.resume-project-exp-wrapper .project-exp-pre-item {
+    margin-bottom: 48px
+}.resume-project-exp-wrapper .project-exp-pre-item:last-of-type {
+    margin-bottom: 40px
+}
+.resume-project-exp-wrapper .project-exp-pre-item-title {
+    margin-bottom: 8px;
+    font-size: 18px;
+    color: #333;
+    letter-spacing: 1.56px
+}
+.resume-project-exp-wrapper .project-exp-pre-item-title span:first-of-type {
+    display: inline-block;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    max-width: 20em;
+    overflow: hidden;
+    white-space: nowrap
+}
+.resume-project-exp-wrapper .project-exp-pre-item-time {
+    font-size: 12px;
+    color: #999;
+    letter-spacing: 1.04px
+}
+.resume-project-exp-wrapper .project-exp-pre-item-edit {
+    display: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #1787fb;
+    letter-spacing: 1.21px
+}
+.resume-project-exp-wrapper .project-exp-pre-item-edit i {
+    font-size: 14px;
+    color: inherit
+}
+.resume-project-exp-wrapper .project-exp-pre-item-salary {
+    margin-bottom: 24px;
+    font-size: 14px;
+    color: #999;
+    letter-spacing: 1.21px
+}
+.resume-project-exp-wrapper .project-exp-pre-item-salary span {
+    margin-right: 1em
+}
+.resume-project-exp-wrapper .project-exp-pre-item-detail {
+    word-wrap: break-word;
+    font-size: 14px;
+    color: #666;
+    letter-spacing: 0;
+    line-height: 24px
+}
+.resume-project-exp-wrapper .project-exp-pre-item-detail pre {
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word
+}
+.resume-project-exp-wrapper .project-exp-edit-wrapper input[type=text] {
+    height: 36px
+}
+.resume-project-exp-wrapper .project-exp-edit-wrapper textarea {
+    resize: none;
+    height: 124px
+}
+.resume-project-exp-wrapper .project-exp-edit-wrapper .ivu-select-selection {
+    height: 36px
+}
+.resume-project-exp-wrapper .project-exp-edit-wrapper .ivu-tag {
+    margin: 6px 4px 2px 0
+}
+.resume-project-exp-wrapper .project-exp-edit-wrapper .form-error-tip {
+    font-size: 12px;
+    color: #ff5c56
+}
+.resume-project-exp-wrapper .project-exp-edit-form {
+    padding: 40px 91px 0 25px;
+    background: #f8f8f8
+}
+.resume-project-exp-wrapper .project-exp-edit-item {
+    position: relative;
+    padding-left: 142px;
+    height: 60px
+}
+.resume-project-exp-wrapper .project-exp-edit-item.height-auto {
+    height: auto
+}
+.resume-project-exp-wrapper .project-exp-edit-line {
+    margin: 0 16px;
+    display: inline-block;
+    width: 24px;
+    height: 2px;
+    background: #e6e8ec
+}
+.resume-project-exp-wrapper .project-exp-edit-today {
+    position: absolute;
+    right: -15px;
+    top: 7px;
+    -webkit-transform: translate(100%);
+    -ms-transform: translate(100%);
+    transform: translate(100%)
+}
+.resume-project-exp-wrapper .project-exp-edit-label {
+    margin-left: -142px;
+    line-height: 36px;
+    font-size: 16px;
+    color: #999;
+    letter-spacing: 1.39px
+}
+.resume-project-exp-wrapper .project-exp-edit-textarea-tips {
+    padding: 8px 0 24px;
+    line-height: 17px;
+    font-size: 12px;
+    color: #dcdcdc;
+    letter-spacing: 1.04px
+}
+.resume-project-exp-wrapper .project-exp-edit-textarea-tips span {
+    font-size: 12px;
+    color: #999;
+    letter-spacing: 1.04px
+}
+.resume-project-exp-wrapper .project-exp-edit-textarea-tips span.over {
+    color: #ff5c56
+}
+.resume-project-exp-wrapper .project-exp-edit-btns-sure {
+    margin: 32px 44px 40px 167px;
+    font-size: 14px;
+    background-color: #1787fb;
+    color: #fff;
+    border-radius: -webkit-calc(1em + 16px);
+    border-radius: calc(1em + 16px);
+    border: 1px solid #1787fb;
+    padding: 8px 16px;
+    -webkit-transition: all .1s;
+    -o-transition: all .1s;
+    transition: all .1s;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    line-height: 1;
+    outline: none;
+    text-align: center
+}
+.resume-project-exp-wrapper .project-exp-edit-btns-sure:hover {
+    background-color: #1479e1
+}
+.resume-project-exp-wrapper .project-exp-edit-btns-cancel {
+    margin-top: 32px;
+    font-size: 14px;
+    color: #999;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    padding: 8px 16px;
+    -webkit-transition: all .1s;
+    -o-transition: all .1s;
+    transition: all .1s;
+    line-height: 1;
+    outline: none;
+    text-align: center
+}
+.resume-project-exp-wrapper .project-exp-edit-btns .icon-resume-delete {
+    margin: 32px -76px 0 0;
+    color: #333;
+    cursor: pointer
+}
+
+.resume-job-exp-wrapper {
+    padding: 32px 25px 0;
+    background: #fff
+}
+.resume-job-exp-wrapper:after {
+    content: "";
+    display: block;
+    margin: 0 auto;
+    width: 830px;
+    border-bottom: 1px dashed #eaedf1
+}
+.resume-job-exp-wrapper .job-exp-title {
+    margin-bottom: 40px;
+    font-size: 24px;
+    color: #333;
+    letter-spacing: 1.21px
+}
+.resume-job-exp-wrapper .job-exp-add {
+    padding: 0 10px;
+    line-height: 26px;
+    border: 1px solid #eaedf1;
+    border-radius: 100px;
+    text-align: center;
+    font-size: 14px;
+    color: #999;
+    letter-spacing: .74px;
+    cursor: pointer
+}
+.resume-job-exp-wrapper .job-exp-add i {
+    color: #1787fb;
+    font-size: 14px
+}.resume-job-exp-wrapper .job-exp-add-null {
+    margin: 0 auto 40px;
+    width: 830px;
+    line-height: 52px;
+    background: #f9f9f9;
+    border: 1px dashed #dcdcdc;
+    border-radius: 2px;
+    font-size: 14px;
+    text-align: center;
+    color: #999;
+    letter-spacing: 1.11px;
+    cursor: pointer
+}.resume-job-exp-wrapper .job-exp-add-null i {
+    font-size: 14px
+}
+.resume-job-exp-wrapper .show-all {
+    margin-bottom: 24px;
+    font-size: 14px;
+    color: #1787fb;
+    letter-spacing: 0;
+    cursor: pointer
+}
+.resume-job-exp-wrapper .show-all .iconfont {
+    display: inline-block;
+    -webkit-transform: scale(.3);
+    -ms-transform: scale(.3);
+    transform: scale(.3)
+}
+.resume-job-exp-wrapper .job-exp-pre-item {
+    margin-bottom: 48px
+}.resume-job-exp-wrapper .job-exp-pre-item:last-of-type {
+    margin-bottom: 40px
+}
+.resume-job-exp-wrapper .job-exp-pre-item-title {
+    margin-bottom: 8px;
+    font-size: 18px;
+    color: #333;
+    letter-spacing: 1.56px
+}
+.resume-job-exp-wrapper .job-exp-pre-item-title span:first-of-type {
+    display: inline-block;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    max-width: 20em;
+    overflow: hidden;
+    white-space: nowrap
+}
+.resume-job-exp-wrapper .job-exp-pre-item-time {
+    font-size: 12px;
+    color: #999;
+    letter-spacing: 1.04px
+}
+.resume-job-exp-wrapper .job-exp-pre-item-edit {
+    display: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #1787fb;
+    letter-spacing: 1.21px
+}
+.resume-job-exp-wrapper .job-exp-pre-item-edit i {
+    font-size: 14px;
+    color: inherit
+}
+.resume-job-exp-wrapper .job-exp-pre-item-salary {
+    margin-bottom: 24px;
+    font-size: 14px;
+    color: #999;
+    letter-spacing: 1.21px
+}
+.resume-job-exp-wrapper .job-exp-pre-item-salary span {
+    margin-right: 1em;
+    display: inline-block;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    max-width: 20em;
+    overflow: hidden;
+    white-space: nowrap
+}
+.resume-job-exp-wrapper .job-exp-pre-item-detail {
+    margin-bottom: 10px;
+    word-wrap: break-word;
+    font-size: 14px;
+    color: #666;
+    letter-spacing: 0;
+    line-height: 24px
+}
+.resume-job-exp-wrapper .job-exp-pre-item-detail pre {
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word
+}
+.resume-job-exp-wrapper .job-exp-edit-wrapper input[type=text] {
+    height: 36px
+}
+.resume-job-exp-wrapper .job-exp-edit-wrapper textarea {
+    resize: none;
+    height: 124px
+}
+.resume-job-exp-wrapper .job-exp-edit-wrapper .ivu-select-selection {
+    height: 36px
+}
+.resume-job-exp-wrapper .job-exp-edit-wrapper .ivu-tag {
+    margin: 6px 4px 2px 0
+}
+.resume-job-exp-wrapper .job-exp-edit-wrapper .ivu-tag-checked .ivu-tag-text {
+    width: 140px;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block
+}
+.resume-job-exp-wrapper .job-exp-edit-wrapper .ivu-tag-checked .ivu-icon-ios-close-empty {
+    top: -5px
+}
+.resume-job-exp-wrapper .job-exp-edit-wrapper .ivu-select-selected-value {
+    line-height: 34px !important
+}
+.resume-job-exp-wrapper .job-exp-edit-wrapper .ivu-custom-option-group:after {
+    content: "";
+    display: block;
+    clear: both
+}
+.resume-job-exp-wrapper .job-exp-edit-wrapper .ivu-custom-option {
+    clear: none;
+    float: left;
+    width: 50%
+}
+.resume-job-exp-wrapper .job-exp-edit-wrapper .form-error-tip {
+    font-size: 12px;
+    color: #ff5c56
+}
+.resume-job-exp-wrapper .job-exp-edit-form {
+    padding: 40px 91px 0 25px;
+    background: #f8f8f8
+}
+.resume-job-exp-wrapper .job-exp-edit-item {
+    position: relative;
+    padding-left: 142px;
+    height: 60px
+}
+.resume-job-exp-wrapper .job-exp-edit-item:last-of-type {
+    height: auto
+}
+.resume-job-exp-wrapper .job-exp-edit-jobtype-wrapper {
+    position: relative;
+    display: block
+}
+.resume-job-exp-wrapper .job-exp-edit-jobtype-wrapper .ivu-checkbox-wrapper {
+    font-size: 14px
+}
+.resume-job-exp-wrapper .job-exp-edit-jobtype-wrapper .ivu-select-dropdown {
+    left: 0 !important
+}
+.resume-job-exp-wrapper .job-exp-edit-jobtype-label {
+    height: 36px;
+    padding-left: 8px;
+    line-height: 36px;
+    background: #fff;
+    cursor: pointer;
+    border: 1px solid #dddee1;
+    -webkit-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out
+}
+.resume-job-exp-wrapper .job-exp-edit-jobtype-label span {
+    margin-right: 1em
+}
+.resume-job-exp-wrapper .job-exp-edit-jobtype-wrapper-small {
+    width: 50%;
+    margin: 2px 0
+}
+.resume-job-exp-wrapper .job-exp-edit-jobtype-wrapper-small .ivu-select-dropdown {
+    left: 0 !important;
+    width: auto
+}
+.resume-job-exp-wrapper .job-exp-edit-jobtype-label-small {
+    position: relative;
+    display: inline-block;
+    width: auto !important;
+    padding-right: 2em;
+    cursor: pointer
+}
+.resume-job-exp-wrapper .job-exp-edit-jobtype-content {
+    position: relative;
+    padding: 0 12px;
+    width: 592px
+}
+.resume-job-exp-wrapper .job-exp-edit-jobtype-title {
+    padding-bottom: 5px;
+    line-height: 26px;
+    font-size: 14px;
+    color: #666;
+    letter-spacing: 1.21px
+}
+.resume-job-exp-wrapper .job-exp-edit-jobtype-item {
+    width: 50%;
+    margin: 4px 0
+}
+.resume-job-exp-wrapper .job-exp-edit-jobtype-item-industry {
+    width: 50%;
+    margin: 2px 0
+}
+.resume-job-exp-wrapper .job-exp-edit-label {
+    margin-left: -142px;
+    line-height: 36px;
+    font-size: 16px;
+    color: #999;
+    letter-spacing: 1.39px
+}
+.resume-job-exp-wrapper .job-exp-edit-line {
+    margin: 0 16px;
+    display: inline-block;
+    width: 24px;
+    height: 2px;
+    background: #e6e8ec
+}
+.resume-job-exp-wrapper .job-exp-edit-today {
+    position: absolute;
+    right: -15px;
+    top: 7px;
+    -webkit-transform: translate(100%);
+    -ms-transform: translate(100%);
+    transform: translate(100%)
+}
+.resume-job-exp-wrapper .job-exp-edit-textarea-tips {
+    padding: 8px 0 0;
+    line-height: 17px;
+    font-size: 12px;
+    color: #dcdcdc;
+    letter-spacing: 1.04px
+}
+.resume-job-exp-wrapper .job-exp-edit-textarea-tips span {
+    font-size: 12px;
+    color: #999;
+    letter-spacing: 1.04px
+}
+.resume-job-exp-wrapper .job-exp-edit-textarea-tips span.over {
+    color: #ff5c56
+}
+.resume-job-exp-wrapper .job-exp-edit-btns-sure {
+    margin: 32px 44px 40px 167px;
+    font-size: 14px;
+    background-color: #1787fb;
+    color: #fff;
+    border-radius: -webkit-calc(1em + 16px);
+    border-radius: calc(1em + 16px);
+    border: 1px solid #1787fb;
+    padding: 8px 16px;
+    -webkit-transition: all .1s;
+    -o-transition: all .1s;
+    transition: all .1s;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    line-height: 1;
+    outline: none;
+    text-align: center
+}
+.resume-job-exp-wrapper .job-exp-edit-btns-sure:hover {
+    background-color: #1479e1
+}
+.resume-job-exp-wrapper .job-exp-edit-btns-cancel {
+    margin-top: 32px;
+    font-size: 14px;
+    color: #999;
+    background-color: transparent;
+    padding: 8px 16px;
+    -webkit-transition: all .1s;
+    -o-transition: all .1s;
+    transition: all .1s;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    line-height: 1;
+    outline: none;
+    text-align: center
+}.resume-job-exp-wrapper .job-exp-edit-btns .icon-resume-delete {
+    margin: 32px -76px 0 0;
+    color: #333;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none
+}.resume-job-exp-wrapper[data-v-560d03af] {
+    color: #333;
+    font-size: 14px;
+    background: #fff;
+    padding: 32px 25px 0;
+    font-family: PingFangSC-Regular, Microsoft YaHei
+}
+.resume-job-exp-wrapper[data-v-560d03af]:after {
+    content: "";
+    display: block;
+    margin: 0 auto;
+    width: 830px;
+    height: 30px;
+    border-bottom: 1px solid #eaedf1
+}
+.resume-job-exp-wrapper .edu-title-container[data-v-560d03af] {
+    padding-bottom: 40px
+}
+.resume-job-exp-wrapper .edu-experience[data-v-560d03af] {
+    font-size: 24px
+}
+.resume-job-exp-wrapper .edu-experience-add[data-v-560d03af] {
+    background: #f9f9f9;
+    border: 1px dashed #dcdcdc;
+    height: 52px;
+    color: #999;
+    text-align: center;
+    line-height: 52px;
+    vertical-align: middle;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px
+}.resume-job-exp-wrapper .edu-experience-add i[data-v-560d03af] {
+    color: #999;
+    font-size: 14px
+}
+.resume-job-exp-wrapper .edu-experience-add-right[data-v-560d03af] {
+    line-height: 26px;
+    color: #999;
+    text-align: center;
+    font-size: 14px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 0 10px
+}.resume-job-exp-wrapper .edu-experience-add-right i[data-v-560d03af] {
+    color: #1787fb;
+    font-size: 14px
+}
+.resume-job-exp-wrapper .edu-ul[data-v-560d03af] {
+    word-wrap: break-word
+}
+.resume-job-exp-wrapper .edu-ul li[data-v-560d03af] {
+    padding: 10px 0
+}
+.resume-job-exp-wrapper .edu-ul li .zp-edit-icon[data-v-560d03af] {
+    display: none
+}.resume-job-exp-wrapper .edu-ul-title[data-v-560d03af] {
+    width: 220px;
+    font-size: 18px;
+    margin-right: 40px;
+    letter-spacing: 1.56px;
+    display: inline-block
+}
+.resume-job-exp-wrapper .edu-ul-name[data-v-560d03af] {
+    width: 180px;
+    margin-right: 24px;
+    display: inline-block
+}
+.resume-job-exp-wrapper .edu-ul-name[data-v-560d03af], .resume-job-exp-wrapper .edu-ul-qualification[data-v-560d03af], .resume-job-exp-wrapper .edu-ul-timerange[data-v-560d03af] {
+    color: #666;
+    margin-right: 24px
+}
+.professional-skills-wrap[data-v-5283ba1a] {
+    word-wrap: break-word
+}
+.professional-skills-wrap-item[data-v-5283ba1a] {
+    padding: 10px 0
+}
+.professional-skills-wrap-item .zp-edit-icon[data-v-5283ba1a] {
+    display: none
+}.professional-skills-wrap-title[data-v-5283ba1a] {
+    width: 220px;
+    font-size: 18px;
+    margin-right: 40px;
+    letter-spacing: 1.56px;
+    display: inline-block;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    line-height: 18px
+}
+.professional-skills-wrap-name[data-v-5283ba1a] {
+    width: 180px;
+    margin-right: 24px;
+    display: inline-block
+}
+.professional-skills-wrap-name[data-v-5283ba1a], .professional-skills-wrap-qualification[data-v-5283ba1a], .professional-skills-wrap-timerange[data-v-5283ba1a] {
+    color: #666;
+    margin-right: 24px
+}
+.zp-evalution {
+    width: 830px;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    padding: 32px 25px 40px;
+    margin-bottom: 15px;
+    background: #fff
+}.zp-evalution-title span:first-child {
+    font-size: 24px;
+    color: #333
+}
+.zp-evalution-title span:nth-child(2) {
+    display: none;
+    font-size: 14px;
+    color: #1787fb;
+    margin-right: 5px;
+    cursor: pointer
+}
+.zp-evalution-content {
+    margin-top: 40px
+}
+.zp-evalution-content p {
+    width: 830px;
+    font-size: 16px;
+    color: #666;
+    line-height: 28px;
+    overflow: auto;
+    word-wrap: break-word
+}
+.zp-evalution-edit {
+    width: 830px;
+    color: #999;
+    margin-top: 32px
+}
+.zp-evalution-edit-content {
+    width: 830px;
+    padding: 40px 0;
+    background: #f8f8f8
+}
+.zp-evalution-edit-content .description {
+    font-size: 16px;
+    margin-left: 25px;
+    margin-top: 3px
+}
+.zp-evalution-edit-surplus {
+    margin-right: 71px
+}
+.zp-evalution-edit-surplus textarea {
+    padding: 8px 13px 8px 16px;
+    background: #fff;
+    border: 1px solid #e6e8ec;
+    resize: none;
+    width: 592px;
+    min-height: 122px
+}
+.zp-evalution-edit-surplus p {
+    text-align: right;
+    font-size: 12px
+}
+.zp-evalution-edit-btn {
+    height: 80px;
+    font-size: 14px;
+    background: #f8f8f8
+}
+.zp-evalution-edit-btn div {
+    display: inline-block;
+    vertical-align: middle
+}
+.zp-evalution-edit-btn div span {
+    cursor: pointer
+}
+.zp-evalution-edit-btn div:first-child {
+    text-align: right;
+    width: 268px
+}
+.zp-evalution-edit-btn div:first-child a {
+    display: inline-block;
+    padding: 6px 20px;
+    border-radius: 100px;
+    color: #fff
+}
+.zp-evalution-edit-btn div:nth-child(2) {
+    text-align: right;
+    width: 75px
+}.zp-evalution-edit-btn div:nth-child(3) {
+    text-align: right;
+    width: 455px
+}
+.zp-evalution-edit-btn div:nth-child(3) span {
+    margin-top: 2px;
+    cursor: pointer
+}.zp-evalution-edit-btn__sure {
+    background-color: #1787fb;
+    color: #fff;
+    border-radius: -webkit-calc(1em + 16px);
+    border-radius: calc(1em + 16px);
+    border: 1px solid #1787fb;
+    font-size: 14px;
+    padding: 8px 16px;
+    -webkit-transition: all .1s;
+    -o-transition: all .1s;
+    transition: all .1s;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    line-height: 1;
+    outline: none;
+    text-align: center
+}
+.zp-evalution-edit-btn__sure:hover {
+    background-color: #1479e1
+}.resume-tabs-wrapper {
+    font-size: 14px;
+    color: #999;
+    background: #fff;
+    letter-spacing: .71px
+}
+.resume-tabs-wrapper .resume-tabs-item {
+    width: 16.6%;
+    height: 52px;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    text-align: center;
+    line-height: 50px;
+    padding: 0 1em;
+    cursor: pointer;
+    border-bottom: 2px solid #fff
+}

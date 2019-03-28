@@ -32,6 +32,7 @@ ul,ol{list-style: none;}
 .register_form .protocolInfo{margin-top: 40px;color:#999;}
 .register_form .protocol{margin:0 5px 0 0;display: inline-block;vertical-align: middle;}
 .register_form input.applicant{margin-left:0;padding-left:0;}
+.register_form h4.tate-owned{margin-top:25px;}
 .register_form button{margin-top:5%;}
 /*index*/
 .topNav{heigt:30px;background: #f8f8f8;line-height: 30px;font-size: 12px;coor:#333;}
@@ -70,3 +71,24 @@ ul,ol{list-style: none;}
 .indexContent .C_model .model_right dl{margin-top:5%;}
 .indexContent .C_model .model_right dl dt{color:#ff6000;font-weight: bold;font-size: 14px;border-bottom: 1px solid #eee;padding-bottom:5px;margin-bottom:10px;}
 .indexContent .C_model .model_right dl dd{color:#999;font-size: 12px;padding:3px 0;}
+/*职位列表*/
+.contentpile__content,.contentpile__jobcontent{padding-bottom:35px;margin-right:15px;background:#fff;margin-bottom:20px}
+.contentpile__content{background: #fefefe;}
+.contentpile__content__wrapper,.contentpile_c_w_item{position:relative;-webkit-box-sizing:border-box;letter-spacing:0;box-sizing:border-box}
+.contentpile__content__wrapper{display:block;width:70%;margin:2% auto 0;background: #fff;}
+.contentpile_c_w_item{padding:0 15px 0 30px}
+.contentpile__content__wrapper__item__info{display:block;-webkit-box-sizing:border-box;box-sizing:border-box;padding:12px 0 18px;border-bottom:1px solid #eee;overflow: hidden;}
+.contentpile__content__wrapper__item__info__box{clear:both}.contentpile__content__wrapper__item__info__box__welfare{display:inline-block;overflow:hidden;clear:both;font-size:12px;color:#999}
+.contentpile__content__wrapper__item__info__box__welfare__item{float:left;margin-right:10px;padding:0 10px;line-height:25px;border:1px solid #eee}
+.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info__box--name .contentpile__content__wrapper__item__info__box__cname__title{float:right;max-width:260px;overflow:hidden;-o-text-overflow:ellipsis;text-overflow:ellipsis;white-space:nowrap}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info__box--name .contentpile__content__wrapper__item__info__box__cname__title:hover{color:#1787fb}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info__box--name .contentpile__content__wrapper__item__info__box__cname__viplevel{float:right;margin-top:11px;margin-left:4px;max-width:50px;height:14px}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info--desc{margin-bottom:10px}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info--desc .contentpile__content__wrapper__item__info__box__job{height:26px;line-height:26px;display:inline-block;clear:both}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info--desc .contentpile__content__wrapper__item__info__box__job__saray{font-size:16px;color:#ff5959;margin-right:10px;float:left}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info--desc .contentpile__content__wrapper__item__info__box__job__demand{float:left;height:20px}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info--desc .contentpile__content__wrapper__item__info__box__job__demand__item{float:left;max-width:110px;overflow:hidden;-o-text-overflow:ellipsis;text-overflow:ellipsis;white-space:nowrap;border-right:1px solid #eee;font-size:12px;color:#666;letter-spacing:0;padding:0 8px}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info--desc .contentpile__content__wrapper__item__info__box__job__demand:last-child{border-right:none}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info--desc .contentpile__content__wrapper__item__info__box__job__comdec{float:right}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info--desc .contentpile__content__wrapper__item__info__box__job__comdec__item{padding:0 10px;border-left:1px solid #eee}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info--desc .contentpile__content__wrapper__item__info__box__job__comdec__item:first-child{border-left:none}.contentpile__content__wrapper__item__jobbtn{width:220px;background:#fff;position:absolute;top:50px;bottom:3px;right:0}.contentpile__content__wrapper__item__jobbtn__collect{width:auto;bottom:20px;right:135px;background:#fff;color:#666;border:none}.contentpile__content__wrapper__item__jobbtn__collect--true{color:#ffb433;letter-spacing:1.87px}.contentpile__content__wrapper__item__jobbtn__collect--true:hover{color:#ffb433!important}.contentpile__content__wrapper__item__jobbtn__collect:hover{color:#1787fb}.contentpile__content__wrapper__item__jobbtn__apply{color:#fff;background:#1787fb;bottom:20px;right:15px}.contentpile__content__wrapper__item__jobbtn__apply--true{border:1px solid #ccc;background:#ccc}.contentpile__content__wrapper__item__jobbtn__apply--true:hover{background:#ccc!important}.contentpile__content__wrapper__item__jobbtn__apply:hover{background:#1479e1}.contentpile__content__wrapper__eager-talents{color:#ff9804;border-color:#ffe0b3}
+.contentpile_c_w_item{border-bottom: 1px solid #eee;padding:10px 20px 25px;}
+.nameBox{position:relative;width:100%;}
+.nameBox .jobName{padding:10px 0;}
+.nameBox a{color:#333;}
+.nameBox .contentpile_c_w_i_i_b_cname{width:220px;text-align:right;position:absolute;top:10px;right:0px;z-index: 2;font-size: 14px;}
+.nameBox .contentpile_c_w_i_i_b_cname .job__comdec{color:#999;margin-top: 5px;}
+.descBox .jobDesc{overflow: hidden;padding-bottom: 10px;}
+.descBox .jobDesc p{color:red;padding:5px 0;display: inline-block;float: left;}
+.descBox .jobDesc .job__demand{display: inline-block;float: left;font-size: 12px;color:#999;padding:7px 5px;}
+.descBox .jobDesc .job__demand li{float: left;border-right:1px solid #999;padding:0 6px;}
+.descBox .jobDesc .job__demand li:last-child{border-right:0;}

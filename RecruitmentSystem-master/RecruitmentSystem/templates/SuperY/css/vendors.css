@@ -1,0 +1,17 @@
+blockquote,body,code,dd,div,dl,dt,fieldset,form,h1,h2,h3,h4,h5,h6,input,legend,ol,p,pre,table,td,textarea,th,ul{border:0;font-family:PingFang SC,Microsoft YaHei,Lantinghei SC,Helvetica Neue,Helvetica,Arial,\\5FAE\8F6F\96C5\9ED1,STHeitiSC-Light,simsun,\\5B8B\4F53,WenQuanYi Zen Hei,WenQuanYi Micro Hei,"sans-serif";margin:0;padding:0}
+abbr,acronym,fieldset,img{border:none}
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:400}
+em,i{font-style:normal}
+a,a:hover,a:link,a:visited{text-decoration:none}
+a:hover{color:#3697fc}
+a,input,input:focus{outline:none}
+input{background:none;border:none;line-height:36px}
+input.bre6{border:1px solid #e6e6e6}
+input::-ms-clear{display:none}
+button{border:none;cursor:pointer;vertical-align:middle}
+table{border-collapse:collapse;*border-collapse:collapse;border-spacing:0}
+address,caption,cite,code,dfn,th{font-style:normal;font-weight:400}
+li,ul{list-style:none}
+:link img,:visited img,a img{border:0;outline:none}
+button,input,select,textarea{outline:none}
+strong{font-weight:400}

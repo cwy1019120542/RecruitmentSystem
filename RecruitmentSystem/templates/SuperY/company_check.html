@@ -7,6 +7,15 @@
 	<link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
 </head>
 <body>
+		<div class='topNav'>
+		<div class="topNav_c clearfix">
+			<span>欢迎回来  {{user.person_name}}</span>
+			<ul>
+				<li data-user-id={{user.id}} name='phone_number'>{{user.phone_number}}</li>
+				<a href="{% url 'SuperY:company_logout' user.id %}"><li>注销</li></a>
+			</ul>
+		</div>
+	</div>
 <div class="center">
 	<div class='login_form register_form'>
 		<h4>企业名称 <span name="company_name_info"></span></h4>
@@ -43,7 +52,11 @@
 		var address_info=document.querySelector('[name="address_info"]');
 		var business_licence_info=document.querySelector('[name="business_licence_info"]');
 		var is_post=true;
-		console.log(company_type)
+		company_name_info.innerHTML='';
+		company_type_info.innerHTML='';
+		staff_number_info.innerHTML='';
+		address_info.innerHTML='';
+		business_licence_info.innerHTML='';
 		if (!company_name || company_name.length>50) {
 			is_post=false;
 			company_name_info.innerHTML="请您填写正确格式的公司名";
@@ -64,24 +77,28 @@
 			is_post=false;
 			business_licence_info.innerHTML="请您上传营业执照";
 		}
-		//console.log(person_name,phone_number,mail,passwd1,identity.value)
 		if (is_post){
 			var formData=new FormData();
-			formData.append('company_name',company_name)
-			formData.append('company_type',company_type.value)
-			formData.append('staff_number',staff_number)
-			formData.append('address',address)
-			formData.append('business_licence',business_licence)
+			formData.append('company_name',company_name);
+			formData.append('company_type',company_type.value);
+			formData.append('staff_number',staff_number);
+			formData.append('address',address);
+			formData.append('business_licence',business_licence);
+			var user_id=document.querySelector('[name="phone_number"]').getAttribute('data-user-id');
+			formData.append('user_id',user_id);
 			$.ajax({
 				type:'post',
 				url:'{% url "SuperY:company_check_ajax" %}',
 				data:formData,
+				processData:false,
+                contentType:false,
 				success:function(data) {
-					if (data){
-						alert(data);
+					data=JSON.parse(data)
+					if (data.company_name_error){
+						company_name_info.innerHTML=data.company_name_error;
 					}
 					else {
-						window.location.replace('https://www.baidu.com');
+						window.location.replace('{% url "SuperY:company_index" user.id %}');
 					}
 				}
 			}) 

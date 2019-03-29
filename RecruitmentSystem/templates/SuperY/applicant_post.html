@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <title>求职者搜索</title>
+    <title>职位列表</title>
     <link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
 </head>
 <body>
@@ -22,7 +22,7 @@
                         <dd>修改密码</dd>
                     </dl>
                 </li>
-                <a href="{% url 'SuperY:logout' 'applicant' user.id %}"><li>注销</li></a>
+                <a href="{% url 'SuperY:applicant_logout' user.id %}"><li>注销</li></a>
             </ul>
         </div>
     </div>    

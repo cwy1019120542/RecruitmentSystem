@@ -24,7 +24,7 @@
                         <dd>修改密码</dd>
                     </dl>
                 </li>
-                <a href="{% url 'SuperY:logout' 'applicant' user.id %}"><li>注销</li></a>
+                 <a href="{% url 'SuperY:applicant_logout' user.id %}"><li>注销</li></a>
             </ul>
         </div>
     </div>
@@ -107,7 +107,7 @@
                     <div class="company__description">
                         {{post.company.company_info}}
                     </div>
-                    <a href="" class="company__page-site">该公司其他职位</a>
+                    <a href="{% url 'SuperY:applicant_company_post' user.id post.company.id 1 %}" class="company__page-site">该公司其他职位</a>
                 </div>
             </div>
         </div>
@@ -118,9 +118,15 @@
 <script>
     document.querySelector('[name="deliver_btn"]').onclick=function() {
         var post_id=document.querySelector('[class="summary-plane__title"]').getAttribute('data-post-id');
+        var user_id=document.querySelector('[name="phone_number"]').getAttribute('data-user-id');
         $.ajax({
             type:'post',
-            url:'{% url "SuperY:deliver" %}',
+            url:'{% url "SuperY:deliver_post_ajax" %}',
+            data:{'post_id':post_id,'user_id':user_id},
+            success:function(data) {
+                data=JSON.parse(data);
+                alert(data.message);
+            }
         })
     };
 </script>

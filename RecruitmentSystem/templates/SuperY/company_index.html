@@ -20,7 +20,7 @@
 						<dd>修改密码</dd>
 					</dl>
 				</li>
-				<a href=""><li>注销</li></a>
+				<a href="{% url 'SuperY:company_logout' user.id %}"><li>注销</li></a>
 			</ul>
 		</div>
 	</div>
@@ -40,14 +40,13 @@
 				<ul class='clearfix'>
 					{% for resume in resume_list %}
 					<li>
-						<a href="{% url 'SuperY:applicant_post_detail' user.id post.id %}" target="_blank">
-							<h4>{{resume.applicant.person_name}}</h4>
+						<a href="{% url 'SuperY:company_resume_detail' user.id post.id %}" target="_blank">
+							<h4>{{resume.post_name}}</h4>
 							<strong>{{resume.work_place}}</strong>
 							<strong>{{resume.experience}}</strong>
-							<strong>{{post.graduate_require}}</strong>
-							<p>{{post.company.company_name}}</p>
-							<span>{{post.company.company_type}}</span>
-							<span>{{post.company.staff_number}}</span>
+							<strong>{{resume.graduate}}</strong>
+							<p>{{resume.applicant.company_name}}</p>
+							<span>{{resume.phone_number}}</span>
 							<h4>{{post.salary}}</h4>
 						</a>
 					</li>
@@ -62,8 +61,8 @@
 				</div>
 				<ol class="clearfix">
 					<li>
-						<span>{{company_look}}</span>条
-						<h4>看过的简历</h4>
+						<span>{{resume_number}}</span>条
+						<h4>我看过的</h4>
 					</li>
 					<li>
 						<span>{{receive_resume}}</span>条
@@ -80,8 +79,8 @@
 						<h4>公司职位</h4>
 					</li>
 					<li>
-						<img src="{% static 'SuperY/images/refresh_resume_hover.png' %}">
-						<h4>刷新</h4>
+						<a href="{% url 'SuperY:company_index' user.id %}"><img src="{% static 'SuperY/images/refresh_resume_hover.png' %}">
+						<h4>刷新</h4></a>
 					</li>
 				</ul>
 				<dl class="hotNews">
@@ -103,10 +102,11 @@
 			alert('请输入正确格式的关键词')
 		}
 		if (is_search) {
+			var user_id=document.querySelector('[name="phone_number"]').getAttribute('data-user-id');
 			$.ajax({
 				type:'post',
-				url:'{% url "SuperY:applicant_search_ajax" %}',
-				data:{'search_word':search_word},
+				url:'{% url "SuperY:company_search_ajax" %}',
+				data:{'search_word':search_word,'user_id':user_id},
 				success:function(data) {
 					url=JSON.parse(data).url
 					window.open(url)

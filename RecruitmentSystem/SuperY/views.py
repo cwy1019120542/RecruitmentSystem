@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from django.conf import settings
 import os
 import random
+from functools import wraps
 
 def md5_passwd(deal_text):
 	m=hashlib.md5()
@@ -60,26 +61,28 @@ def register_ajax(request):
 		url=reverse('SuperY:login')
 		return HttpResponse(demjson.encode({'url':url}))
 
-def is_login(request,identity,user_id):				#现在统一采用id来查询用户，速度更快
-	print(identity,user_id)
-	user=eval(f'models.{identity.capitalize()}.objects.filter(id=user_id)')
-	key=identity+'-'+str(user_id)
-	if key not in request.session:				#判断登录状态更严谨
-		return redirect(reverse('SuperY:login'))
-	elif not user:
-		return redirect(reverse('SuperY:login'))
-	elif request.session[key] != user[0].login_random:
-		return redirect(reverse('SuperY:login'))
+def is_login(identity):
+	def login_judge(func):
+		@wraps(func)
+		def wrapper(request,user_id,*args,**kwargs):
+			user=eval(f'models.{identity.capitalize()}.objects.filter(id=user_id)')
+			key=identity+'-'+str(user_id)
+			if key not in request.session:				#判断登录状态更严谨
+				print('fail1')
+				return redirect(reverse('SuperY:login'))
+			elif not user:
+				print('fail2')
+				return redirect(reverse('SuperY:login'))
+			elif request.session[key] != user[0].login_random:
+				print('fail3')
+				return redirect(reverse('SuperY:login'))
+			print('success')
+			return func(request,user_id,*args,**kwargs)
+		return wrapper
+	return login_judge
 
-
-def logout(request,identity,user_id):
-	is_login(request,identity,user_id)
-	key=identity+'-'+user_id
-	request.session.pop(key)
-	return redirect(reverse('SuperY:login'))
-
+@is_login('applicant')
 def applicant_index(request,user_id):
-	is_login(request,'applicant',user_id)
 	applicant=models.Applicant.objects.get(id=user_id)
 	applicant_search_list=models.ApplicantSearch.objects.filter(applicant=applicant)
 	if not applicant_search_list:
@@ -113,17 +116,16 @@ def my_paginator(data_all,page_data_number,aim_page):
 	data_list=paginator.page(aim_page)
 	return paginator.count,paginator.num_pages,data_list
 
-
+@is_login('applicant')
 def applicant_search_post(request,user_id,search_word,page):
-	is_login(request,'applicant',user_id)
 	applicant=models.Applicant.objects.get(id=user_id)
 	post_all=models.Post.objects.filter(Q(company__company_name__icontains=search_word)|Q(post_name__icontains=search_word)|Q(work_place__icontains=search_word))
 	post_number,page_all,post_list=my_paginator(post_all,5,page)
 	context_dict={'user':applicant,'post_number':post_number,'page_all':page_all,'post_list':post_list}
 	return render(request,'SuperY/applicant_post.html',context_dict)
 
+@is_login('applicant')
 def applicant_post_detail(request,user_id,post_id):
-	is_login(request,'applicant',user_id)
 	applicant=models.Applicant.objects.get(id=user_id)
 	post=models.Post.objects.filter(id=post_id)
 	if not post:
@@ -133,28 +135,37 @@ def applicant_post_detail(request,user_id,post_id):
 
 def deliver_post_ajax(request):
 	post_id=request.POST['post_id']
-	user_id=request.POST['user_id'] 
+	user_id=request.POST['user_id']
+	applicant=models.Applicant.objects.get(id=user_id)
+	resume=models.Resume.objects.get(applicant=applicant)
+	post_list=models.Post.objects.filter(resume=resume)
+	post=models.Post.objects.get(id=post_id)
+	if post in post_list:
+		return HttpResponse(demjson.encode({'message':'fail'}))
+	else: 
+		post.resume.add(resume)
+		return HttpResponse(demjson.encode({'message':'success'})) 
 
+@is_login('applicant')
 def applicant_company_look(request,user_id,page):
-	is_login(request,'applicant',user_id)
 	applicant=models.Applicant.objects.get(id=user_id)
 	resume=models.Resume.objects.get(applicant=applicant)
 	company_all=resume.company_look.all()
 	company_number,page_all,company_list=my_paginator(company_all,5,page)
-	context_dict={'user':applicant,'company_list':company_list}
+	context_dict={'user':applicant,'company_list':company_list,'company_number':company_number,'page_all':page_all}
 	return render(request,'SuperY/applicant_company_look.html',context_dict)
 
+@is_login('applicant')
 def applicant_company_post(request,user_id,company_id,page):
-	is_login(request,'applicant',user_id)
 	applicant=models.Applicant.objects.get(id=user_id)
-	company=models.Company.objects.get(id=comppany_id)
+	company=models.Company.objects.get(id=company_id)
 	post_all=models.Post.objects.filter(company=company)
-	post_list=my_paginator(post_all,5,page)
-	context_dict={'user':applicant,'post_list':post_list}
-	return render(request,'Super/applicant_company_post.html',context_dict)
+	post_number,page_all,post_list=my_paginator(post_all,5,page)
+	context_dict={'user':applicant,'post_list':post_list,'post_number':post_number,'page_all':page_all}
+	return render(request,'SuperY/applicant_post.html',context_dict)
 
+@is_login('applicant')
 def applicant_deliver_post(request,phone_number):
-	is_login(request,'applicant',phone_number)
 	applicant=models.Applicant.objects.get(phone_number=phone_number)
 	resume=models.Resume.objects.get(applicant=applicant)
 	post_all=models.Post.objects.filter(resume=resume)
@@ -162,47 +173,15 @@ def applicant_deliver_post(request,phone_number):
 	context_dict={'user':applicant,'post_list':post_list}
 	return render(request,'Super/applicant_company_post.html',context_dict)
 
+@is_login('applicant')
+def applicant_logout(request,user_id):
+	applicant=models.Applicant.objects.get(id=user_id)
+	key='applicant'+'-'+str(user_id)
+	request.session.pop(key)
+	return redirect(reverse('SuperY:login'))
 
-def company_index(request,user_id):
-	is_login(request,'company',user_id)
-	company=models.Company.objects.get(id=user_id)
-	if not company.is_check:
-		return redirect(reverse('SuperY:company_check',kwargs={'user_id':user_id}))
-	company_look=models.Resume.objects.filter(company_look=company).count()
-	post_list=models.Post.objects.filter(company=company)
-	receive_resume=0
-	for post in post_list:
-		receive_resume+=post.resume.count()
-	context_dict={'user':company,'company_look':company_look,'receive_resume':receive_resume}
-	return render(request,'SuperY/company_index.html',context_dict)
-
-def company_check(request,user_id):
-	is_login(request,'company',user_id)
-	company=models.Company.objects.get(id=user_id)
-	if company.is_check:
-		return redirect(reverse('SuperY:company_index',kwargs={'user_id':user_id}))
-	return render(request,'SuperY/company_check.html')
-
-def company_check_ajax(request):
-	data=request.POST.copy()
-	company_name=data['company_name']
-	company_same=models.Company.objects.filter(company_name=company_name)
-	if company_same:
-		return HttpResponse(demjson.encode({'error':'该公司已被注册'}))
-	business_licence=request.FILES['business_licence']
-	phone_number=data.pop('phone_number')[0]
-	models.Company.objects.filter(phone_number=phone_number).update(**data,is_check=True,business_licence=business_licence)
-	pic_path=settings.MEDIA_ROOT+r'\company\business_licence'+'\\'+company_name
-	if not os.path.exists(pic_path):
-		os.mkdir(pic_path)
-	pic=pic_path+'\\'+business_licence.name
-	with open(pic,'wb') as f:
-		for chunk in business_licence.chunks():
-			f.write(chunk)
-	return HttpResponse(demjson.encode({'url':reverse('SuperY:company_index',kwargs={'phone_number':phone_number})}))
-
+@is_login('applicant')
 def applicant_resume(request,user_id):
-	is_login(request,'applicant',user_id)
 	applicant=models.Applicant.objects.get(id=user_id)
 	resume=models.Resume.objects.get(applicant=applicant)
 	context_dict={'user':applicant,'resume':resume}
@@ -278,6 +257,66 @@ def skill_ajax(request):
 		models.Skill.objects.filter(id=skill_id).update(**data)
 	return HttpResponse()
 
+
+
+@is_login('company')
+def company_index(request,user_id):
+	company=models.Company.objects.get(id=user_id)
+	if not company.is_check:
+		return redirect(reverse('SuperY:company_check',kwargs={'user_id':user_id}))
+	resume_number=models.Resume.objects.filter(company_look=company).count()
+	post_list=models.Post.objects.filter(company=company)
+	receive_resume=0
+	for post in post_list:
+		receive_resume+=post.resume.count()
+	context_dict={'user':company,'resume_number':resume_number,'receive_resume':receive_resume}
+	return render(request,'SuperY/company_index.html',context_dict)
+
+@is_login('company')
+def company_check(request,user_id):
+	company=models.Company.objects.get(id=user_id)
+	if company.is_check:
+		return redirect(reverse('SuperY:company_index',kwargs={'user_id':user_id}))
+	context_dict={'user':company}
+	return render(request,'SuperY/company_check.html',context_dict)
+
+def company_check_ajax(request):
+	data=request.POST.copy()
+	company_name=data['company_name']
+	company_same=models.Company.objects.filter(company_name=company_name)
+	if company_same:
+		return HttpResponse(demjson.encode({'company_name_error':'该公司已被注册'}))
+	business_licence=request.FILES['business_licence']
+	user_id=data.pop('user_id')[0]
+	data=data.dict()
+	models.Company.objects.filter(id=user_id).update(**data,is_check=True,business_licence=business_licence)
+	pic_path=settings.MEDIA_ROOT+r'\company\business_licence'+'\\'+company_name
+	if not os.path.exists(pic_path):
+		os.mkdir(pic_path)
+	pic=pic_path+'\\'+business_licence.name
+	with open(pic,'wb') as f:
+		for chunk in business_licence.chunks():
+			f.write(chunk)
+	return HttpResponse()
+
+def company_search_ajax(request):
+	data=request.POST.copy()
+	search_word=data['search_word']
+	user_id=data['user_id']
+	company=models.Company.objects.get(id=user_id)
+	models.CompanySearch.objects.create(company=company,search_word=search_word)		#搜索关键词保存应该放在这里，这样就只会搜索的时候保存一次
+	url=reverse('SuperY:company_search_resume',kwargs={'user_id':user_id,'search_word':search_word,'page':1})
+	return HttpResponse(demjson.encode({'url':url}))
+
+@is_login('company')
+def company_search_resume(request,user_id,search_word,page):
+	company=models.Company.objects.get(id=user_id)
+	resume_all=models.Resume.objects.filter(Q(post_name__icontains=search_word)|Q(work_place__icontains=search_word)|Q(gradute__icontains=search_word))
+	resume_number,page_all,resume_list=my_paginator(resume_all,5,page)
+	context_dict={'user':applicant,'resume_number':resume_number,'page_all':page_all,'resume_list':resume_list}
+	return render(request,'SuperY/company_resume.html',context_dict)
+
+
 def passwd_change(request,identity,phone_number):
 	user=eval(f'models.{identity.capitalize()}.objects.get(phone_number=phone_number)')
 	context_dict={'user':user}
@@ -330,3 +369,11 @@ def company_post_detail_ajax(request):
 	for tag_id in tag_id_list:
 		tag=models.Tag.objects.get(id=tag_id)
 		post.tag.add(tag)
+
+
+@is_login('company')
+def company_logout(request,user_id):
+	company=models.Company.objects.get(id=user_id)
+	key='company'+'-'+str(user_id)
+	request.session.pop(key)
+	return redirect(reverse('SuperY:login'))

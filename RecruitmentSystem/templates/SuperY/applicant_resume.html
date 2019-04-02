@@ -41,21 +41,21 @@
             <div class="zp-left-container">
                 <div>
                     <div class="profile-pre jump-to" number="0">
-                        <div class="profile-pre-wrapper"><img src="./我的简历_files/82f5c177-5df9-4eb5-ada6-3543d0ecdcb9.jpg" class="profile-pre-head">
+                        <div class="profile-pre-wrapper"><img src="/media/resume/head_pic/{{user.id}}/{{resume.head_pic}}" class="profile-pre-head">
                             <p class="profile-pre-name clearfix"><span class="fl">{{resume.applicant_name}}</span> <span class="profile-pre-name__update-time">
                                     更新时间：{{resume.update_datetime}}</span></p>
                             <p class="profile-pre-info"><span class="profile-pre-info-txt">
                                     {{resume.sex}}
                                 </span> <span class="profile-pre-info-txt">{{resume.age}}</span> <span class="profile-pre-info-txt">
                                     {{resume.birth_place}}</span> <span class="profile-pre-info-txt">{{resume.experience}}</span></p>
-                            <p class="profile-pre-contact clearfix"><i class="iconfont icon-resume-phone fl profile-pre-contact-phone"></i> <span class="fl profile-pre-contact-phoneT">{{resume.phone_number}}</span> <i class="iconfont icon-resume-email fl profile-pre-contact-phone"></i> <span class="fl">{{resume.mail}}</span></p> <span class="profile-pre-edit"><span class="iconfont icon-resume-edit profile-pre-edit-resume"></span>编辑</span>
+                            <p class="profile-pre-contact clearfix"><i class="iconfont icon-resume-phone fl profile-pre-contact-phone"></i> <span class="fl profile-pre-contact-phoneT">{{resume.phone_number}}</span> <i class="iconfont icon-resume-email fl profile-pre-contact-phone"></i> <span class="fl">{{resume.mail}}</span></p> <span class="profile-pre-edit"><span class="iconfont icon-resume-edit profile-pre-edit-resume"></span><a href="{% url 'SuperY:resume_info_modify' user.id %}">编辑</a></span>
                         </div>
                         <!---->
                     </div>
                     <div class="resume-wanna-wrapper jump-to" number="1">
                         <p class="wanna-title clearfix">
                             求职意向
-                            <span class="wanna-edit fr"><i class="iconfont icon-resume-edit"></i> 编辑
+                            <span class="wanna-edit fr"><i class="iconfont icon-resume-edit"></i> <a href="{% url 'SuperY:resume_hope_modify' user.id %}">编辑</a>
                             </span></p>
                         <div class="wanna-pre-wrapper clearfix">
                             <div class="clearfix">
@@ -96,7 +96,7 @@
                     <div class="resume-job-exp-wrapper jump-to" number="2">
                         <p class="job-exp-title clearfix">
                             工作经验
-                            <span onselectstart="return false;" class="job-exp-add fr"><i class="iconfont icon-resume-add"></i> 添加工作经验
+                            <span onselectstart="return false;" class="job-exp-add fr"><i class="iconfont icon-resume-add"></i> <a href="{% url 'SuperY:work_experience' user.id %}">添加工作经验</a>
                             </span></p>
                         <div onselectstart="return false;" class="job-exp-add-null" style="display: none;"><i class="iconfont icon-resume-add"></i> 添加工作经验
                         </div>
@@ -104,24 +104,19 @@
                         <div class="job-exp-pre-wrapper">
                           {% for work_experience in resume.workexperience_set.all %}
                             <div class="job-exp-pre-item">
-                                <p class="job-exp-pre-item-title"><span title="中国移动公司">中国移动公司</span> <span class="job-exp-pre-item-time fr">2018.7-至今</span> <span class="job-exp-pre-item-edit fr"><i class="iconfont icon-resume-edit"></i> 编辑
+                                <p class="job-exp-pre-item-title"><span>{{work_experience.company_name}}</span> <span class="job-exp-pre-item-time fr">{{work_experience.start_date}}-{{work_experience.end_date}}</span> <span class="job-exp-pre-item-edit fr"><i class="iconfont icon-resume-edit"></i> 编辑
                                     </span></p>
-                                <p class="job-exp-pre-item-salary"><span title="网管中心" class="fl">网管中心</span>4001-6000元/月
+                                <p class="job-exp-pre-item-salary"><span class="fl">{{work_experience.post_name}}</span>{{work_experience.salary}}
                                 </p>
                                 <div class="job-exp-pre-item-detail">
-                                    <pre>1.将django，selenium结合，并在其他各种包的辅助下独立编写出可视自动化框架，快捷高效的帮助公司完成一系列日常工作的自动化操作。
-                          }
-2.运用selenium，requests，pyuserinput，pyperclip等工具包完成各种信息的爬取。
-3.运用django搭建项目网站。
-4.编写项目文档。
-5.维护代码，解决问题</pre>
+                                    <pre>{{work_experience.work_detail}}</pre>
                                 </div>
                                 <!---->
                             </div>
                             {% endfor %}
                         </div>
                     </div>
-                    <div data-v-1fd58cf5="" class="resume-project-exp-wrapper jump-to" number="3">
+                    <div class="resume-project-exp-wrapper jump-to" number="3">
                         <p class="project-exp-title clearfix">
                             项目经验
                             <span onselectstart="return false;" class="project-exp-add fr"><i class="iconfont icon-resume-add"></i> 添加项目经验
@@ -132,63 +127,56 @@
                         {% for project_experience in resume.projectexperience_set.all %}
                         <div class="project-exp-pre-wrapper">
                             <div class="project-exp-pre-item">
-                                <p class="project-exp-pre-item-title"><span title="可视自动化框架">可视自动化框架</span> <span class="project-exp-pre-item-time fr">2018.8-2018.9</span> <span class="project-exp-pre-item-edit fr"><i class="iconfont icon-resume-edit"></i> 编辑
+                                <p class="project-exp-pre-item-title"><span>{{project_experience.project_name}}</span> <span class="project-exp-pre-item-time fr">{{project_experience.start_date}}-{{project_experience.end_date}}</span> <span class="project-exp-pre-item-edit fr"><i class="iconfont icon-resume-edit"></i> 编辑
                                     </span></p>
                                 <p class="project-exp-pre-item-salary">
                                     项目描述
                                 </p>
                                 <div class="project-exp-pre-item-detail">
-                                    <pre>将django，selenium结合，并在其他各种包的辅助下独立编写出可视自动化框架，快捷高效的帮助公司完成一系列日常工作的自动化操作。</pre>
-                                </div>
-                                <!---->
-                            </div>
-                            <div class="project-exp-pre-item">
-                                <p class="project-exp-pre-item-title"><span title="爬虫">爬虫</span> <span class="project-exp-pre-item-time fr">2018.7-2018.12</span> <span class="project-exp-pre-item-edit fr"><i class="iconfont icon-resume-edit"></i> 编辑
-                                    </span></p>
-                                <p class="project-exp-pre-item-salary">
-                                    项目描述
-                                </p>
-                                <div class="project-exp-pre-item-detail">
-                                    <pre>运用selenium，requests，pyuserinput，pyperclip等工具包完成各种信息的爬取。</pre>
+                                    <pre>{{project_experience.project_detail}}</pre>
                                 </div>
                                 <!---->
                             </div>
                         </div>
                         {% endfor %}
                     </div>
-                    <div class="resume-job-exp-wrapper jump-to" number="4">
-                        <p class="edu-title-container clearfix"><span class="edu-experience">教育经历</span> <span onselectstart="return false " class="edu-experience-add-right fr"><i class="iconfont icon-resume-add"></i> 添加教育经历</span></p>
+                   <div class="resume-job-exp-wrapper jump-to" number="2">
+                        <p class="job-exp-title clearfix">
+                            教育经历
+                            <span onselectstart="return false;" class="job-exp-add fr"><i class="iconfont icon-resume-add"></i> 添加教育经历
+                            </span></p>
+                        <div onselectstart="return false;" class="job-exp-add-null" style="display: none;"><i class="iconfont icon-resume-add"></i> 添加教育经历
+                        </div>
                         <!---->
-                        <!---->
-                        <ul class="edu-ul">
-                            {% for educate_experience in resume.educateexperience_set.all %}
-                            <li class="clearfix"><span class="edu-ul-title">
-                                    安徽财经大学</span> <span class="edu-ul-name">
-                                    计算机科学与技术
-                                </span> <span class="edu-ul-qualification">本科</span> <span class="edu-ul-timerange">2015.9-2019.7</span> <span class="zp-edit-icon iconfont icon-resume-edit fr"> 编辑</span>
-                                <!---->
-                            </li>
+                        <div class="job-exp-pre-wrapper">
+                          {% for educate_experience in resume.educateexperience_set.all %}
+                            <div class="job-exp-pre-item">
+                                <p class="job-exp-pre-item-title"><span> {{educate_experience.school_name}}</span> <span class="job-exp-pre-item-time fr">{{educate_experience.start_date}}-{{educate_experience.end_date}}</span> <span class="job-exp-pre-item-edit fr"><i class="iconfont icon-resume-edit"></i> 编辑
+                                    </span></p>
+                                <p class="job-exp-pre-item-salary"><span class="fl"> {{educate_experience.profession}}</span>
+                                </p>
+                            </div>
                             {% endfor %}
-                        </ul>
+                        </div>
                     </div>
-                    <div  class="professional-skills jump-to" number="11">
-                        <p class="professional-skills-container clearfix"><span class="professional-skills-experience">
-                                专业技能</span> <span onselectstart="return false " class="professional-skills-experience-add-right fr"><i class="iconfont icon-resume-add professional-skills-experience-add-right-hover"></i>
-                                添加专业技能</span></p>
+                    <div class="resume-job-exp-wrapper jump-to" number="2">
+                        <p class="job-exp-title clearfix">
+                            专业技能
+                            <span onselectstart="return false;" class="job-exp-add fr"><i class="iconfont icon-resume-add"></i> 添加专业技能
+                            </span></p>
+                        <div onselectstart="return false;" class="job-exp-add-null" style="display: none;"><i class="iconfont icon-resume-add"></i> 添加专业技能
+                        </div>
                         <!---->
-                        <!---->
-                        <ul class="professional-skills-wrap">
-                          {% for skill in resume.skill_set.all %}
-                            <li class="clearfix professional-skills-wrap-item"><span class="professional-skills-wrap-title">
-                                    python</span> <span class="professional-skills-wrap-name">
-                                    精通
-                                </span> <span class="professional-skills-wrap-qualification">
-                                    使用时长:
-                                    10月</span> <span class="zp-edit-icon iconfont icon-resume-edit fr"> 编辑</span>
-                                <!---->
-                            </li>
+                        <div class="job-exp-pre-wrapper">
+                           {% for skill in resume.skill_set.all %}
+                            <div class="job-exp-pre-item">
+                                <p class="job-exp-pre-item-title"><span>  {{skill.skill_name}}</span><span class="job-exp-pre-item-edit fr"><i class="iconfont icon-resume-edit"></i> 编辑
+                                    </span></p>
+                               <p class="job-exp-pre-item-salary"><span class="fl">{{skill.level}}</span>{{skill.use_time}}
+                                </p>
+                            </div>
                             {% endfor %}
-                        </ul>
+                        </div>
                     </div>
                     <div class="zp-evalution jump-to" module-num="9" number="9">
                         <div class="zp-evalution-title clearfix"><span class="fl">自我评价</span> <span onselectstart="return false" class="iconfont icon-resume-edit fr">编辑</span></div>

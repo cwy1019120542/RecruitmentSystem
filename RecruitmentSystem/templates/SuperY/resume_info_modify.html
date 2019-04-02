@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>简历信息修改</title>
+	<link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
+</head>
+<body>
+		 <div class='topNav'>
+        <div class="topNav_c clearfix">
+            <span>求职用户 {{user.person_name}}</span>
+            <ul>
+                <li data-user-id={{user.id}} name='applicant_phone_number'>{{user.phone_number}}</li>
+                <li>
+                    个人中心
+                    <dl>
+                        <a href="{% url 'SuperY:applicant_resume' user.id %}">
+                            <dd>我的简历</dd>
+                        </a>
+                        <dd>账号信息</dd>
+                        <dd>修改密码</dd>
+                    </dl>
+                </li>
+                <a href="{% url 'SuperY:applicant_logout' user.id %}">
+                    <li>注销</li>
+                </a>
+            </ul>
+        </div>
+    </div>
+<div class="center">
+	<div class='login_form register_form'>
+		<h4>求职者名称 <span name="applicant_name_info"></span></h4>
+		<input type='text' name="applicant_name" placeholder="请输入求职者名称，不超过50字符" value="{{resume.applicant_name}}">
+		<h4>性别 <span name="sex_info"></span></h4>
+		<input type="radio" name="sex" value='男' class='applicant' {% if resume.sex == '男' %}checked="checked"{% endif %}>男
+		<input type="radio" name="sex" value='女'class='bossRadio'  {% if resume.sex == '女' %}checked="checked"{% endif %}>女
+		<h4 class='tate-owned'>年龄 <span name="age_info"></span></h4>
+		<input type='text' name="age" placeholder="请输入年龄" value='{{resume.age}}'>
+		<h4>出生地 <span name="birth_place_info"></span></h4>
+		<input name="birth_place" placeholder="请输入出生地" type="text" value='{{resume.birth_place}}'>
+		<h4>工作经验 <span name="experience_info"></span></h4>
+		<input name="experience" placeholder="请输入工作经验" type="text" value="{{resume.experience}}">
+		<h4>手机号 <span name="phone_number_info"></span></h4>
+		<input name="phone_number" placeholder="请输入手机号" type="text" value="{{resume.phone_number}}">
+		<h4>邮箱 <span name="mail_info"></span></h4>
+		<input name="mail" placeholder="请输入邮箱" type="text" value="{{resume.mail}}">
+		<h4>毕业院校 <span name="graduate_info"></span></h4>
+		<input name="graduate" placeholder="请输入毕业院校" type="text" value='{{resume.graduate}}'>
+		<h4>头像 <span name="head_pic_info"></span></h4>
+		<label>
+		<input type="button" name='pic_btn' value="选择图片"><span name="pic_text">
+		{% if resume.head_pic %}
+		{{resume.head_pic}}
+		{% else %}
+		请您上传头像
+		{% endif %}
+		</span>
+		<input type="file" name='head_pic' style="display:none;">
+		</label>
+		<button name='save_btn'>保存</button>
+	</div>
+</div>
+<div class="bottom">我是底部</div>
+	<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
+	<script>
+		document.querySelector('[name="pic_btn"]').onclick=function() {
+			document.querySelector('[name="head_pic"]').click();
+		}
+		var head_pic=document.querySelector('[name="head_pic"]');
+		head_pic.onchange=function() {
+			document.querySelector('[name="pic_text"]').innerHTML=head_pic.files[0].name;
+		}
+		document.querySelector('[name="save_btn"]').onclick=function() {
+		var applicant_name=document.querySelector('[name="applicant_name"]').value;
+		var sex=document.querySelector('[name="sex"]:checked');
+		var age=document.querySelector('[name="age"]').value;
+		var birth_place=document.querySelector('[name="birth_place"]').value;
+		var experience=document.querySelector('[name="experience"]').value;
+		var phone_number=document.querySelector('[name="phone_number"]').value;
+		var mail=document.querySelector('[name="mail"]').value;
+		var graduate=document.querySelector('[name="graduate"]').value;
+		var head_pic=document.querySelector('[name="head_pic"]').files[0];
+		var applicant_name_info=document.querySelector('[name="applicant_name_info"]');
+		var sex_info=document.querySelector('[name="sex_info"]');
+		var age_info=document.querySelector('[name="age_info"]');
+		var birth_place_info=document.querySelector('[name="birth_place_info"]');
+		var experience_info=document.querySelector('[name="experience_info"]');
+		var phone_number_info=document.querySelector('[name="phone_number_info"]');
+		var mail_info=document.querySelector('[name="mail_info"]');
+		var graduate_info=document.querySelector('[name="graduate_info"]');
+		var head_pic_info=document.querySelector('[name="head_pic_info"]');
+		var pic_text=document.querySelector('[name="pic_text"]');
+		var is_post=true;
+		applicant_name_info.innerHTML='';
+		sex_info.innerHTML='';
+		age_info.innerHTML='';
+		birth_place_info.innerHTML='';
+		experience_info.innerHTML='';
+		phone_number_info.innerHTML='';
+		mail_info.innerHTML='';
+		graduate_info.innerHTML='';
+		head_pic_info.innerHTML='';
+		if (!applicant_name) {
+			is_post=false;
+			applicant_name_info.innerHTML="请您填写正确格式的姓名";
+		};
+		if (!sex) {
+			is_post=false;
+			sex_info.innerHTML="请您选择性别";
+		};
+		if (!age) {
+			is_post=false;
+			age_info.innerHTML="请您填写正确格式的年龄";
+		};
+		if (!birth_place) {
+			is_post=false;
+			birth_place_info.innerHTML="请您填写正确格式的出生地";
+		};
+		if (!experience) {
+			is_post=false;
+			experience_info.innerHTML="请您填写正确格式的工作经验";
+		};
+		if (!phone_number) {
+			is_post=false;
+			phone_number_info.innerHTML="请您填写正确格式的手机号";
+		};
+		if (!mail) {
+			is_post=false;
+			mail_info.innerHTML="请您填写正确格式的邮箱";
+		};
+		if (!graduate) {
+			is_post=false;
+			graduate_info.innerHTML="请您填写正确格式的毕业院校";
+		};
+		if (pic_text == '请您上传头像') {
+			is_post=false;
+			head_pic_info.innerHTML="请您上传头像";
+		};
+		if (is_post){
+			var formData=new FormData();
+			formData.append('applicant_name',applicant_name);
+			formData.append('sex',sex.value);
+			formData.append('age',age);
+			formData.append('birth_place',birth_place);
+			formData.append('experience',experience);
+			formData.append('phone_number',phone_number);
+			formData.append('mail',mail);
+			formData.append('graduate',graduate);
+			formData.append('head_pic',head_pic);
+			var user_id=document.querySelector('[name="applicant_phone_number"]').getAttribute('data-user-id');
+			console.log(user_id)
+			formData.append('user_id',user_id);
+			$.ajax({
+				type:'post',
+				url:'{% url "SuperY:resume_info_modify_ajax" %}',
+				data:formData,
+				processData:false,
+                contentType:false,
+				success:function() {
+						window.location.replace('{% url "SuperY:applicant_resume" user.id %}');
+				}
+			}) 
+		}
+	};
+	</script>
+</body>
+</html>

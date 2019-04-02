@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>工作经历</title>
+	<link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
+</head>
+<body>
+		 <div class='topNav'>
+        <div class="topNav_c clearfix">
+            <span>求职用户 {{user.person_name}}</span>
+            <ul>
+                <li data-user-id={{user.id}} name='applicant_phone_number'>{{user.phone_number}}</li>
+                <li>
+                    个人中心
+                    <dl>
+                        <a href="{% url 'SuperY:applicant_resume' user.id %}">
+                            <dd>我的简历</dd>
+                        </a>
+                        <dd>账号信息</dd>
+                        <dd>修改密码</dd>
+                    </dl>
+                </li>
+                <a href="{% url 'SuperY:applicant_logout' user.id %}">
+                    <li>注销</li>
+                </a>
+            </ul>
+        </div>
+    </div>
+<div class="center">
+	<div class='login_form register_form'>
+		<h4>公司名称 <span name="profession_info"></span></h4>
+		<input type='text' name="profession" placeholder="请输入期望从事行业" value="{{work_experience.company_name}}">
+		<h4 class='tate-owned'>职位名称 <span name="work_place_info"></span></h4>
+		<input type='text' name="work_place" placeholder="请输入期望工作地点" value='{{work_experience.post_name}}'>
+		<h4>薪资 <span name="post_name_info"></span></h4>
+		<input name="post_name" placeholder="请输入期望职位" type="text" value='{{work_experience.salary}}'>
+		<h4>开始时间 <span name="salary_info"></span></h4>
+		<input name="salary" placeholder="请输入期望薪资" type="text" value="{{work_experience.start_date}}">
+		<h4>结束时间 <span name="salary_info"></span></h4>
+		<input name="salary" placeholder="请输入期望薪资" type="text" value="{{work_experience.end_date}}">
+		<h4>工作描述 <span name="salary_info"></span></h4>
+		<input name="salary" placeholder="请输入期望薪资" type="text" value="{{work_experience.work_detail}}">
+		
+		<button name='save_btn'>保存</button>
+	</div>
+</div>
+<div class="bottom">我是底部</div>
+	<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
+	<script>
+		document.querySelector('[name="save_btn"]').onclick=function() {
+		var apply_status=document.querySelector('[name="apply_status"]:checked');
+		var profession=document.querySelector('[name="profession"]').value;
+		var work_place=document.querySelector('[name="work_place"]').value;
+		var post_name=document.querySelector('[name="post_name"]').value;
+		var salary=document.querySelector('[name="salary"]').value;
+		var work_nature=document.querySelector('[name="work_nature"]:checked');
+		var apply_status_info=document.querySelector('[name="apply_status_info"]');
+		var profession_info=document.querySelector('[name="profession_info"]');
+		var work_place_info=document.querySelector('[name="work_place_info"]');
+		var post_name_info=document.querySelector('[name="post_name_info"]');
+		var salary_info=document.querySelector('[name="salary_info"]');
+		var work_nature_info=document.querySelector('[name="work_nature_info"]');
+		var is_post=true;
+		apply_status_info.innerHTML='';
+		profession_info.innerHTML='';
+		work_place_info.innerHTML='';
+		post_name_info.innerHTML='';
+		salary_info.innerHTML='';
+		work_nature_info.innerHTML='';
+		if (!apply_status) {
+			is_post=false;
+			apply_status_info.innerHTML="请您选择求职状态";
+		};
+		if (!profession) {
+			is_post=false;
+			profession_info.innerHTML="请您填写正确格式的从事行业";
+		};
+		if (!work_place) {
+			is_post=false;
+			work_place_info.innerHTML="请您填写正确格式的期望工作地点";
+		};
+		if (!post_name) {
+			is_post=false;
+			post_name_info.innerHTML="请您填写正确格式的期望职位 ";
+		};
+		if (!salary) {
+			is_post=false;
+			salary_info.innerHTML="请您填写正确格式的期望薪资";
+		};
+		if (!work_nature) {
+			is_post=false;
+			work_nature_info.innerHTML="请您选择工作性质";
+		};
+		if (is_post){
+			var formData=new FormData();
+			formData.append('apply_status',apply_status.value);
+			formData.append('profession',profession);
+			formData.append('work_place',work_place);
+			formData.append('post_name',post_name);
+			formData.append('salary',salary);
+			formData.append('work_nature',work_nature.value);
+			var user_id=document.querySelector('[name="applicant_phone_number"]').getAttribute('data-user-id');
+			formData.append('user_id',user_id);
+			$.ajax({
+				type:'post',
+				url:'{% url "SuperY:resume_hope_modify_ajax" %}',
+				data:formData,
+				processData:false,
+                contentType:false,
+				success:function() {
+						window.location.replace('{% url "SuperY:applicant_resume" user.id %}');
+				}
+			}) 
+		}
+	};
+	</script>
+</body>
+</html>

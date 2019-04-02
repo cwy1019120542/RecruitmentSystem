@@ -10,6 +10,7 @@ from django.conf import settings
 import os
 import random
 from functools import wraps
+from datetime import datetime
 
 def md5_passwd(deal_text):
 	m=hashlib.md5()
@@ -187,19 +188,61 @@ def applicant_resume(request,user_id):
 	context_dict={'user':applicant,'resume':resume}
 	return render(request,'SuperY/applicant_resume.html',context_dict)
 
-def applicant_resume_ajax(request):
+@is_login('applicant')
+def resume_info_modify(request,user_id):
+	applicant=models.Applicant.objects.get(id=user_id)
+	resume=models.Resume.objects.select_related('applicant').get(applicant=applicant)
+	context_dict={'user':applicant,'resume':resume}
+	return render(request,'SuperY/resume_info_modify.html',context_dict)
+
+@is_login('applicant')
+def resume_hope_modify(request,user_id):
+	applicant=models.Applicant.objects.get(id=user_id)
+	resume=models.Resume.objects.select_related('applicant').get(applicant=applicant)
+	context_dict={'user':applicant,'resume':resume}
+	return render(request,'SuperY/resume_hope_modify.html',context_dict)
+
+def resume_info_modify_ajax(request):
 	data=request.POST.copy()
-	phone_number=data.pop('phone_number')[0]
-	is_login(request,'applicant',phone_number)
-	head_pic=request.FILES['head_pic']
-	update_type=data.pop('update_type')[0]
-	if update_type == 'add':
-		applicant=models.Applicant.objects.get(phone_number=phone_number)
-		models.Resume.objects.create(applicant=applicant,head_pic=head_pic,**data)
+	user_id=data.pop('user_id')[0]
+	applicant=models.Applicant.objects.get(id=user_id)
+	data=data.dict()	
+	head_pic=request.FILES.get('head_pic','fail')
+	if head_pic == 'fail':
+		data.pop('head_pic')
+		models.Resume.objects.filter(applicant=applicant).update(**data,update_datetime=datetime.now())
+		return HttpResponse()
 	else:
-		resume_id=data.pop('resume_id')[0]
-		models.Resume.objects.filter(id=resume_id).update(head_pic=head_pic,**data)
+		print(data)
+		models.Resume.objects.filter(applicant=applicant).update(**data,head_pic=head_pic,update_datetime=datetime.now())
+		pic_path=settings.MEDIA_ROOT+r'\resume\head_pic'+'\\'+str(applicant.id)
+		if not os.path.exists(pic_path):
+			os.mkdir(pic_path)
+		pic=pic_path+'\\'+head_pic.name
+		with open(pic,'wb') as f:
+			for chunk in head_pic.chunks():
+				f.write(chunk)
+		return HttpResponse()
+
+def resume_hope_modify_ajax(request):
+	data=request.POST.copy()
+	user_id=data.pop('user_id')[0]
+	applicant=models.Applicant.objects.get(id=user_id)
+	data=data.dict()
+	models.Resume.objects.filter(applicant=applicant).update(**data)
 	return HttpResponse()
+
+@is_login('applicant')
+def work_experience(request,user_id,work_experience_id=None):
+	applicant=models.Applicant.objects.get(id=user_id)
+	resume=models.Resume.objects.get(applicant=applicant)
+	if work_experience_id:
+		work_experience=models.WorkExperience.objects.get(id=work_experience_id)
+		context_dict={'user':applicant,'work_experience':work_experience}
+	else:
+		context_dict={'user':applicant}
+	return render(request,'SuperY/work_experience.html',context_dict)
+
 
 def work_experience_ajax(request):
 	data=request.POST.copy()

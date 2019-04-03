@@ -30,18 +30,16 @@
     </div>
 <div class="center" data-experience-id={{experience.id}}>
 	<div class='login_form register_form'>
-		<h4>公司名称 <span name="company_name_info"></span></h4>
-		<input type='text' name="company_name" placeholder="请输入公司名称" value="{{experience.company_name}}">
-		<h4 class='tate-owned'>职位名称 <span name="post_name_info"></span></h4>
-		<input type='text' name="post_name" placeholder="请输入职位名称" value='{{experience.post_name}}'>
-		<h4>薪资 <span name="salary_info"></span></h4>
-		<input name="salary" placeholder="请输入薪资" type="text" value='{{experience.salary}}'>
+		<h4>学校名称 <span name="school_name_info"></span></h4>
+		<input type='text' name="school_name" placeholder="请输入学校名称" value="{{experience.school_name}}">
+		<h4 class='tate-owned'>专业 <span name="profession_info"></span></h4>
+		<input type='text' name="profession" placeholder="请输入专业" value='{{experience.profession}}'>
+		<h4>学历 <span name="record_info"></span></h4>
+		<input name="record" placeholder="请输入学历" type="text" value='{{experience.record}}'>
 		<h4>开始时间 <span name="start_date_info"></span></h4>
 		<input name="start_date" placeholder="请输入开始时间" type="text" value="{{experience.start_date}}">
 		<h4>结束时间 <span name="end_date_info"></span></h4>
 		<input name="end_date" placeholder="请输入结束时间" type="text" value="{{experience.end_date}}">
-		<h4>工作描述 <span name="work_detail_info"></span></h4>
-		<input name="work_detail" placeholder="请输入工作描述" type="text" value="{{experience.work_detail}}">
 		<button name='save_btn'>保存</button>
 	</div>
 </div>
@@ -49,36 +47,33 @@
 	<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
 	<script>
 		document.querySelector('[name="save_btn"]').onclick=function() {
-		var company_name=document.querySelector('[name="company_name"]').value;
-		var post_name=document.querySelector('[name="post_name"]').value;
-		var salary=document.querySelector('[name="salary"]').value;
+		var school_name=document.querySelector('[name="school_name"]').value;
+		var profession=document.querySelector('[name="profession"]').value;
+		var record=document.querySelector('[name="record"]').value;
 		var start_date=document.querySelector('[name="start_date"]').value;
 		var end_date=document.querySelector('[name="end_date"]').value;
-		var work_detail=document.querySelector('[name="work_detail"]').value;
-		var company_name_info=document.querySelector('[name="company_name_info"]');
-		var post_name_info=document.querySelector('[name="post_name_info"]');
-		var salary_info=document.querySelector('[name="salary_info"]');
+		var school_name_info=document.querySelector('[name="school_name_info"]');
+		var profession_info=document.querySelector('[name="profession_info"]');
+		var record_info=document.querySelector('[name="record_info"]');
 		var start_date_info=document.querySelector('[name="start_date_info"]');
 		var end_date_info=document.querySelector('[name="end_date_info"]');
-		var work_detail_info=document.querySelector('[name="work_detail_info"]');
 		var is_post=true;
-		company_name_info.innerHTML='';
-		post_name_info.innerHTML='';
-		salary_info.innerHTML='';
+		school_name_info.innerHTML='';
+		profession_info.innerHTML='';
+		record_info.innerHTML='';
 		start_date_info.innerHTML='';
 		end_date_info.innerHTML='';
-		work_detail_info.innerHTML='';
-		if (!company_name) {
+		if (!school_name) {
 			is_post=false;
-			company_name_info.innerHTML="请您填写正确格式的公司名";
+			school_name_info.innerHTML="请您填写正确格式的学校名称";
 		};
-		if (!post_name) {
+		if (!profession) {
 			is_post=false;
-			post_name_info.innerHTML="请您填写正确格式的职位名";
+			profession_info.innerHTML="请您填写正确格式的专业";
 		};
-		if (!salary) {
+		if (!record) {
 			is_post=false;
-			salary_info.innerHTML="请您填写正确格式的薪资";
+			record_info.innerHTML="请您填写正确格式的学历";
 		};
 		if (!start_date) {
 			is_post=false;
@@ -88,23 +83,18 @@
 			is_post=false;
 			end_date_info.innerHTML="请您填写正确格式的结束时间";
 		};
-		if (!work_detail) {
-			is_post=false;
-			work_detail_info.innerHTML="请您填写正确格式的工作描述";
-		};
 		var experience_id=document.querySelector('div[class="center"]').getAttribute('data-experience-id');
 		if (is_post){
 			var formData=new FormData();
-			formData.append('company_name',company_name);
-			formData.append('post_name',post_name);
-			formData.append('salary',salary);
+			formData.append('school_name',school_name);
+			formData.append('profession',profession);
+			formData.append('record',record);
 			formData.append('start_date',start_date);
 			formData.append('end_date',end_date);
-			formData.append('work_detail',work_detail);
 			var user_id=document.querySelector('[name="applicant_phone_number"]').getAttribute('data-user-id');
 			formData.append('user_id',user_id);
 			formData.append('experience_id',experience_id);
-			formData.append('experience_name','WorkExperience');
+			formData.append('experience_name','EducateExperience');
 			$.ajax({
 				type:'post',
 				url:'{% url "SuperY:experience_ajax" %}',

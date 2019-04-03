@@ -109,9 +109,8 @@
 				type:'post',
 				url:'{% url "SuperY:applicant_search_ajax" %}',
 				data:{'search_word':search_word,'user_id':user_id},
-				success:function(data) {
-					url=JSON.parse(data).url
-					window.open(url)
+				success:function() {
+					window.open('{% url "SuperY:company_search_resume" user_id search_word 1 %}')
 				}
 			})
 		}

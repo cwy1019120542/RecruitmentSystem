@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>工作经历</title>
+	<link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
+</head>
+<body>
+		 <div class='topNav'>
+        <div class="topNav_c clearfix">
+            <span>求职用户 {{user.person_name}}</span>
+            <ul>
+                <li data-user-id={{user.id}} name='applicant_phone_number'>{{user.phone_number}}</li>
+                <li>
+                    个人中心
+                    <dl>
+                        <a href="{% url 'SuperY:applicant_resume' user.id %}">
+                            <dd>我的简历</dd>
+                        </a>
+                        <dd>账号信息</dd>
+                        <dd>修改密码</dd>
+                    </dl>
+                </li>
+                <a href="{% url 'SuperY:applicant_logout' user.id %}">
+                    <li>注销</li>
+                </a>
+            </ul>
+        </div>
+    </div>
+<div class="center" data-experience-id={{experience.id}}>
+	<div class='login_form register_form'>
+		<h4>技能名称 <span name="skill_name_info"></span></h4>
+		<input type='text' name="skill_name" placeholder="请输入技能名称" value="{{experience.skill_name}}">
+		<h4 class='tate-owned'>掌握程度 <span name="level_info"></span></h4>
+		<input type='text' name="level" placeholder="请输入掌握程度" value='{{experience.level}}'>
+		<h4>使用时长 <span name="use_time_info"></span></h4>
+		<input name="use_time" placeholder="请输入使用时长" type="text" value='{{experience.use_time}}'>
+		<button name='save_btn'>保存</button>
+	</div>
+</div>
+<div class="bottom">我是底部</div>
+	<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
+	<script>
+		document.querySelector('[name="save_btn"]').onclick=function() {
+		var skill_name=document.querySelector('[name="skill_name"]').value;
+		var level=document.querySelector('[name="level"]').value;
+		var use_time=document.querySelector('[name="use_time"]').value;
+		var skill_name_info=document.querySelector('[name="skill_name_info"]');
+		var level_info=document.querySelector('[name="level_info"]');
+		var use_time_info=document.querySelector('[name="use_time_info"]');
+		var is_post=true;
+		skill_name_info.innerHTML='';
+		level_info.innerHTML='';
+		use_time_info.innerHTML='';
+		if (!skill_name) {
+			is_post=false;
+			skill_name_info.innerHTML="请您填写正确格式的技能名称";
+		};
+		if (!level) {
+			is_post=false;
+			level_info.innerHTML="请您填写正确格式的掌握程度";
+		};
+		if (!use_time) {
+			is_post=false;
+			use_time_info.innerHTML="请您填写正确格式的使用时长";
+		};
+		var experience_id=document.querySelector('div[class="center"]').getAttribute('data-experience-id');
+		if (is_post){
+			var formData=new FormData();
+			formData.append('skill_name',skill_name);
+			formData.append('level',level);
+			formData.append('use_time',use_time);
+			var user_id=document.querySelector('[name="applicant_phone_number"]').getAttribute('data-user-id');
+			formData.append('user_id',user_id);
+			formData.append('experience_id',experience_id);
+			formData.append('experience_name','Skill');
+			$.ajax({
+				type:'post',
+				url:'{% url "SuperY:experience_ajax" %}',
+				data:formData,
+				processData:false,
+                contentType:false,
+				success:function() {
+						window.location.replace('{% url "SuperY:applicant_resume" user.id %}');
+				}
+			}) 
+		}
+	};
+	</script>
+</body>
+</html>

@@ -9,9 +9,9 @@
 <body>
 	<div class='topNav'>
 		<div class="topNav_c clearfix">
-			<span>欢迎回来  {{user.person_name}}</span>
+			<span>企业用户  {{user.person_name}}</span>
 			<ul>
-				<li>{{user.phone_number}}</li>
+				<li name="phone_number" data-user-id={{user.id}}>{{user.phone_number}}</li>
 				<li>
 					{{user.company_name}}
 					<dl>
@@ -30,7 +30,7 @@
 				<img src="{% static 'SuperY/images/logo_blue.png' %}">
 			</a>
 			<div class="tell search">
-				<input type="text" name="search_word" placeholder="请您输入关键词，求职者职位/技能，20个字符以内"><button>搜索</button>
+				<input type="text" name="search_word" placeholder="请您输入关键词，求职者职位/技能，20个字符以内"><button name="search_btn">搜索</button>
 			</div>
 		</div>
 	</div>
@@ -40,14 +40,13 @@
 				<ul class='clearfix'>
 					{% for resume in resume_list %}
 					<li>
-						<a href="{% url 'SuperY:company_resume_detail' user.id post.id %}" target="_blank">
+						<a href="{% url 'SuperY:company_resume_detail' user.id resume.id %}" target="_blank">
 							<h4>{{resume.post_name}}</h4>
 							<strong>{{resume.work_place}}</strong>
 							<strong>{{resume.experience}}</strong>
 							<strong>{{resume.graduate}}</strong>
-							<p>{{resume.applicant.company_name}}</p>
+							<p>{{resume.applicant_name}}</p>
 							<span>{{resume.phone_number}}</span>
-							<h4>{{post.salary}}</h4>
 						</a>
 					</li>
 					{% endfor %}

@@ -53,7 +53,7 @@ class CompanySearch(models.Model):
 
 class Resume(models.Model):
 	applicant=models.OneToOneField(Applicant,on_delete=models.CASCADE,help_text='所属求职者',null=True)
-	head_pic=models.ImageField(upload_to='resume',null=True)
+	head_pic=models.ImageField(upload_to='resume',null=True,default='default.png')
 	applicant_name=models.CharField(max_length=255,help_text='求职者名称',default='')
 	sex=models.CharField(max_length=255,help_text='性别',default='')
 	age=models.CharField(max_length=255,help_text='年龄',default='')

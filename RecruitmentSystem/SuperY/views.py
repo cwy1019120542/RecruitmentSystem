@@ -69,15 +69,11 @@ def is_login(identity):
 			user=eval(f'models.{identity.capitalize()}.objects.filter(id=user_id)')
 			key=identity+'-'+str(user_id)
 			if key not in request.session:				#判断登录状态更严谨
-				print('fail1')
 				return redirect(reverse('SuperY:login'))
 			elif not user:
-				print('fail2')
 				return redirect(reverse('SuperY:login'))
 			elif request.session[key] != user[0].login_random:
-				print('fail3')
 				return redirect(reverse('SuperY:login'))
-			print('success')
 			return func(request,user_id,*args,**kwargs)
 		return wrapper
 	return login_judge
@@ -206,16 +202,17 @@ def resume_info_modify_ajax(request):
 	data=request.POST.copy()
 	user_id=data.pop('user_id')[0]
 	applicant=models.Applicant.objects.get(id=user_id)
+	resume=models.Resume.objects.filter(applicant=applicant)
 	data=data.dict()	
 	head_pic=request.FILES.get('head_pic','fail')
 	if head_pic == 'fail':
 		data.pop('head_pic')
-		models.Resume.objects.filter(applicant=applicant).update(**data,update_datetime=datetime.now())
+		resume.update(**data,update_datetime=datetime.now())
 		return HttpResponse()
 	else:
-		print(data)
-		models.Resume.objects.filter(applicant=applicant).update(**data,head_pic=head_pic,update_datetime=datetime.now())
-		pic_path=settings.MEDIA_ROOT+r'\resume\head_pic'+'\\'+str(applicant.id)
+		head_pic.name=str(resume[0].id)+'.'+head_pic.name.split('.')[1]
+		resume.update(**data,head_pic=head_pic,update_datetime=datetime.now())
+		pic_path=settings.MEDIA_ROOT+r'\resume\head_pic'
 		if not os.path.exists(pic_path):
 			os.mkdir(pic_path)
 		pic=pic_path+'\\'+head_pic.name
@@ -233,74 +230,32 @@ def resume_hope_modify_ajax(request):
 	return HttpResponse()
 
 @is_login('applicant')
-def work_experience(request,user_id,work_experience_id=None):
+def experience(request,user_id,experience_name,experience_id=None):
 	applicant=models.Applicant.objects.get(id=user_id)
 	resume=models.Resume.objects.get(applicant=applicant)
-	if work_experience_id:
-		work_experience=models.WorkExperience.objects.get(id=work_experience_id)
-		context_dict={'user':applicant,'work_experience':work_experience}
+	if experience_id:
+		experience_name_class=experience_name.title().replace('_','')
+		experience=eval(f'models.{experience_name_class}.objects.get(id=experience_id)')
+		context_dict={'user':applicant,'experience':experience}
 	else:
 		context_dict={'user':applicant}
-	return render(request,'SuperY/work_experience.html',context_dict)
+	return render(request,f'SuperY/{experience_name}.html',context_dict)
 
-
-def work_experience_ajax(request):
+def experience_ajax(request):
 	data=request.POST.copy()
-	phone_number=data.pop('phone_number')[0]
-	is_login(request,'applicant',phone_number)
-	update_type=data.pop('update_type')[0]
-	if update_type == 'add':
-		resume_id=data.pop('resume_id')[0]
-		resume=models.Resume.objects.get(id=resume_id)
-		models.WorkExperience.objects.create(resume=resume,**data)
+	user_id=data.pop('user_id')[0]
+	applicant=models.Applicant.objects.get(id=user_id)
+	resume=models.Resume.objects.get(applicant=applicant)
+	experience_id=data.pop('experience_id')[0]
+	experience_name=data.pop('experience_name')[0]
+	data=data.dict()
+	if not experience_id:
+		eval(f'models.{experience_name}.objects.create(resume=resume,**data)')
 	else:		
-		work_experience_id=data.pop('work_experience_id')[0]
-		models.WorkExperience.objects.filter(id=work_experience_id).update(**data)
+		eval(f'models.{experience_name}.objects.filter(id=experience_id).update(**data)')
+	resume.update_datetime=datetime.now()
+	resume.save()
 	return HttpResponse()
-
-def project_experience_ajax(request):
-	data=request.POST.copy()
-	phone_number=data.pop('phone_number')[0]
-	is_login(request,'applicant',phone_number)
-	update_type=data.pop('update_type')[0]
-	if update_type == 'add':
-		resume_id=data.pop('resume_id')[0]
-		resume=models.Resume.objects.get(id=resume_id)
-		models.ProjectExperience.objects.create(resume=resume,**data)
-	else:		
-		project_experience_id=data.pop('project_experience_id')[0]
-		models.ProjectExperience.objects.filter(id=project_experience_id).update(**data)
-	return HttpResponse()
-
-def educate_experience_ajax(request):
-	data=request.POST.copy()
-	phone_number=data.pop('phone_number')[0]
-	is_login(request,'applicant',phone_number)
-	update_type=data.pop('update_type')[0]
-	if update_type == 'add':
-		resume_id=data.pop('resume_id')[0]
-		resume=models.Resume.objects.get(id=resume_id)
-		models.EducateExperience.objects.create(resume=resume,**data)
-	else:		
-		educate_experience_id=data.pop('educate_experience_id')[0]
-		models.EducateExperience.objects.filter(id=educate_experience_id).update(**data)
-	return HttpResponse()
-
-def skill_ajax(request):
-	data=request.POST.copy()
-	phone_number=data.pop('phone_number')[0]
-	is_login(request,'applicant',phone_number)
-	update_type=data.pop('update_type')[0]
-	if update_type == 'add':
-		resume_id=data.pop('resume_id')[0]
-		resume=models.Resume.objects.get(id=resume_id)
-		models.Skill.objects.create(resume=resume,**data)
-	else:		
-		skill_id=data.pop('skill_id')[0]
-		models.Skill.objects.filter(id=skill_id).update(**data)
-	return HttpResponse()
-
-
 
 @is_login('company')
 def company_index(request,user_id):
@@ -312,7 +267,13 @@ def company_index(request,user_id):
 	receive_resume=0
 	for post in post_list:
 		receive_resume+=post.resume.count()
-	context_dict={'user':company,'resume_number':resume_number,'receive_resume':receive_resume}
+	company_search_list=models.CompanySearch.objects.filter(company=company)
+	if not company_search_list:
+		resume_list=models.Resume.objects.all()[:9]
+	else:
+		search_word=company_search_list[0]
+		resume_list=models.Resume.objects.filter(Q(work_place__icontains=search_word)|Q(post_name__icontains=search_word)|Q(profession__icontains=search_word))
+	context_dict={'user':company,'resume_number':resume_number,'receive_resume':receive_resume,'resume_list':resume_list}
 	return render(request,'SuperY/company_index.html',context_dict)
 
 @is_login('company')
@@ -332,11 +293,11 @@ def company_check_ajax(request):
 	business_licence=request.FILES['business_licence']
 	user_id=data.pop('user_id')[0]
 	data=data.dict()
-	models.Company.objects.filter(id=user_id).update(**data,is_check=True,business_licence=business_licence)
-	pic_path=settings.MEDIA_ROOT+r'\company\business_licence'+'\\'+company_name
+	company_same.update(**data,is_check=True,business_licence=business_licence)
+	pic_path=settings.MEDIA_ROOT+r'\company\business_licence'
 	if not os.path.exists(pic_path):
 		os.mkdir(pic_path)
-	pic=pic_path+'\\'+business_licence.name
+	pic=pic_path+'\\'+str(user_id)+business_licence.name.split('.')[1]
 	with open(pic,'wb') as f:
 		for chunk in business_licence.chunks():
 			f.write(chunk)
@@ -354,9 +315,9 @@ def company_search_ajax(request):
 @is_login('company')
 def company_search_resume(request,user_id,search_word,page):
 	company=models.Company.objects.get(id=user_id)
-	resume_all=models.Resume.objects.filter(Q(post_name__icontains=search_word)|Q(work_place__icontains=search_word)|Q(gradute__icontains=search_word))
+	resume_all=models.Resume.objects.filter(Q(post_name__icontains=search_word)|Q(work_place__icontains=search_word)|Q(profession__icontains=search_word))
 	resume_number,page_all,resume_list=my_paginator(resume_all,5,page)
-	context_dict={'user':applicant,'resume_number':resume_number,'page_all':page_all,'resume_list':resume_list}
+	context_dict={'user':company,'resume_number':resume_number,'page_all':page_all,'resume_list':resume_list}
 	return render(request,'SuperY/company_resume.html',context_dict)
 
 
@@ -379,12 +340,19 @@ def passwd_change_ajax(request):
 	user.save()
 	return HttpResponse()
 
-def company_resume_detail(request,phone_number,resume_id):
-	is_login(request,'company',phone_number)
-	company=models.Company.objects.get(phone_number=phone_number)
+@is_login('company')
+def company_resume_detail(request,user_id,resume_id):
+	company=models.Company.objects.get(id=user_id)
 	resume=models.Resume.objects.get(id=resume_id)
+	resume.company_look.add(company)
 	context_dict={'user':company,'resume':resume}
-	return render(request,'SuperY/company_resume.html',context_dict)
+	return render(request,'SuperY/company_resume_detail.html',context_dict)
+
+@is_login('company')
+def company_info_modify(request,user_id):
+	company=models.Company.objects.get(id=user_id)
+	context_dict={'user':company}
+	return render(request,'SuperY:company_info.html',context_dict)
 
 def company_post_list(request,phone_number,page):
 	is_login(request,'company',phone_number)

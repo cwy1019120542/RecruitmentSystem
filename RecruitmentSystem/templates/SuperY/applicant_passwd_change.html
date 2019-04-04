@@ -1,0 +1,71 @@
+{% extends 'SuperY/applicant_base.html' %}
+{% load staticfiles %}
+{% block title %}
+修改密码
+{% endblock title %}
+{% block content %}
+<div class="center">
+    <div class='login_form register_form info_form'>
+        <h4>原密码 <span name="old_passwd_info"></span></h4>
+        <input type='password' name="old_passwd" placeholder="请输入原密码">
+        <h4>新密码 <span name="new_passwd_info"></span></h4>
+        <input name="new_passwd" placeholder="请输入新密码" type="password">
+        <h4>确认新密码 <span name="passwd_again_info"></span></h4>
+        <input name="passwd_again" placeholder="请确认新密码" type="password">
+        <button name='save_btn'>保存</button>
+    </div>
+</div>
+<script>
+document.querySelector('[name="save_btn"]').onclick = function() {
+    var old_passwd = document.querySelector('[name="old_passwd"]').value;
+    var new_passwd = document.querySelector('[name="new_passwd"]').value;
+    var passwd_again = document.querySelector('[name="passwd_again"]').value;
+    var old_passwd_info = document.querySelector('[name="old_passwd_info"]');
+    var new_passwd_info = document.querySelector('[name="new_passwd_info"]');
+    var passwd_again_info = document.querySelector('[name="passwd_again_info"]');
+    var is_post = true;
+    old_passwd_info.innerHTML = '';
+    new_passwd_info.innerHTML = '';
+    passwd_again_info.innerHTML = '';
+    if (!old_passwd) {
+        is_post = false;
+        old_passwd_info.innerHTML = "请您填写正确格式的原密码";
+    };
+    if (!new_passwd) {
+        is_post = false;
+        new_passwd_info.innerHTML = "请您填写正确格式的新密码";
+    };
+     if (!passwd_again) {
+        is_post = false;
+        passwd_again_info.innerHTML = "请您确认新密码";
+    };
+     if (new_passwd != passwd_again) {
+        is_post = false;
+        passwd_again_info.innerHTML = "两次输入的密码不一致";
+    };
+    if (is_post) {
+        var formData = new FormData();
+        formData.append('old_passwd', old_passwd);
+        formData.append('new_passwd', new_passwd);
+        var user_id = document.querySelector('[name="applicant_phone_number"]').getAttribute('data-user-id');
+        formData.append('user_id', user_id);
+        formData.append('identity', 'applicant')
+        $.ajax({
+            type: 'post',
+            url: '{% url "SuperY:passwd_change_ajax" %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if (data) {
+                    data = JSON.parse(data)
+                    old_passwd_info.innerHTML = data.old_passwd_error;
+                } else {
+                    window.location.replace('{% url "SuperY:applicant_index" user.id %}');
+                }
+            }
+        })
+    }
+};
+</script>
+{% endblock content %}

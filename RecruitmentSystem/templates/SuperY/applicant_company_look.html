@@ -1,61 +1,27 @@
-<!DOCTYPE html>
+{% extends 'SuperY/applicant_base.html' %}
 {% load staticfiles %}
-<html>
-
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <title>看过我的公司</title>
-    <link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
-</head>
-
-<body>
-    <div class='topNav'>
-        <div class="topNav_c clearfix">
-            <span>欢迎回来 {{user.person_name}}</span>
-            <ul>
-                <li data-user-id={{user.id}} name='phone_number'>{{user.phone_number}}</li>
-                <li>
-                    个人中心
-                    <dl>
-                        <dd>我的简历</dd>
-                        <dd>账号信息</dd>
-                        <dd>修改密码</dd>
-                    </dl>
-                </li>
-                <a href="{% url 'SuperY:applicant_logout' user.id %}">
-                    <li>注销</li>
-                </a>
-            </ul>
-        </div>
-    </div>
+{% block title %}
+看过我的企业
+{% endblock title %}
+{% block content %}
     <div id="listContent" class="contentpile__content">
         <div class="contentpile__content__wrapper clearfix">
             {% for company in company_list %}
+            <a href="{% url 'SuperY:applicant_company_post' user.id company.id 1 %}">
             <div class="contentpile_c_w_item clearfix">
                 <div class="nameBox">
                     <div class="jobName">
                         <span class="contentpile_c_w_i_i_b_j_title">
                             <span style="color: #FF5959;"></span>
-                            <a href="{% url 'SuperY:applicant_post_detail' user.id post.id %}">{{post.post_name}}</a>
+                            {{company.company_name}}
                         </span>
-                        <span class="contentpile_c_w_i_i_b_j_sale" style="display: none;"></span>
-                        <!---->
                     </div>
                     <div class="contentpile_c_w_i_i_b_cname">
-                        <a href="#" target="_blank">
-                            {{company.company_name}}
-                        </a>
-                        <div class="job__comdec">
-                            <span class="job__comdec__item">{{post.company.company_type}} |</span>
-                            <span class="job__comdec__item">{{post.company.staff_number}} </span>
-                        </div>
+                            {{company.register_datetime}}
                     </div>
                 </div>
                 <div class="descBox">
                     <div class="jobDesc">
-                        <p>{{post.salary}}</p>
                         <ul class="job__demand">
                             <li>{{company.company_type}}</li>
                             <li>{{company.staff_number}}</li>
@@ -72,22 +38,10 @@
                         </div>
                     </div>
                 </div>
-                <!--</a> -->
-                <span class="zp-icon icon-job_checked-pile icon-job_isNotChecked" style="display: none;"></span>
-                <div class="contentpile__content__wrapper__item__jobbtn" style="display: none;">
-                    <div class="zp-jobBtn contentpile__content__wrapper__item__jobbtn__collect"><span class="zp-icon icon-job_collectStar"></span> <span>收藏</span></div>
-                    <div class="a-job-apply-button contentpile__apply-button">
-                        <button type="button" class="a-button a--bordered a--filled">申请职位
-                        </button>
-                        <!---->
-                    </div>
-                </div>
             </div>
+            </a>
             {% endfor %}
         </div>
     </div>
     </div>
-    <div class="bottom">我是底部</div>
-</body>
-
-</html>
+{% endblock content %}

@@ -1,41 +1,9 @@
-<!DOCTYPE html>
+{% extends 'SuperY/applicant_base.html' %}
 {% load staticfiles %}
-<html lang="cn">
-
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <title>我的简历</title>
-    <link rel="shortcut icon" type="image/png" href="https://common-bucket.zhaopin.cn/img/zhilian-ico/zhilian-ico-1.0.0.png">
-    <link rel="stylesheet" href="{% static 'SuperY/css/vendors.dc6fff.css' %}">
-    <link rel="stylesheet" href="{% static 'SuperY/css/resume.a13cfa.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'SuperY/css/iconfont.css' %}">
-    <link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
-</head>
-
-<body>
-    <div class='topNav'>
-        <div class="topNav_c clearfix">
-            <span>求职用户 {{user.person_name}}</span>
-            <ul>
-                <li data-user-id={{user.id}} name='phone_number'>{{user.phone_number}}</li>
-                <li>
-                    个人中心
-                    <dl>
-                        <a href="{% url 'SuperY:applicant_resume' user.id %}">
-                            <dd>我的简历</dd>
-                        </a>
-                        <dd>账号信息</dd>
-                        <dd>修改密码</dd>
-                    </dl>
-                </li>
-                <a href="{% url 'SuperY:applicant_logout' user.id %}">
-                    <li>注销</li>
-                </a>
-            </ul>
-        </div>
-    </div>
+{% block title %}
+求职者主页
+{% endblock title %}
+{% block content %}
     <div id="root" class="zp">
         <div class="zp-main-center clearfix">
             <div class="zp-left-container">
@@ -179,6 +147,4 @@
                     </div>
                 </div>
             </div>
-</body>
-
-</html>
+{% endblock content %}

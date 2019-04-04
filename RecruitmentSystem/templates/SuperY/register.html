@@ -9,7 +9,7 @@
 <body>
 <div class="top">
 	<div class="logoTell">
-		<a href="applicant_index.html">
+		<a href="{% url 'SuperY:login' %}">
 			<img src="{% static 'SuperY/images/logo_blue.png' %}">
 		</a>
 		<div class="tell">电话：<span>138562286</span></div>
@@ -73,7 +73,6 @@
 			is_read_info.innerHTML='请您接受用户协议和隐私政策';
 			is_post=false;
 		}
-		console.log(person_name,phone_number,passwd1,identity.value)
 		if (is_post){
 			person_name_info.innerHTML='';
 			phone_number_info.innerHTML='';

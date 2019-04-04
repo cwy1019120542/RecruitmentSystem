@@ -1,39 +1,9 @@
-<!DOCTYPE html>
+{% extends 'SuperY/applicant_base.html' %}
 {% load staticfiles %}
-<html>
-<head>
-	<meta charset="utf8">
-	<title>求职者主页</title>
-	 <link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
-</head>
-<body>
-	<div class='topNav'>
-		<div class="topNav_c clearfix">
-			<span>欢迎回来  {{user.person_name}}</span>
-			<ul>
-				<li data-user-id={{user.id}} name='phone_number'>{{user.phone_number}}</li>
-				<li>
-					个人中心
-					<dl>
-						<a href="{% url 'SuperY:applicant_resume' user.id %}"><dd>我的简历</dd></a>
-						<dd>账号信息</dd>
-						<dd>修改密码</dd>
-					</dl>
-				</li>
-				 <a href="{% url 'SuperY:applicant_logout' user.id %}"><li>注销</li></a>
-			</ul>
-		</div>
-	</div>
-	<div class="top indexTop">
-		<div class="logoTell indexSearch">
-			<a href="applicant_index.html">
-				<img src="{% static 'SuperY/images/logo_blue.png' %}">
-			</a>
-			<div class="tell search">
-				<input type="text" name="search_word" placeholder="请您输入关键词，公司名/工作地点/职位信息，20个字符以内"><button name='search_btn'>搜索</button>
-			</div>
-		</div>
-	</div>
+{% block title %}
+求职者主页
+{% endblock title %}
+{% block content %}
 	<div class='indexContent'>
 		<div class="C_model clearfix">
 			<div class="model_left">
@@ -42,7 +12,7 @@
 					<li>
 						<a href="{% url 'SuperY:applicant_post_detail' user.id post.id %}" target="_blank">
 							<h4>{{post.post_name}}</h4>
-							<strong>{{post.work_place}}</strong>
+							<strong class='firstStrong'>{{post.work_place}}</strong>
 							<strong>{{post.experience_require}}</strong>
 							<strong>{{post.graduate_require}}</strong>
 							<p>{{post.company.company_name}}</p>
@@ -56,7 +26,7 @@
 			</div>
 			<div class="model_right">
 				<div class="userInfo clearfix">
-					<img src="{% static 'SuperY/images/photoshopImg.png' %}" >
+					<img src="/media/applicant/head_pic/{{user.head_pic}}" >
 					<h2>Hi，<span>{{user.person_name}}</span></h2>
 					欢迎回来！
 				</div>
@@ -66,14 +36,14 @@
 						<h4>企业看过</h4></a>
 					</li>
 					<li>
-						<a href=""><span>{{resume.post_set.count}}</span>家
+						<a href="{% url 'SuperY:applicant_deliver_post' user.id 1 %}"><span>{{resume.post_set.count}}</span>家
 						<h4>我的投递</h4></a>
 					</li>
 				</ol>
 				<ul class="clearfix">
 					<li>
-						<img src="{% static 'SuperY/images/top_resume_hover.gif' %}">
-						<h4>个人中心</h4>
+						<a href="{% url 'SuperY:person_info' 'applicant' user.id %}"><img src="{% static 'SuperY/images/top_resume_hover.gif' %}">
+						<h4>个人中心</h4></a>
 					</li>
 					<li>
 						<a href="{% url 'SuperY:applicant_resume' user.id %}"><img src="{% static 'SuperY/images/resume_hover.gif' %}">
@@ -93,28 +63,4 @@
 			</div>
 		</div>
 	</div>
-	<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
-	<script>
-	document.querySelector('[name="search_btn"]').onclick=function() {
-		var search_word=document.querySelector('[name="search_word"]').value;
-		var is_search=true;
-		if (!search_word || search_word.length>20) {
-			is_search=false;
-			alert('请输入正确格式的关键词')
-		}
-		console.log(user_id,search_word)
-		if (is_search) {
-			var user_id=document.querySelector('[name="phone_number"]').getAttribute('data-user-id');
-			$.ajax({
-				type:'post',
-				url:'{% url "SuperY:applicant_search_ajax" %}',
-				data:{'search_word':search_word,'user_id':user_id},
-				success:function() {
-					window.open('{% url "SuperY:company_search_resume" user_id search_word 1 %}')
-				}
-			})
-		}
-	};
-	</script>
-</body>
-</html>
+{% endblock content %}

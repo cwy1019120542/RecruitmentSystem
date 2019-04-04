@@ -1,0 +1,87 @@
+{% extends 'SuperY/applicant_base.html' %}
+{% load staticfiles %}
+{% block title %}
+个人信息
+{% endblock title %}
+{% block content %}
+<div class="center">
+	<div class='login_form register_form info_form'>
+		<h4>手机号 <span name="phone_number_info"></span></h4>
+		<input type='text' name="phone_number" placeholder="请输入手机号" value="{{user.phone_number}}">
+		<h4>姓名 <span name="person_name_info"></span></h4>
+		<input name="person_name" placeholder="请输入姓名" type="text" value='{{user.person_name}}'>
+		<h4>头像 <span name="head_pic_info"></span></h4>
+		<label>
+		<input type="button" name='pic_btn' value="选择图片"><span name="pic_text">
+		{{user.head_pic}}
+		</span>
+		<input type="file" name='head_pic' style="display:none;">
+		</label>
+		<h4>密码验证 <span name="passwd_info"></span></h4>
+		<input type='text' name="passwd" placeholder="请验证密码" value="{{user.phone_number}}">
+		<button name='save_btn'>保存</button>
+	</div>
+</div>
+	<script>
+		document.querySelector('[name="pic_btn"]').onclick=function() {
+			document.querySelector('[name="head_pic"]').click();
+		}
+		var head_pic=document.querySelector('[name="head_pic"]');
+		head_pic.onchange=function() {
+			document.querySelector('[name="pic_text"]').innerHTML=head_pic.files[0].name;
+		}
+		document.querySelector('[name="save_btn"]').onclick=function() {
+		var phone_number=document.querySelector('[name="phone_number"]').value;
+		var person_name=document.querySelector('[name="person_name"]').value;
+		var head_pic=document.querySelector('[name="head_pic"]').files[0];
+		var passwd=document.querySelector('[name="passwd"]').value;
+		var phone_number_info=document.querySelector('[name="phone_number_info"]');
+		var person_name_info=document.querySelector('[name="person_name_info"]');
+		var head_pic_info=document.querySelector('[name="head_pic_info"]');
+		var passwd_info=document.querySelector('[name="passwd_info"]');
+		var is_post=true;
+		phone_number_info.innerHTML='';
+		person_name_info.innerHTML='';
+		head_pic_info.innerHTML='';
+		passwd_info.innerHTML='';
+		if (!phone_number) {
+			is_post=false;
+			phone_number_info.innerHTML="请您填写正确格式的手机号";
+		};
+		if (!person_name) {
+			is_post=false;
+			person_name_info.innerHTML="请您填写正确格式的姓名";
+		};
+		if (!passwd) {
+			is_post=false;
+			person_name_info.innerHTML="请您填写正确格式的密码";
+		};
+		if (is_post){
+			var formData=new FormData();
+			formData.append('phone_number',phone_number);
+			formData.append('person_name',person_name);
+			formData.append('head_pic',head_pic);
+			formData.append('passwd',passwd);
+			var user_id=document.querySelector('[name="applicant_phone_number"]').getAttribute('data-user-id');
+			formData.append('user_id',user_id);
+			formData.append('identity','applicant')
+			$.ajax({
+				type:'post',
+				url:'{% url "SuperY:person_info_ajax" %}',
+				data:formData,
+				processData:false,
+                contentType:false,
+				success:function(data) {
+					if (data) {
+						data=JSON.parse(data)
+						phone_number_info.innerHTML=data.phone_number_error;
+					}
+					else {
+						window.location.replace('{% url "SuperY:applicant_index" user.id %}');
+					}
+				}
+			}) 
+		}
+	};
+	</script>
+{% endblock content %}

@@ -1,31 +1,9 @@
-<!DOCTYPE html>
+{% extends 'SuperY/applicant_base.html' %}
 {% load staticfiles %}
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <title>职位列表</title>
-    <link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
-</head>
-<body>
-<div class='topNav'>
-        <div class="topNav_c clearfix">
-            <span>欢迎回来  {{user.person_name}}</span>
-            <ul>
-                <li data-user-id={{user.id}} name='phone_number'>{{user.phone_number}}</li>
-                <li>
-                    个人中心
-                    <dl>
-                        <dd>我的简历</dd>
-                        <dd>账号信息</dd>
-                        <dd>修改密码</dd>
-                    </dl>
-                </li>
-                <a href="{% url 'SuperY:applicant_logout' user.id %}"><li>注销</li></a>
-            </ul>
-        </div>
-    </div>    
+{% block title %}
+职位列表
+{% endblock title %}
+{% block content %}   
 <div id="listContent" class="contentpile__content">
     <div class="contentpile__content__wrapper clearfix">
     	{% for post in post_list %}
@@ -85,7 +63,4 @@
         </div>
     </div>
 </div>
-<div class="bottom">我是底部</div>
-
-</body>
-</html>
+{% endblock content %}

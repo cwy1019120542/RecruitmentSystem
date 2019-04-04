@@ -1,37 +1,14 @@
-<!DOCTYPE html>
+{% extends 'SuperY/applicant_base.html' %}
 {% load staticfiles %}
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <title>职位信息</title>
-    <link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'SuperY/css/vendors.css' %}">
-    <link rel="stylesheet" href="{% static 'SuperY/css/positionInfo.css' %}">
-</head>
-<body>
-<div class='topNav'>
-        <div class="topNav_c clearfix">
-            <span>求职者  {{user.person_name}}</span>
-            <ul>
-                <li data-user-id={{user.id}} name='phone_number'>{{user.phone_number}}</li>
-                <li>
-                    个人中心
-                    <dl>
-                        <dd>我的简历</dd>
-                        <dd>账号信息</dd>
-                        <dd>修改密码</dd>
-                    </dl>
-                </li>
-                 <a href="{% url 'SuperY:applicant_logout' user.id %}"><li>注销</li></a>
-            </ul>
-        </div>
-    </div>
+{% block title %}
+职位详情
+{% endblock title %}
+{% block content %}
 <div id="listContent" class="contentpile__content a-center-layout__content">
     <div class="job-summary">
         <div class="summary-plane">
-            <div class="summary-plane__content"><!---->
+            <div class="summary-plane__content">
+                <!---->
                 <div class="summary-plane__top"></div>
                 <h3 class="summary-plane__title" data-post-id={{post.id}}>{{post.post_name}}</h3>
                 <div class="summary-plane__bottom">
@@ -48,7 +25,8 @@
                     </div>
                     <div class="summary-plane__right">
                         <div class="a-job-apply-button summary-plane__action">
-                            <button type="button" class="a-button a--bordered a--filled" name="deliver_btn">申请职位</button><!---->
+                            <button type="button" class="a-button a--bordered a--filled" name="deliver_btn">申请职位</button>
+                            <!---->
                         </div>
                     </div>
                 </div>
@@ -69,7 +47,7 @@
                 <div class="describtion">
                     <h2 class="describtion__title">职位描述</h2>
                     <div class="describtion__detail-content">
-                       {{post.post_info}}
+                        {{post.post_info}}
                     </div>
                 </div>
                 <div class="job-address">
@@ -89,12 +67,12 @@
                     <h2 class="manager__title">职位发布者</h2>
                     <div class="manager__detail">
                         <h3 class="manager__detail-name">{{post.company.person_name}}</h3>
-                        <span class="manager__detail-label">刚刚在线</span>
-                        <span class="manager__detail-label">处理简历快</span>
+                        <span class="manager__detail-label">已认证</span>
+                        <span class="manager__detail-label">{{post.company.register_datetime}}</span>
                     </div>
                 </div>
                 <div class="company">
-                    <img src="images/66453804451_100x100.png"alt="公司Logo" title="公Logo" class="company__avatar">
+                    <img src="/media/company/business_licence/{{post.company.business_licence}}" class="company__avatar">
                     <span class="company__title">{{post.company.company_name}}</span>
                     <div class="company__detail">
                         <button class="company__industry">
@@ -116,19 +94,18 @@
 <div class="bottom">我是底部</div>
 <script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
 <script>
-    document.querySelector('[name="deliver_btn"]').onclick=function() {
-        var post_id=document.querySelector('[class="summary-plane__title"]').getAttribute('data-post-id');
-        var user_id=document.querySelector('[name="phone_number"]').getAttribute('data-user-id');
-        $.ajax({
-            type:'post',
-            url:'{% url "SuperY:deliver_post_ajax" %}',
-            data:{'post_id':post_id,'user_id':user_id},
-            success:function(data) {
-                data=JSON.parse(data);
-                alert(data.message);
-            }
-        })
-    };
+document.querySelector('[name="deliver_btn"]').onclick = function() {
+    var post_id = document.querySelector('[class="summary-plane__title"]').getAttribute('data-post-id');
+    var user_id = document.querySelector('[name="applicant_phone_number"]').getAttribute('data-user-id');
+    $.ajax({
+        type: 'post',
+        url: '{% url "SuperY:deliver_post_ajax" %}',
+        data: { 'post_id': post_id, 'user_id': user_id },
+        success: function(data) {
+            data = JSON.parse(data);
+            alert(data.message);
+        }
+    })
+};
 </script>
-</body>
-</html>
+{% endblock content %}

@@ -3,7 +3,8 @@ from django.db import models
 class Applicant(models.Model):
 	phone_number=models.CharField(max_length=255,help_text='手机号码',unique=True)
 	person_name=models.CharField(max_length=255,help_text='注册人姓名',default='')
-	passwd=models.CharField(max_length=255,help_text='密码',default='')						#删除了头像字段，主页显示直接调用简历中的头像即可
+	head_pic=models.ImageField(null=True,default='default.png')
+	passwd=models.CharField(max_length=255,help_text='密码',default='')						
 	register_datetime=models.DateTimeField(auto_now_add=True,help_text='注册时间',null=True)
 	login_random=models.CharField(max_length=255,help_text='登陆号',default='')
 	class Meta:
@@ -15,6 +16,7 @@ class Applicant(models.Model):
 class Company(models.Model):
 	phone_number=models.CharField(max_length=255,help_text='手机号码',unique=True)			#手机号都设置唯一，索引查询更快
 	person_name=models.CharField(max_length=255,help_text='注册人姓名',default='')
+	head_pic=models.ImageField(null=True,default='default.png')
 	passwd=models.CharField(max_length=255,help_text='密码',default='')
 	business_licence=models.ImageField(upload_to='company',default='',help_text='营业执照')
 	company_name=models.CharField(max_length=255,help_text='公司名称',default='')

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>忘记密码</title>
+	 <link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
+</head>
+<body>
+<div class="top">
+	<div class="logoTell">
+		<a href="{% url 'SuperY:login' %}">
+			<img src="{% static 'SuperY/images/logo_blue.png' %}">
+		</a>
+		<div class="tell">电话：<span>138562286</span></div>
+	</div>
+</div>
+<div class="center">
+	<div class='login_form register_form'>
+		<h4>姓名 <span name="person_name_info"></span></h4>
+		<input type='password' name="person_name" placeholder="请输入您的真实姓名，不可超过20位">
+		<h4>手机号码 <span name="phone_number_info"></span></h4>
+		<input type='password' name="phone_number" placeholder="请输入您的手机号">
+		<h4>用户id <span name="user_id_info"></span></h4>
+		<input name="user_id" placeholder="请输入您的用户id" type="password">
+		<h4>注册日期 <span name="register_datetime_info"></span></h4>
+		<input name="register_datetime" placeholder="请输入您的注册日期" type="password">
+		<h4>身份选择 <span name="identity_info"></span></h4>
+		<input type="radio" name="identity" value='applicant' class='applicant'>求职者
+		<input type="radio" name="identity" value='company' class='bossRadio'>企业用户
+		<h4>新密码 <span name="passwd_info"></span></h4>
+		<input name="passwd" placeholder="请输入您的新密码" type="password">
+		<button name="register_btn">更新密码</button>
+	</div>
+</div>
+<div class="bottom">我是底部</div>
+	<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
+	<script>
+		document.querySelector('[name="register_btn"]').onclick=function() {
+		var person_name=document.querySelector('[name="person_name"]').value;
+		var phone_number=document.querySelector('[name="phone_number"]').value;
+		var user_id=document.querySelector('[name="user_id"]').value;
+		var register_datetime=document.querySelector('[name="register_datetime"]').value;
+		var identity=document.querySelector('[name="identity"]:checked');
+		var passwd=document.querySelector('[name="passwd"]').value;
+		var person_name_info=document.querySelector('[name="person_name_info"]');
+		var phone_number_info=document.querySelector('[name="phone_number_info"]');
+		var user_id_info=document.querySelector('[name="user_id_info"]');
+		var register_datetime_info=document.querySelector('[name="register_datetime_info"]');
+		var identity_info=document.querySelector('[name="identity_info"]');
+		var passwd_info=document.querySelector('[name="passwd_info"]');
+		var is_post=true;
+		if (!person_name){
+			person_name_info.innerHTML='请您填写正确格式的姓名';
+			is_post=false;
+		}
+		if (!phone_number){
+			phone_number_info.innerHTML='请您填写正确格式的手机号';
+			is_post=false;
+		}
+		if (!user_id){
+			user_id_info.innerHTML='请您填写正确格式的用户id';
+			is_post=false;
+		}
+		if (!register_datetime){
+			register_datetime_info.innerHTML='请您填写正确格式的注册时间';
+			is_post=false;
+		}
+		if (!identity){
+			identity_info.innerHTML='请您选择用户身份';
+			is_post=false;
+		}
+		if (!passwd){
+			passwd_info.innerHTML='请您填写正确格式的密码';
+			is_post=false;
+		}
+		if (is_post){
+			person_name_info.innerHTML='';
+			phone_number_info.innerHTML='';
+			user_id_info.innerHTML='';
+			register_datetime_info.innerHTML='';
+			identity_info.innerHTML='';
+			$.ajax({
+				type:'post',
+				url:'{% url "SuperY:forget_passwd_ajax" %}',
+				data:{'passwd':passwd,'person_name':person_name,'phone_number':phone_number,'user_id': user_id,'register_datetime':register_datetime,'identity':identity.value},
+				success:function(data) {
+					if (data){
+						data=JSON.parse(data)
+						phone_number_info.innerHTML=data.phone_number_error;
+					}
+					else{
+						window.location.replace("{% url 'SuperY:login' %}");
+					}
+				}
+			}) 
+		}
+	};
+	</script>
+</body>
+</html>

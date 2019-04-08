@@ -1,4 +1,4 @@
-{% extends 'SuperY/applicant_base.html' %}
+{% extends 'SuperY/company_base.html' %}
 {% load staticfiles %}
 {% block title %}
 职位详情
@@ -16,7 +16,7 @@
                         <span class="summary-plane__salary">{{post.salary}}</span>
                         <ul class="summary-plane__info">
                             <li>
-                                <a href="" target="_blank">{{post.work_place}}</a>
+                                {{post.work_place}}
                             </li>
                             <li>{{post.experience_require}}</li>
                             <li>{{post.graduate_require}}</li>
@@ -25,7 +25,7 @@
                     </div>
                     <div class="summary-plane__right">
                         <div class="a-job-apply-button summary-plane__action">
-                            <button type="button" class="a-button a--bordered a--filled" name="deliver_btn">申请职位</button>
+                           <a href="{% url 'SuperY:company_post_modify' post.id user.id %}"><button type="button" class="a-button a--bordered a--filled" name="modify_btn">编辑</button></a> 
                             <!---->
                         </div>
                     </div>
@@ -91,20 +91,4 @@
         </div>
     </div>
 </div>
-<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
-<script>
-document.querySelector('[name="deliver_btn"]').onclick = function() {
-    var post_id = document.querySelector('[class="summary-plane__title"]').getAttribute('data-post-id');
-    var user_id = document.querySelector('[name="applicant_phone_number"]').getAttribute('data-user-id');
-    $.ajax({
-        type: 'post',
-        url: '{% url "SuperY:deliver_post_ajax" %}',
-        data: { 'post_id': post_id, 'user_id': user_id },
-        success: function(data) {
-            data = JSON.parse(data);
-            alert(data.message);
-        }
-    })
-};
-</script>
 {% endblock content %}

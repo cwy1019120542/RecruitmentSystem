@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+    <meta charset="utf8">
+    <title>
+        {% block title %}
+        {% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'SuperY/css/iconfont.css' %}">
+    <link rel="stylesheet" href="{% static 'SuperY/css/positionInfo.css' %}">
+    <link rel="stylesheet" href="{% static 'SuperY/css/resume.a13cfa.css' %}">
+    <link rel="stylesheet" href="{% static 'SuperY/css/resume.css' %}">
+    <link rel="stylesheet" href="{% static 'SuperY/css/vendors.css' %}">
+    <link rel="stylesheet" href="{% static 'SuperY/css/vendors.dc6fff.css' %}">
+     <link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
+</head>
+<body>
+	<div class='topNav'>
+		<div class="topNav_c clearfix">
+			<span>企业用户  {{user.person_name}}</span>
+			<ul>
+				<li name="company_phone_number" data-user-id={{user.id}}>{{user.phone_number}}</li>
+				<li>
+					{{user.company_name}}
+					<dl>
+						<dd><a href="{% url 'SuperY:person_info' 'company' user.id %}">用户信息</a></dd>
+						<dd><a href="{% url 'SuperY:company_info' user.id %}">企业信息</a></dd>
+						<dd><a href="{% url 'SuperY:company_post' user.id 1 %}">企业职位</a></dd>
+						<dd><a href="{% url 'SuperY:company_post_add' user.id %}">创建职位</a></dd>
+						<dd><a href="{% url 'SuperY:passwd_change' 'company' user.id %}">修改密码</a></dd>
+					</dl>
+				</li>
+				<a href="{% url 'SuperY:logout' 'company' user.id %}"><li>注销</li></a>
+			</ul>
+		</div>
+	</div>
+	<div class="top indexTop">
+		<div class="logoTell indexSearch">
+			<a href="{% url 'SuperY:company_index' user.id %}">
+				<img src="{% static 'SuperY/images/logo_blue.png' %}">
+			</a>
+			<div class="tell search">
+				<input type="text" name="search_word" placeholder="请您输入关键词，求职者职位/技能/工作地点，20个字符以内"><button name="search_btn">搜索</button>
+			</div>
+		</div>
+	</div>
+	 {% block content %}
+    {% endblock content %}
+     <div class="bottom">我是底部</div>
+	<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
+	<script>
+	document.querySelector('[name="search_btn"]').onclick=function() {
+		var search_word=document.querySelector('[name="search_word"]').value;
+		var is_search=true;
+		if (!search_word || search_word.length>20) {
+			is_search=false;
+			alert('请输入正确格式的关键词')
+		}
+		if (is_search) {
+			var user_id=document.querySelector('[name="company_phone_number"]').getAttribute('data-user-id');
+			$.ajax({
+				type:'post',
+				url:'{% url "SuperY:search_ajax" %}',
+				data:{'search_word':search_word,'user_id':user_id,'identity':'company'},
+				success:function(data) {
+					url=JSON.parse(data).url
+					window.open(url)
+				}
+			})
+		}
+	};
+	</script>
+
+</body>
+</html>

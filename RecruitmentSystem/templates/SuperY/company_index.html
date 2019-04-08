@@ -1,39 +1,9 @@
-<!DOCTYPE html>
+{% extends 'SuperY/company_base.html' %}
 {% load staticfiles %}
-<html>
-<head>
-	<meta charset="utf8">
-	<title>企业主页</title>
-	 <link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
-</head>
-<body>
-	<div class='topNav'>
-		<div class="topNav_c clearfix">
-			<span>企业用户  {{user.person_name}}</span>
-			<ul>
-				<li name="phone_number" data-user-id={{user.id}}>{{user.phone_number}}</li>
-				<li>
-					{{user.company_name}}
-					<dl>
-						<dd>企业职位</dd>
-						<dd>企业信息</dd>
-						<dd>修改密码</dd>
-					</dl>
-				</li>
-				<a href="{% url 'SuperY:company_logout' user.id %}"><li>注销</li></a>
-			</ul>
-		</div>
-	</div>
-	<div class="top indexTop">
-		<div class="logoTell indexSearch">
-			<a href="applicant_index.html">
-				<img src="{% static 'SuperY/images/logo_blue.png' %}">
-			</a>
-			<div class="tell search">
-				<input type="text" name="search_word" placeholder="请您输入关键词，求职者职位/技能，20个字符以内"><button name="search_btn">搜索</button>
-			</div>
-		</div>
-	</div>
+{% block title %}
+企业主页
+{% endblock title %}
+{% block content %}
 	<div class='indexContent'>
 		<div class="C_model clearfix">
 			<div class="model_left">
@@ -54,18 +24,18 @@
 			</div>
 			<div class="model_right">
 				<div class="userInfo clearfix">
-					<img src="{% static 'SuperY/images/photoshopImg.png' %}" >
+					<img src="/media/company/head_pic/{{user.head_pic}}" >
 					<h2>Hi，<span>{{user.person_name}}</span></h2>
 					欢迎回来！
 				</div>
 				<ol class="clearfix">
 					<li>
-						<span>{{resume_number}}</span>条
-						<h4>我看过的</h4>
+						<a href="{% url 'SuperY:company_company_look' user.id 1 %}"><span>{{resume_number}}</span>条
+						<h4>我看过的</h4></a>
 					</li>
 					<li>
-						<span>{{receive_resume}}</span>条
-						<h4>收到的简历</h4>
+						<a href="{% url 'SuperY:company_receive_resume' user.id 1 %}"><span>{{receive_resume}}</span>条
+						<h4>收到的简历</h4></a>
 					</li>
 				</ol>
 				<ul class="clearfix">
@@ -91,28 +61,4 @@
 			</div>
 		</div>
 	</div>
-	<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
-	<script>
-	document.querySelector('[name="search_btn"]').onclick=function() {
-		var search_word=document.querySelector('[name="search_word"]').value;
-		var is_search=true;
-		if (!search_word || search_word.length>20) {
-			is_search=false;
-			alert('请输入正确格式的关键词')
-		}
-		if (is_search) {
-			var user_id=document.querySelector('[name="phone_number"]').getAttribute('data-user-id');
-			$.ajax({
-				type:'post',
-				url:'{% url "SuperY:company_search_ajax" %}',
-				data:{'search_word':search_word,'user_id':user_id},
-				success:function(data) {
-					url=JSON.parse(data).url
-					window.open(url)
-				}
-			})
-		}
-	};
-	</script>
-</body>
-</html>
+	{% endblock content %}

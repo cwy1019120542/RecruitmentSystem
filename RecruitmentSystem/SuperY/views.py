@@ -37,7 +37,7 @@ def login_ajax(request):
 	key=identity+'-'+str(same_user.id)
 	request.session[key]=same_user.login_random			#session中存储的值更加合理化
 	user_id=same_user.id
-	return HttpResponse(demjson.encode({'url':reverse(f'SuperY:{identity}_index',kwargs={'identity':identity,'user_id':user_id})}))
+	return HttpResponse(demjson.encode({'url':reverse(f'SuperY:{identity}_index',kwargs={'user_id':user_id})}))
 
 def register(request):
 	return render(request,'SuperY/register.html')
@@ -66,10 +66,14 @@ def is_login(func):
 		user=eval(f'models.{identity.capitalize()}.objects.filter(id=user_id)')
 		key=identity+'-'+str(user_id)
 		if key not in request.session:				#判断登录状态更严谨
+			print('fail1')
+			print(key)
 			return redirect(reverse('SuperY:login'))
 		elif not user:
+			print('fail2')
 			return redirect(reverse('SuperY:login'))
 		elif request.session[key] != user[0].login_random:
+			print('fail3')
 			return redirect(reverse('SuperY:login'))
 		return func(request,identity,user_id,*args,**kwargs)
 	return wrapper
@@ -287,20 +291,36 @@ def company_check_ajax(request):
 	pic_path=settings.MEDIA_ROOT+r'\company\business_licence'
 	if not os.path.exists(pic_path):
 		os.mkdir(pic_path)
-	pic=pic_path+'\\'+str(user_id)+business_licence.name.split('.')[1]
+	pic=pic_path+'\\'+str(user_id)+'.'+business_licence.name.split('.')[1]
 	with open(pic,'wb') as f:
 		for chunk in business_licence.chunks():
 			f.write(chunk)
 	return HttpResponse()
 
-def company_search_ajax(request):
+def company_info_ajax(request):
 	data=request.POST.copy()
-	search_word=data['search_word']
-	user_id=data['user_id']
-	company=models.Company.objects.get(id=user_id)
-	models.CompanySearch.objects.create(company=company,search_word=search_word)		#搜索关键词保存应该放在这里，这样就只会搜索的时候保存一次
-	url=reverse('SuperY:company_search_resume',kwargs={'user_id':user_id,'search_word':search_word,'page':1})
-	return HttpResponse(demjson.encode({'url':url}))
+	user_id=data.pop('user_id')[0]
+	company=models.Company.objects.filter(id=user_id)
+	company_name=data['company_name']
+	company_same=models.Company.objects.filter(company_name=company_name)
+	if company[0] != company_same[0]:
+		return HttpResponse(demjson.encode({'company_name_error':'该公司已被注册'}))
+	business_licence=request.FILES.get('business_licence','fail')
+	data=data.dict()
+	if business_licence == 'fail':
+		data.pop('business_licence')
+		company_same.update(**data)
+		return HttpResponse()
+	business_licence.name=str(user_id)+'.'+business_licence.name.split('.')[1]
+	company_same.update(**data,business_licence=business_licence)
+	pic_path=settings.MEDIA_ROOT+r'\company\business_licence'
+	if not os.path.exists(pic_path):
+		os.mkdir(pic_path)
+	pic=pic_path+'\\'+business_licence.name
+	with open(pic,'wb') as f:
+		for chunk in business_licence.chunks():
+			f.write(chunk)
+	return HttpResponse()
 
 @is_login
 def company_search(request,identity,user_id,search_word,page):
@@ -311,6 +331,12 @@ def company_search(request,identity,user_id,search_word,page):
 	return render(request,'SuperY/company_resume.html',context_dict)
 
 @is_login
+def company_info(request,identity,user_id):
+	company=models.Company.objects.get(id=user_id)
+	context_dict={'user':company}
+	return render(request,'SuperY/company_info.html',context_dict)
+
+@is_login
 def company_resume_detail(request,identity,user_id,resume_id):
 	company=models.Company.objects.get(id=user_id)
 	resume=models.Resume.objects.get(id=resume_id)
@@ -319,37 +345,71 @@ def company_resume_detail(request,identity,user_id,resume_id):
 	return render(request,'SuperY/company_resume_detail.html',context_dict)
 
 @is_login
-def company_info_modify(request,identity,user_id):
+def company_post(request,identity,user_id,page):
 	company=models.Company.objects.get(id=user_id)
-	context_dict={'user':company}
-	return render(request,'SuperY:company_info.html',context_dict)
-
-def company_post_list(request,phone_number,page):
-	is_login(request,'company',phone_number)
-	company=models.Company.objects.get(phone_number=phone_number)
 	post_all=models.Post.objects.filter(company=company)
-	post_list=my_paginator(post_all,5,page)
-	context_dict={'user':company,'post_list':post_list}
-	return render(request,'SuperY/company_post_list.html',context_dict)
+	post_number,page_all,post_list=my_paginator(post_all,5,page)
+	context_dict={'user':company,'post_list':post_list,'post_number':post_number,'page_all':page_all}
+	return render(request,'SuperY/company_post.html',context_dict)
 
-def company_post_detail(request,phone_number,post_id):
-	is_login(request,'company',phone_number)
-	company=models.Company.objects.get(phone_number=phone_number)
+@is_login
+def company_post_detail(request,identity,user_id,post_id):
+	company=models.Company.objects.get(id=user_id)
 	post=models.Post.objects.get(id=post_id)
 	context_dict={'user':company,'post':post_id}
 	return render(request,'SuperY/company_post_detail.html',context_dict)
 
-def company_post_detail_ajax(request):
-	data=request.POST().copy()
-	phone_number=data.pop('phone_number')[0]
-	is_login(request,'company',phone_number)
-	post_id=data.pop('post_id')[0]
-	post=models.Post.objects.get(id=post_id)
+@is_login
+def company_post_modify(request,identity,user_id,post_id=None):
+	company=models.Company.objects.get(id=user_id)
+	tag_list=models.Tag.objects.all()
+	if post_id:
+		post=models.Post.objects.get(id=post_id)
+		context_dict={'user':company,'tag_list':tag_list,'post':post}
+	else:
+		context_dict={'user':company,'tag_list':tag_list}
+	return render(request,'SuperY/company_post_modify.html',context_dict)
+
+def company_post_modify_ajax(request):
+	data=request.POST.copy().dict()
+	user_id=data.pop('user_id')
+	company=models.Company.objects.get(id=user_id)
+	post_id=data.pop('post_id')
 	tag_id_list=data.pop('tag_id_list')
-	post.tag.clear()
-	for tag_id in tag_id_list:
-		tag=models.Tag.objects.get(id=tag_id)
-		post.tag.add(tag)
+	print(tag_id_list)
+	if post_id:
+		post=models.Post.objects.filter(id=post_id)
+		post.update(**data,company=company)
+		post=post[0]
+	else:
+		post=models.Post.objects.create(**data,company=company)
+	tag_id_list=tag_id_list.split(',')
+	if tag_id_list[0]:
+		tag_list=(models.Tag.objects.get(id=int(tag_id)) for tag_id in tag_id_list)
+		post.tag.clear()
+		post.tag.add(*tag_list)
+	return HttpResponse()
+
+@is_login
+def company_company_look(request,identity,user_id,page):
+	company=models.Company.objects.get(id=user_id)
+	resume_all=models.Resume.objects.filter(company_look=company)
+	resume_number,page_all,resume_list=my_paginator(resume_all,5,page)
+	context_dict={'user':company,'resume_number':resume_number,'page_all':page_all,'resume_list':resume_list}
+	return render(request,'SuperY/company_resume.html',context_dict)
+
+@is_login
+def company_receive_resume(request,identity,user_id,page):
+	company=models.Company.objects.get(id=user_id)
+	post_list=models.Post.objects.filter(company=company)
+	resume_all=[]
+	for post in post_list:
+		resume_all.extend(list(post.resume.all()))
+	resume_number,page_all,resume_list=my_paginator(resume_all,5,page)
+	for resume in resume_list:
+		print(resume.post_set.post_name)
+	context_dict={'user':company,'resume_number':resume_number,'page_all':page_all,'resume_list':resume_list,'receive':True}
+	return render(request,'SuperY/company_resume.html',context_dict)
 
 @is_login
 def person_info(request,identity,user_id):
@@ -361,18 +421,21 @@ def person_info_ajax(request):
 	data=request.POST.copy().dict()
 	identity=data.pop('identity')
 	user_id=data.pop('user_id')
-	phone_number=data['phone_number']
+	phone_number=data.pop('phone_number')
 	head_pic=request.FILES.get('head_pic','fail')
 	user=eval(f'models.{identity.capitalize()}.objects.filter(id=user_id)')
 	same_user=eval(f'models.{identity.capitalize()}.objects.filter(phone_number=phone_number)')
-	passwd=phone_number[:5]+data['passwd']+phone_number[6:]
+	passwd=data.pop('passwd')
+	passwd=user[0].phone_number[:5]+passwd+user[0].phone_number[6:]
 	passwd=md5_passwd(passwd)
 	if user[0].passwd != passwd:
 		return HttpResponse(demjson.encode({'passwd_error':'密码不正确'}))
 	if not same_user or same_user[0] == user[0]:
 		if not same_user:
-			deal_text=phone_number[:5]+user[0].passwd+phone_number[6:]
-			data['passwd']=md5_passwd(deal_text)
+			passwd=phone_number[:5]+data['passwd']+phone_number[6:]
+			passwd=md5_passwd(passwd)
+			data['passwd']=passwd
+			data['phone_number']=phone_number
 		if head_pic == 'fail':
 			data.pop('head_pic')
 			user.update(**data)
@@ -433,8 +496,8 @@ def forget_passwd_ajax(request):
 	if not user:
 		return HttpResponse(demjson.encode({'phone_number_error':'该用户不存在'}))
 	else:
-		if str(user[0].register_datetime) != register_datetime:
-			return HttpResponse(demjson.encode({'phone_number_error':'该用户不存在'}))
+		# if str(user[0].register_datetime) != register_datetime:
+		# 	return HttpResponse(demjson.encode({'phone_number_error':'该用户不存在'}))
 		passwd=data['passwd']
 		deal_text=phone_number[:5]+passwd+phone_number[6:]
 		user[0].passwd=md5_passwd(deal_text)

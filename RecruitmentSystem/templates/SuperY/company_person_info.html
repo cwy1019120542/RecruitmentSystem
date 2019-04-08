@@ -1,7 +1,7 @@
-{% extends 'SuperY/applicant_base.html' %}
+{% extends 'SuperY/company_base.html' %}
 {% load staticfiles %}
 {% block title %}
-个人信息
+用户信息
 {% endblock title %}
 {% block content %}
 <div class="center">
@@ -62,9 +62,9 @@
 			formData.append('person_name',person_name);
 			formData.append('head_pic',head_pic);
 			formData.append('passwd',passwd);
-			var user_id=document.querySelector('[name="applicant_phone_number"]').getAttribute('data-user-id');
+			var user_id=document.querySelector('[name="company_phone_number"]').getAttribute('data-user-id');
 			formData.append('user_id',user_id);
-			formData.append('identity','applicant')
+			formData.append('identity','company');
 			$.ajax({
 				type:'post',
 				url:'{% url "SuperY:person_info_ajax" %}',
@@ -83,7 +83,7 @@
 						
 					}
 					else {
-						window.location.replace('{% url "SuperY:applicant_index" user.id %}');
+						window.location.replace('{% url "SuperY:company_index" user.id %}');
 					}
 				}
 			}) 

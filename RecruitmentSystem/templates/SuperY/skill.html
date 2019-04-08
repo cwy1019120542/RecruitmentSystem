@@ -1,35 +1,11 @@
-<!DOCTYPE html>
+{% extends 'SuperY/applicant_base.html' %}
 {% load staticfiles %}
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>工作经历</title>
-	<link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
-</head>
-<body>
-		 <div class='topNav'>
-        <div class="topNav_c clearfix">
-            <span>求职用户 {{user.person_name}}</span>
-            <ul>
-                <li data-user-id={{user.id}} name='applicant_phone_number'>{{user.phone_number}}</li>
-                <li>
-                    个人中心
-                    <dl>
-                        <a href="{% url 'SuperY:applicant_resume' user.id %}">
-                            <dd>我的简历</dd>
-                        </a>
-                        <dd>账号信息</dd>
-                        <dd>修改密码</dd>
-                    </dl>
-                </li>
-                <a href="{% url 'SuperY:applicant_logout' user.id %}">
-                    <li>注销</li>
-                </a>
-            </ul>
-        </div>
-    </div>
+{% block title %}
+职位期望
+{% endblock title %}
+{% block content %}
 <div class="center" data-experience-id={{experience.id}}>
-	<div class='login_form register_form'>
+	<div class='login_form register_form info_form'>
 		<h4>技能名称 <span name="skill_name_info"></span></h4>
 		<input type='text' name="skill_name" placeholder="请输入技能名称" value="{{experience.skill_name}}">
 		<h4 class='tate-owned'>掌握程度 <span name="level_info"></span></h4>
@@ -39,7 +15,6 @@
 		<button name='save_btn'>保存</button>
 	</div>
 </div>
-<div class="bottom">我是底部</div>
 	<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
 	<script>
 		document.querySelector('[name="save_btn"]').onclick=function() {
@@ -88,5 +63,4 @@
 		}
 	};
 	</script>
-</body>
-</html>
+{% endblock content %}

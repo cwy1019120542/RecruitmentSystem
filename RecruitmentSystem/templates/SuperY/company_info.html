@@ -1,39 +1,11 @@
-<!DOCTYPE html>
+{% extends 'SuperY/company_base.html' %}
 {% load staticfiles %}
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>工作经历</title>
-    <link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
-</head>
-
-<body>
-    <div class='topNav'>
-        <div class="topNav_c clearfix">
-            <span>企业用户 {{user.person_name}}</span>
-            <ul>
-                <li name="phone_number" data-user-id={{user.id}}>{{user.phone_number}}</li>
-                <li>
-                    {{user.company_name}}
-                    <dl>
-                        <dd>企业职位</dd>
-                        <dd>企业信息</dd>
-                        <dd>修改密码</dd>
-                    </dl>
-                </li>
-                <a href="{% url 'SuperY:company_logout' user.id %}">
-                    <li>注销</li>
-                </a>
-            </ul>
-        </div>
-    </div>
+{% block title %}
+用户信息
+{% endblock title %}
+{% block content %}
     <div class="center">
-        <div class='login_form register_form'>
-            <h4>手机号 <span name="phone_number_info"></span></h4>
-            <input type='text' name="phone_number" placeholder="请输入手机号，不超过50字符" value={{user.phone_number}}>
-            <h4>用户姓名 <span name="person_name_info"></span></h4>
-            <input type='text' name="person_name" placeholder="请输入用户姓名，不超过50字符" value={{user.person_name}}>
+        <div class='login_form register_form info_form'>
             <h4>企业名称 <span name="company_name_info"></span></h4>
             <input type='text' name="company_name" placeholder="请输入企业名称，不超过50字符" value={{user.company_name}}>
             <h4>企业性质 <span name="company_type_info"></span></h4>
@@ -44,7 +16,7 @@
             <input name="address" placeholder="请输入企业地址，不超过100个字符" type="text" value={{user.address}}>
             <h4>上传营业执照 <span name="business_licence_info"></span></h4>
             <label>
-                <input type="button" name='pic_btn' value="上传营业执照"><span name="pic_text">
+                <input type="button" name='pic_btn' value="选择图片"><span name="pic_text">
                     {{user.business_licence}}
                 </span>
                 <input type="file" name='business_licence' style="display:none;">
@@ -54,7 +26,6 @@
             <button name='save_btn'>保 存</button>
         </div>
     </div>
-    <div class="bottom">我是底部</div>
     <script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
     <script>
     document.querySelector('[name="pic_btn"]').onclick=function() {
@@ -65,16 +36,12 @@
 			document.querySelector('[name="pic_text"]').innerHTML=business_licence.files[0].name;
 		}
     document.querySelector('[name="save_btn"]').onclick = function() {
-        var phone_number = document.querySelector('[name="phone_number"]').value;
-        var person_name = document.querySelector('[name="person_name"]').value;
         var company_name = document.querySelector('[name="company_name"]').value;
         var company_type = document.querySelector('[name="company_type"]').value;
         var staff_number = document.querySelector('[name="staff_number"]').value;
         var address = document.querySelector('[name="address"]').value;
         var business_licence = document.querySelector('[name="business_licence"]').files[0];
         var company_info = document.querySelector('[name="company_info"]').value;
-        var phone_number_info = document.querySelector('[name="phone_number_info"]');
-        var person_name_info = document.querySelector('[name="person_name_info"]');
         var company_name_info = document.querySelector('[name="company_name_info"]');
         var company_type_info = document.querySelector('[name="company_type_info"]');
         var staff_number_info = document.querySelector('[name="staff_number_info"]');
@@ -82,22 +49,12 @@
         var business_licence_info = document.querySelector('[name="business_licence_info"]');
         var company_info_info = document.querySelector('[name="company_info_info"]');
         var is_post = true;
-        phone_number_info.innerHTML = '';
-        person_name_info.innerHTML = '';
         company_name_info.innerHTML = '';
-        company_typee_info.innerHTML = '';
+        company_type_info.innerHTML = '';
         staff_number_info.innerHTML = '';
         address_info.innerHTML = '';
         business_licence_info.innerHTML = '';
         company_info_info.innerHTML = '';
-        if (!phone_number) {
-            is_post = false;
-            phone_number_info.innerHTML = "请您填写正确格式的手机号";
-        };
-        if (!person_name) {
-            is_post = false;
-            person_name_info.innerHTML = "请您填写正确格式的用户姓名";
-        };
         if (!company_name) {
             is_post = false;
             company_name_info.innerHTML = "请您填写正确格式的企业名称";
@@ -114,26 +71,19 @@
             is_post = false;
             address_info.innerHTML = "请您填写正确格式的企业地址";
         };
-        if (!business_licence) {
-            is_post = false;
-            business_licence_info.innerHTML = "请您填写正确格式的上传营业执照";
-        };
         if (!company_info) {
             is_post = false;
             company_info_info.innerHTML = "请您填写正确格式的企业简介";
         };
-        var experience_id = document.querySelector('div[class="center"]').getAttribute('data-experience-id');
         if (is_post) {
             var formData = new FormData();
-            formData.append('phone_number', phone_number);
-            formData.append('person_name', person_name);
             formData.append('company_name', company_name);
             formData.append('company_type', company_type);
             formData.append('staff_number', staff_number);
             formData.append('address', address);
             formData.append('business_licence', business_licence);
             formData.append('company_info', company_info);
-            var user_id = document.querySelector('[name="phone_number"]').getAttribute('data-user-id');
+            var user_id = document.querySelector('[name="company_phone_number"]').getAttribute('data-user-id');
             formData.append('user_id', user_id);
             $.ajax({
                 type: 'post',
@@ -141,13 +91,17 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function() {
-                    window.location.replace('{% url "SuperY:applicant_resume" user.id %}');
+                success: function(data) {
+                    if (data) {
+                        data=JSON.parse(data);
+                        company_name_info.innerHTML=data.company_name_error;
+                    }
+                    else {
+                    window.location.replace('{% url "SuperY:company_index" user.id %}');
+                    };
                 }
             })
         }
     };
     </script>
-</body>
-
-</html>
+{% endblock content %}

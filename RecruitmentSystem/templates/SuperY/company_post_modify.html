@@ -1,0 +1,119 @@
+{% extends 'SuperY/company_base.html' %}
+{% load staticfiles %}
+{% block title %}
+职位信息
+{% endblock title %}
+{% block content %}
+    <div class="center" data-post-id={{post.id}}>
+        <div class='login_form register_form info_form'>
+            <h4>职位名称 <span name="post_name_info"></span></h4>
+            <input type='text' name="post_name" placeholder="请输入职位名称，不超过50字符" value={{post.post_name}}>
+            <h4>薪资 <span name="salary_info"></span></h4>
+            <input type='text' name="salary" placeholder="请输入薪资，不超过50字符" value={{post.salary}}>
+            <h4>工作地点 <span name="work_place_info"></span></h4>
+            <input name="work_place" placeholder="请输入工作地点，不超过100个字符" type="text" value={{post.work_place}}>
+            <h4>工作经验要求 <span name="experience_require_info"></span></h4>
+            <input type='text' name="experience_require" placeholder="请输入工作经验要求" value={{post.experience_require}}>
+            <h4>毕业院校要求 <span name="graduate_require_info"></span></h4>
+            <input type='text' name="graduate_require" placeholder="请输入毕业院校要求，不超过50字符" value={{post.graduate_require}}>
+            <h4>招聘人数 <span name="recruit_number_info"></span></h4>
+            <input type='text' name="recruit_number" placeholder="请输入招聘人数，不超过50字符" value={{post.recruit_number}}>
+            <h4>岗位介绍 <span name="post_info_info"></span></h4>
+            <input name="post_info" placeholder="请输入岗位介绍，不超过100个字符" type="text" value={{post.post_info}}>
+            <h4>职位特色 <span name="tag_info"></span></h4>
+            {% for tag in tag_list %}
+            <input type='checkbox' name="tag" value={{tag.id}} {% if tag in post.tag.all %}checked="checked"{% endif %}>{{tag.tag_name}}
+            {% endfor %}
+            <button name='save_btn'>保 存</button>
+        </div>
+    </div>
+    <script>
+    document.querySelector('[name="save_btn"]').onclick = function() {
+        var post_name = document.querySelector('[name="post_name"]').value;
+        var salary = document.querySelector('[name="salary"]').value;
+        var work_place = document.querySelector('[name="work_place"]').value;
+        var experience_require = document.querySelector('[name="experience_require"]').value;
+        var graduate_require = document.querySelector('[name="graduate_require"]').value;
+        var recruit_number = document.querySelector('[name="recruit_number"]').value;
+        var post_info = document.querySelector('[name="post_info"]').value;
+        var tag = document.querySelectorAll('[name="tag"]:checked');
+        var post_name_info = document.querySelector('[name="post_name_info"]');
+        var salary_info = document.querySelector('[name="salary_info"]');
+        var work_place_info = document.querySelector('[name="work_place_info"]');
+        var experience_require_info = document.querySelector('[name="experience_require_info"]');
+        var graduate_require_info = document.querySelector('[name="graduate_require_info"]');
+        var recruit_number_info = document.querySelector('[name="recruit_number_info"]');
+        var post_info_info = document.querySelector('[name="post_info_info"]');
+        var tag_info = document.querySelector('[name="tag_info"]');
+        var is_post = true;
+        post_name_info.innerHTML = '';
+        salary_info.innerHTML = '';
+        work_place_info.innerHTML = '';
+        experience_require_info.innerHTML = '';
+        graduate_require_info.innerHTML = '';
+        recruit_number_info.innerHTML = '';
+        post_info_info.innerHTML = '';
+        tag_info.innerHTML = '';
+        if (!post_name) {
+            is_post = false;
+            post_name_info.innerHTML = "请您填写正确格式的职位名称";
+        };
+        if (!salary) {
+            is_post = false;
+            salary_info.innerHTML = "请您填写正确格式的薪资";
+        };
+        if (!work_place) {
+            is_post = false;
+            work_place_info.innerHTML = "请您填写正确格式的工作地点";
+        };
+        if (!experience_require) {
+            is_post = false;
+            experience_require_info.innerHTML = "请您填写正确格式的工作经验要求";
+        };
+        if (!graduate_require) {
+            is_post = false;
+            graduate_require_info.innerHTML = "请您填写正确格式的毕业院校要求";
+        };
+          if (!recruit_number) {
+            is_post = false;
+            recruit_number_info.innerHTML = "请您填写正确格式的招聘人数";
+        };
+        if (!post_info) {
+            is_post = false;
+            post_info_info.innerHTML = "请您填写正确格式的岗位介绍";
+        };
+        if (is_post) {
+            var post_id = document.querySelector('div[class="center"]').getAttribute('data-post-id');
+            var tag_id_list=[];
+            for (var i=0;i<tag.length;i++) {
+                    tag_id_list.push(tag[i].value)
+            }
+            tag
+            console.log(tag_id_list)
+            var formData = new FormData();
+            formData.append('post_name', post_name);
+            formData.append('salary', salary);
+            formData.append('work_place', work_place);
+            formData.append('experience_require', experience_require);
+            formData.append('graduate_require', graduate_require);
+            formData.append('recruit_number', recruit_number);
+            formData.append('post_info', post_info);
+            formData.append('tag_id_list', tag_id_list);
+            formData.append('post_id', post_id);
+            var user_id = document.querySelector('[name="company_phone_number"]').getAttribute('data-user-id');
+            formData.append('user_id', user_id);
+            $.ajax({
+                type: 'post',
+                url: '{% url "SuperY:company_post_modify_ajax" %}',
+                data: formData,
+                processData: false,
+                contentType: false,
+                traditional:true,
+                success: function(data) {
+                    window.location.replace('{% url "SuperY:company_post" user.id 1 %}');
+                }
+            })
+        }
+    };
+    </script>
+{% endblock content %}

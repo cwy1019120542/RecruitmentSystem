@@ -1,51 +1,54 @@
 {% extends 'SuperY/company_base.html' %}
 {% load staticfiles %}
 {% block title %}
-简历信息
+职位列表
 {% endblock title %}
-{% block content %} 
+{% block content %}   
 <div id="listContent" class="contentpile__content">
     <div class="contentpile__content__wrapper clearfix">
-    	{% for resume in resume_list %}
-        <a href="{% url 'SuperY:company_resume_detail' user.id resume.id %}">
+    	{% for post in post_list %}
+        <a href="{% url 'SuperY:company_post_modify' user.id post.id %}">
         <div class="contentpile_c_w_item clearfix">
             <div class="nameBox">
                 <div class="jobName">
                          <span class="contentpile_c_w_i_i_b_j_title">
                              <span style="color: #FF5959;"></span>
-                             {{resume.post_name}}
+                             {{post.post_name}}
                          </span>
                     <span class="contentpile_c_w_i_i_b_j_sale" style="display: none;"></span> <!---->
                 </div>
                 <div class="contentpile_c_w_i_i_b_cname">
+                    <a href="#" target="_blank">
                         {{post.company.company_name}}
+                    </a>
                     <div class="job__comdec">
-                        <span class="job__comdec__item">{{resume.applicant_name}} |</span>
-                        <span class="job__comdec__item">{{resume.phone_number}} </span>
+                        <span class="job__comdec__item">{{post.company.company_type}} |</span>
+                        <span class="job__comdec__item">{{post.company.staff_number}} </span>
                     </div>
                 </div>
             </div>
             <div class="descBox">
                 <div class="jobDesc">
-                    {% if receive %}
-                     <p>{{resume.post_set}}</p>
-                    {% endif %}
+                    <p>{{post.salary}}</p>
                     <ul class="job__demand">
-                        <li>{{resume.work_place}}</li>
-                        <li>{{resume.experience}}</li>
-                        <li>{{resume.graduate}}</li>
+                        <li>{{post.work_place}}</li>
+                        <li>{{post.experience_require}}</li>
+                        <li>{{post.graduate_require}}</li>
                     </ul>
                 </div>
             </div>
             <div class="contentpile__content__wrapper__item__info__box itemBox">
                 <div class="contentpile__content__wrapper__item__info__box__welfare job_welfare">
-                    {% for skill in resume.skill_set.all %}
+                    <div class="contentpile__content__wrapper__item__info__box__welfare__item
+                   contentpile__content__wrapper__eager-talents">求贤若渴
+                    </div>
+                    {% for tag in post.tag.all %}
                     <div class="contentpile__content__wrapper__item__info__box__welfare__item">
-                        {{skill.skill_name}}
+                        {{tag.tag_name}}
                     </div>
                     {% endfor %}
                 </div>
-            </div>
+            </div>     
         </div>
         </a>
         {% endfor %}

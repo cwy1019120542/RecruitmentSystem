@@ -1,35 +1,11 @@
-<!DOCTYPE html>
+{% extends 'SuperY/applicant_base.html' %}
 {% load staticfiles %}
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>简历期望修改</title>
-	<link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
-</head>
-<body>
-		 <div class='topNav'>
-        <div class="topNav_c clearfix">
-            <span>求职用户 {{user.person_name}}</span>
-            <ul>
-                <li data-user-id={{user.id}} name='applicant_phone_number'>{{user.phone_number}}</li>
-                <li>
-                    个人中心
-                    <dl>
-                        <a href="{% url 'SuperY:applicant_resume' user.id %}">
-                            <dd>我的简历</dd>
-                        </a>
-                        <dd>账号信息</dd>
-                        <dd>修改密码</dd>
-                    </dl>
-                </li>
-                <a href="{% url 'SuperY:applicant_logout' user.id %}">
-                    <li>注销</li>
-                </a>
-            </ul>
-        </div>
-    </div>
+{% block title %}
+职位期望
+{% endblock title %}
+{% block content %}
 <div class="center">
-	<div class='login_form register_form'>
+	<div class='login_form register_form info_form'>
 		<h4>求职状态 <span name="apply_status_info"></span></h4>
 		<input type="radio" name="apply_status" value='在职' class='applicant' {% if resume.apply_status == '在职' %}checked="checked"{% endif %}>在职
 		<input type="radio" name="apply_status" value='离职'class='bossRadio' {% if resume.apply_status == '离职' %}checked="checked"{% endif %}>离职
@@ -47,7 +23,6 @@
 		<button name='save_btn'>保存</button>
 	</div>
 </div>
-<div class="bottom">我是底部</div>
 	<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
 	<script>
 		document.querySelector('[name="save_btn"]').onclick=function() {
@@ -117,5 +92,4 @@
 		}
 	};
 	</script>
-</body>
-</html>
+{% endblock content %}

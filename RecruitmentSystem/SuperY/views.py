@@ -14,7 +14,7 @@ from datetime import datetime
 
 def md5_passwd(deal_text):
 	m=hashlib.md5()
-	m.update(deal_text.encode('utf8'))
+	m.update(str(deal_text).encode('utf8'))
 	return m.hexdigest()
 
 def login(request):
@@ -32,12 +32,13 @@ def login_ajax(request):
 	if passwd != same_user[0].passwd:
 		return HttpResponse(demjson.encode({'passwd_error':'密码不正确'}))
 	same_user=same_user[0]
-	same_user.login_random=str(random.random())
-	same_user.save()
+	login_random=md5_passwd(random.random())
 	key=identity+'-'+str(same_user.id)
-	request.session[key]=same_user.login_random			#session中存储的值更加合理化
+	request.session[key]=login_random			#session中存储的值更加合理化
 	user_id=same_user.id
-	return HttpResponse(demjson.encode({'url':reverse(f'SuperY:{identity}_index',kwargs={'user_id':user_id})}))
+	response=HttpResponse(demjson.encode({'url':reverse(f'SuperY:{identity}_index',kwargs={'user_id':user_id})}))
+	response.set_cookie(key,login_random)
+	return response
 
 def register(request):
 	return render(request,'SuperY/register.html')
@@ -63,17 +64,12 @@ def register_ajax(request):
 def is_login(func):
 	@wraps(func)
 	def wrapper(request,identity,user_id,*args,**kwargs):
-		user=eval(f'models.{identity.capitalize()}.objects.filter(id=user_id)')
 		key=identity+'-'+str(user_id)
-		if key not in request.session:				#判断登录状态更严谨
+		if key not in request.session or key not in request.COOKIES:				#判断登录状态更严谨
 			print('fail1')
-			print(key)
 			return redirect(reverse('SuperY:login'))
-		elif not user:
+		elif request.session[key] != request.COOKIES[key]:
 			print('fail2')
-			return redirect(reverse('SuperY:login'))
-		elif request.session[key] != user[0].login_random:
-			print('fail3')
 			return redirect(reverse('SuperY:login'))
 		return func(request,identity,user_id,*args,**kwargs)
 	return wrapper
@@ -94,11 +90,10 @@ def applicant_index(request,identity,user_id):
 	context_dict={'user':applicant,'post_list':post_list,'resume':resume}
 	return render(request,'SuperY/applicant_index.html',context_dict)
 
-def search_ajax(request):
+@is_login
+def search_ajax(request,identity,user_id):
 	data=request.POST.copy().dict()
 	search_word=data['search_word']
-	user_id=data['user_id']
-	identity=data['identity']
 	user=eval(f'models.{identity.capitalize()}.objects.get(id=user_id)')
 	eval(f'models.{identity.capitalize()}Search.objects.create({identity}=user,search_word=search_word)')		#搜索关键词保存应该放在这里，这样就只会搜索的时候保存一次
 	url=reverse(f'SuperY:{identity}_search',kwargs={'user_id':user_id,'search_word':search_word,'page':1})
@@ -131,9 +126,9 @@ def applicant_post_detail(request,identity,user_id,post_id):
 	context_dict={'user':applicant,'post':post[0]}
 	return render(request,'SuperY/applicant_post_detail.html',context_dict)
 
-def deliver_post_ajax(request):
+@is_login
+def deliver_post_ajax(request,identity,user_id):
 	post_id=request.POST['post_id']
-	user_id=request.POST['user_id']
 	applicant=models.Applicant.objects.get(id=user_id)
 	resume=models.Resume.objects.get(applicant=applicant)
 	post_list=models.Post.objects.filter(resume=resume)
@@ -181,7 +176,7 @@ def applicant_resume(request,identity,user_id):
 @is_login
 def resume_info_modify(request,identity,user_id):
 	applicant=models.Applicant.objects.get(id=user_id)
-	resume=models.Resume.objects.select_related('applicant').get(applicant=applicant)
+	resume=models.Resume.objects.get(applicant=applicant)
 	context_dict={'user':applicant,'resume':resume}
 	return render(request,'SuperY/resume_info_modify.html',context_dict)
 
@@ -192,9 +187,9 @@ def resume_hope_modify(request,identity,user_id):
 	context_dict={'user':applicant,'resume':resume}
 	return render(request,'SuperY/resume_hope_modify.html',context_dict)
 
-def resume_info_modify_ajax(request):
+@is_login
+def resume_info_modify_ajax(request,identity,user_id):
 	data=request.POST.copy()
-	user_id=data.pop('user_id')[0]
 	applicant=models.Applicant.objects.get(id=user_id)
 	resume=models.Resume.objects.filter(applicant=applicant)
 	data=data.dict()	
@@ -202,7 +197,6 @@ def resume_info_modify_ajax(request):
 	if head_pic == 'fail':
 		data.pop('head_pic')
 		resume.update(**data,update_datetime=datetime.now())
-		return HttpResponse()
 	else:
 		head_pic.name=str(resume[0].id)+'.'+head_pic.name.split('.')[1]
 		resume.update(**data,head_pic=head_pic,update_datetime=datetime.now())
@@ -213,11 +207,14 @@ def resume_info_modify_ajax(request):
 		with open(pic,'wb') as f:
 			for chunk in head_pic.chunks():
 				f.write(chunk)
-		return HttpResponse()
+	resume=resume[0]
+	resume.is_useful=True
+	resume.save()
+	return HttpResponse()
 
-def resume_hope_modify_ajax(request):
+@is_login
+def resume_hope_modify_ajax(request,identity,user_id):
 	data=request.POST.copy()
-	user_id=data.pop('user_id')[0]
 	applicant=models.Applicant.objects.get(id=user_id)
 	data=data.dict()
 	models.Resume.objects.filter(applicant=applicant).update(**data)
@@ -235,9 +232,9 @@ def experience(request,identity,user_id,experience_name,experience_id=None):
 		context_dict={'user':applicant}
 	return render(request,f'SuperY/{experience_name}.html',context_dict)
 
-def experience_ajax(request):
+@is_login
+def experience_ajax(request,identity,user_id):
 	data=request.POST.copy()
-	user_id=data.pop('user_id')[0]
 	applicant=models.Applicant.objects.get(id=user_id)
 	resume=models.Resume.objects.get(applicant=applicant)
 	experience_id=data.pop('experience_id')[0]
@@ -263,10 +260,10 @@ def company_index(request,identity,user_id):
 		receive_resume+=post.resume.count()
 	company_search_list=models.CompanySearch.objects.filter(company=company)
 	if not company_search_list:
-		resume_list=models.Resume.objects.all()[:9]
+		resume_list=models.Resume.objects.filter(is_useful=True)[:9]
 	else:
 		search_word=company_search_list[0]
-		resume_list=models.Resume.objects.filter(Q(work_place__icontains=search_word)|Q(post_name__icontains=search_word)|Q(profession__icontains=search_word))
+		resume_list=models.Resume.objects.filter(Q(work_place__icontains=search_word)|Q(post_name__icontains=search_word)|Q(profession__icontains=search_word),is_useful=True)
 	context_dict={'user':company,'resume_number':resume_number,'receive_resume':receive_resume,'resume_list':resume_list}
 	return render(request,'SuperY/company_index.html',context_dict)
 
@@ -278,14 +275,14 @@ def company_check(request,identity,user_id):
 	context_dict={'user':company}
 	return render(request,'SuperY/company_check.html',context_dict)
 
-def company_check_ajax(request):
+@is_login
+def company_check_ajax(request,identity,user_id):
 	data=request.POST.copy()
 	company_name=data['company_name']
 	company_same=models.Company.objects.filter(company_name=company_name)
 	if company_same:
 		return HttpResponse(demjson.encode({'company_name_error':'该公司已被注册'}))
 	business_licence=request.FILES['business_licence']
-	user_id=data.pop('user_id')[0]
 	data=data.dict()
 	company_same.update(**data,is_check=True,business_licence=business_licence)
 	pic_path=settings.MEDIA_ROOT+r'\company\business_licence'
@@ -297,9 +294,9 @@ def company_check_ajax(request):
 			f.write(chunk)
 	return HttpResponse()
 
-def company_info_ajax(request):
+@is_login
+def company_info_ajax(request,identity,user_id):
 	data=request.POST.copy()
-	user_id=data.pop('user_id')[0]
 	company=models.Company.objects.filter(id=user_id)
 	company_name=data['company_name']
 	company_same=models.Company.objects.filter(company_name=company_name)
@@ -325,7 +322,7 @@ def company_info_ajax(request):
 @is_login
 def company_search(request,identity,user_id,search_word,page):
 	company=models.Company.objects.get(id=user_id)
-	resume_all=models.Resume.objects.filter(Q(post_name__icontains=search_word)|Q(work_place__icontains=search_word)|Q(profession__icontains=search_word))
+	resume_all=models.Resume.objects.filter(Q(post_name__icontains=search_word)|Q(work_place__icontains=search_word)|Q(profession__icontains=search_word),is_useful=True)
 	resume_number,page_all,resume_list=my_paginator(resume_all,5,page)
 	context_dict={'user':company,'resume_number':resume_number,'page_all':page_all,'resume_list':resume_list}
 	return render(request,'SuperY/company_resume.html',context_dict)
@@ -370,19 +367,18 @@ def company_post_modify(request,identity,user_id,post_id=None):
 		context_dict={'user':company,'tag_list':tag_list}
 	return render(request,'SuperY/company_post_modify.html',context_dict)
 
-def company_post_modify_ajax(request):
+@is_login
+def company_post_modify_ajax(request,identity,user_id):
 	data=request.POST.copy().dict()
-	user_id=data.pop('user_id')
 	company=models.Company.objects.get(id=user_id)
 	post_id=data.pop('post_id')
 	tag_id_list=data.pop('tag_id_list')
-	print(tag_id_list)
 	if post_id:
 		post=models.Post.objects.filter(id=post_id)
-		post.update(**data,company=company)
+		post.update(**data,company=company,update_datetime=datetime.now())
 		post=post[0]
 	else:
-		post=models.Post.objects.create(**data,company=company)
+		post=models.Post.objects.create(**data,company=company,update_datetime=datetime.now())
 	tag_id_list=tag_id_list.split(',')
 	if tag_id_list[0]:
 		tag_list=(models.Tag.objects.get(id=int(tag_id)) for tag_id in tag_id_list)
@@ -404,10 +400,10 @@ def company_receive_resume(request,identity,user_id,page):
 	post_list=models.Post.objects.filter(company=company)
 	resume_all=[]
 	for post in post_list:
-		resume_all.extend(list(post.resume.all()))
+		for resume in post.resume.all():
+			resume_all.append((post,resume))
 	resume_number,page_all,resume_list=my_paginator(resume_all,5,page)
-	for resume in resume_list:
-		print(resume.post_set.post_name)
+	print(resume_list)
 	context_dict={'user':company,'resume_number':resume_number,'page_all':page_all,'resume_list':resume_list,'receive':True}
 	return render(request,'SuperY/company_resume.html',context_dict)
 
@@ -417,15 +413,14 @@ def person_info(request,identity,user_id):
 	context_dict={'user':user}
 	return render(request,f'SuperY/{identity}_person_info.html',context_dict)
 
-def person_info_ajax(request):
+@is_login
+def person_info_ajax(request,identity,user_id):
 	data=request.POST.copy().dict()
-	identity=data.pop('identity')
-	user_id=data.pop('user_id')
 	phone_number=data.pop('phone_number')
 	head_pic=request.FILES.get('head_pic','fail')
 	user=eval(f'models.{identity.capitalize()}.objects.filter(id=user_id)')
 	same_user=eval(f'models.{identity.capitalize()}.objects.filter(phone_number=phone_number)')
-	passwd=data.pop('passwd')
+	passwd=data['passwd']
 	passwd=user[0].phone_number[:5]+passwd+user[0].phone_number[6:]
 	passwd=md5_passwd(passwd)
 	if user[0].passwd != passwd:
@@ -436,6 +431,8 @@ def person_info_ajax(request):
 			passwd=md5_passwd(passwd)
 			data['passwd']=passwd
 			data['phone_number']=phone_number
+		else:
+			data.pop('passwd')
 		if head_pic == 'fail':
 			data.pop('head_pic')
 			user.update(**data)
@@ -456,10 +453,9 @@ def passwd_change(request,identity,user_id):
 	context_dict={'user':user}
 	return render(request,f'SuperY/{identity}_passwd_change.html',context_dict)
 
-def passwd_change_ajax(request):
+@is_login
+def passwd_change_ajax(request,identity,user_id):
 	data=request.POST.copy().dict()
-	identity=data.pop('identity')
-	user_id=data.pop('user_id')
 	old_passwd=data.pop('old_passwd')
 	user=eval(f'models.{identity.capitalize()}.objects.get(id=user_id)')
 	phone_number=user.phone_number
@@ -485,7 +481,6 @@ def forget_passwd(request):
 	return render(request,'SuperY/forget_passwd.html')
 
 def forget_passwd_ajax(request):
-	print(request.POST)
 	data=request.POST.copy().dict()
 	user_id=data['user_id']
 	identity=data['identity']
@@ -496,10 +491,14 @@ def forget_passwd_ajax(request):
 	if not user:
 		return HttpResponse(demjson.encode({'phone_number_error':'该用户不存在'}))
 	else:
-		# if str(user[0].register_datetime) != register_datetime:
-		# 	return HttpResponse(demjson.encode({'phone_number_error':'该用户不存在'}))
+		print()
+		if str(user[0].register_datetime).split('+')[0] != register_datetime:
+			return HttpResponse(demjson.encode({'phone_number_error':'该用户不存在'}))
 		passwd=data['passwd']
 		deal_text=phone_number[:5]+passwd+phone_number[6:]
 		user[0].passwd=md5_passwd(deal_text)
 		user[0].save()
 		return HttpResponse()
+
+def page_not_found(request,**kwargs):
+	return render(request,'SuperY/404.html')

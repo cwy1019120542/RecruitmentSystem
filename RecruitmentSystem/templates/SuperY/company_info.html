@@ -83,11 +83,9 @@
             formData.append('address', address);
             formData.append('business_licence', business_licence);
             formData.append('company_info', company_info);
-            var user_id = document.querySelector('[name="company_phone_number"]').getAttribute('data-user-id');
-            formData.append('user_id', user_id);
             $.ajax({
                 type: 'post',
-                url: '{% url "SuperY:company_info_ajax" %}',
+                url: '{% url "SuperY:company_info_ajax" user.id %}',
                 data: formData,
                 processData: false,
                 contentType: false,

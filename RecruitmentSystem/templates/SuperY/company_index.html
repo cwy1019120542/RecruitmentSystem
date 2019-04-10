@@ -11,11 +11,11 @@
 					{% for resume in resume_list %}
 					<li>
 						<a href="{% url 'SuperY:company_resume_detail' user.id resume.id %}" target="_blank">
-							<h4>{{resume.post_name}}</h4>
+							<h4>{{resume.applicant_name}}</h4>
 							<strong>{{resume.work_place}}</strong>
 							<strong>{{resume.experience}}</strong>
 							<strong>{{resume.graduate}}</strong>
-							<p>{{resume.applicant_name}}</p>
+							<p>{{resume.post_name}}</p>
 							<span>{{resume.phone_number}}</span>
 						</a>
 					</li>
@@ -40,12 +40,12 @@
 				</ol>
 				<ul class="clearfix">
 					<li>
-						<img src="{% static 'SuperY/images/top_resume_hover.gif' %}">
-						<h4>企业信息</h4>
+						<a href="{% url 'SuperY:company_info' user.id %}"><img src="{% static 'SuperY/images/top_resume_hover.gif' %}">
+						<h4>企业信息</h4></a>
 					</li>
 					<li>
-						<img src="{% static 'SuperY/images/resume_hover.gif' %}">
-						<h4>公司职位</h4>
+						<a href="{% url 'SuperY:company_post' user.id 1 %}"><img src="{% static 'SuperY/images/resume_hover.gif' %}">
+						<h4>公司职位</h4></a>
 					</li>
 					<li>
 						<a href="{% url 'SuperY:company_index' user.id %}"><img src="{% static 'SuperY/images/refresh_resume_hover.png' %}">

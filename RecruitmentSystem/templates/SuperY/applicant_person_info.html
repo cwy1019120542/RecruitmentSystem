@@ -9,7 +9,7 @@
 		<h4>手机号 <span name="phone_number_info"></span></h4>
 		<input type='text' name="phone_number" placeholder="请输入手机号" value="{{user.phone_number}}">
 		<h4>姓名 <span name="person_name_info"></span></h4>
-		<input name="person_name" placeholder="请输入姓名" type="text" value='{{user.person_name}}'>
+		<input name="person_name" placeholder="请输入姓名,1-20个字符" type="text" value='{{user.person_name}}'>
 		<h4>头像 <span name="head_pic_info"></span></h4>
 		<label>
 		<input type="button" name='pic_btn' value="选择图片"><span name="pic_text">
@@ -39,16 +39,17 @@
 		var person_name_info=document.querySelector('[name="person_name_info"]');
 		var head_pic_info=document.querySelector('[name="head_pic_info"]');
 		var passwd_info=document.querySelector('[name="passwd_info"]');
+		var file_type=['jpg','JPG','png','PNG','gif','GIF']
 		var is_post=true;
 		phone_number_info.innerHTML='';
 		person_name_info.innerHTML='';
 		head_pic_info.innerHTML='';
 		passwd_info.innerHTML='';
-		if (!phone_number) {
+		if (!phone_number || phone_number.length != 11 || phone_number.charAt(0) != '1') {
 			is_post=false;
 			phone_number_info.innerHTML="请您填写正确格式的手机号";
 		};
-		if (!person_name) {
+		if (!person_name || person_name.length>20) {
 			is_post=false;
 			person_name_info.innerHTML="请您填写正确格式的姓名";
 		};
@@ -56,18 +57,19 @@
 			is_post=false;
 			passwd_info.innerHTML="请您填写正确格式的密码";
 		};
+		if (head_pic && file_type.indexOf(head_pic.name.split('.')[1])==-1) {
+			is_post=false;
+			head_pic_info.innerHTML="请您上传正确格式的图片";
+		}
 		if (is_post){
 			var formData=new FormData();
 			formData.append('phone_number',phone_number);
 			formData.append('person_name',person_name);
 			formData.append('head_pic',head_pic);
 			formData.append('passwd',passwd);
-			var user_id=document.querySelector('[name="applicant_phone_number"]').getAttribute('data-user-id');
-			formData.append('user_id',user_id);
-			formData.append('identity','applicant')
 			$.ajax({
 				type:'post',
-				url:'{% url "SuperY:person_info_ajax" %}',
+				url:'{% url "SuperY:person_info_ajax" "applicant" user.id %}',
 				data:formData,
 				processData:false,
                 contentType:false,

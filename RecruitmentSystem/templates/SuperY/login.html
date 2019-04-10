@@ -1,81 +1,95 @@
 <!DOCTYPE html>
 {% load staticfiles %}
 <html lang="en">
+
 <head>
-	<meta charset="utf8">
+    <meta charset="utf8">
     <link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
-	<title>登录</title>
+    <link rel="shortcut icon" href="{% static 'SuperY/images/favicon.ico' %}" type="image/x-icon" />
+    <title>登录</title>
 </head>
+
 <body>
     <div class="top">
-		<div class="logoTell">
-			<a href="{% url 'SuperY:login' %}">
-				<img src="{% static 'SuperY/images/logo_blue.png' %}">
-			</a>
-			<div class="tell">电话：<span>13155291086</span></div>
-		</div>
-	</div>
-	<div class="center">
-		<div class='login_form'>
+        <div class="logoTell">
+            <a href="{% url 'SuperY:login' %}">
+                <img src="{% static 'SuperY/images/logo.png' %}">
+            </a>
+            <div class="tell">电话：<span>13155291086</span></div>
+        </div>
+    </div>
+    <div class="center">
+        <div class='login_form'>
+            {% csrf_token %}
             <input type='text' name="phone_number" placeholder="手机号" class='login_input'>
-			<p name="phone_number_info"></p>
-		    <input name="passwd" placeholder="密码" type="password"  class='login_input'>
-			<p name="passwd_info"></p>
-		    <input type="radio" name="identity" value='applicant'>我要求职
-		    <input type="radio" name="identity" value='company' class='bossRadio'>我是BOSS
-		    <p name="identity_info"></p>
-			<button name="login_btn">登 录</button>
+            <p name="phone_number_info"></p>
+            <input name="passwd" placeholder="密码" type="password" class='login_input'>
+            <p name="passwd_info"></p>
+            <input type="radio" name="identity" value='applicant'>我要求职
+            <input type="radio" name="identity" value='company' class='bossRadio'>我是BOSS
+            <p name="identity_info"></p>
+            <button name="login_btn">登 录</button>
             <a href="{% url 'SuperY:register' %}">我要注册</a>
-		</div>
+        </div>
     </div>
     <div class="bottom">我是底部</div>
-<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
-<script>
-	document.querySelector('[name="login_btn"]').onclick=function (){
-		var phone_number=document.querySelector('[name="phone_number"]').value;
-		var passwd=document.querySelector('[name="passwd"]').value;
-		var identity=document.querySelector('[name="identity"]:checked');
-		var phone_number_info=document.querySelector('[name="phone_number_info"]');
-		var passwd_info=document.querySelector('[name="passwd_info"]');
-		var identity_info=document.querySelector('[name="identity_info"]');
-		var is_login=true;
-        console.log(phone_number,passwd)
-		if (!phone_number || phone_number.length>30 || phone_number.length<11) {
-           phone_number_info.innerHTML='请填写正确格式的手机号';
-           is_login=false;
+    <script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'SuperY/js/jquery.cookie.js' %}"></script>
+    <script>
+     function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }
-        if (!passwd || passwd.length>16 || passwd.length<6) {
-            passwd_info.innerHTML='请填写正确格式的密码';
-            is_login=false;
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", $.cookie("csrftoken"));
+                }
+            }
+        });
+    document.querySelector('[name="login_btn"]').onclick = function() {
+        var phone_number = document.querySelector('[name="phone_number"]').value;
+        var passwd = document.querySelector('[name="passwd"]').value;
+        var identity = document.querySelector('[name="identity"]:checked');
+        var phone_number_info = document.querySelector('[name="phone_number_info"]');
+        var passwd_info = document.querySelector('[name="passwd_info"]');
+        var identity_info = document.querySelector('[name="identity_info"]');
+        var is_login = true;
+        phone_number_info.innerHTML = '';
+        passwd_info.innerHTML = '';
+        identity_info.innerHTML = '';
+        if (!phone_number || phone_number.length != 11 || phone_number.charAt(0) != '1') {
+            phone_number_info.innerHTML = '请填写正确格式的手机号';
+            is_login = false;
         }
-        if (!identity){
-        	identity_info.innerHTML='请选择身份';
-        	is_login=false;
+        if (!passwd || passwd.length > 16 || passwd.length < 6) {
+            passwd_info.innerHTML = '请填写正确格式的密码';
+            is_login = false;
+        }
+        if (!identity) {
+            identity_info.innerHTML = '请选择身份';
+            is_login = false;
         }
         if (is_login) {
-        	 phone_number_info.innerHTML='';
-        	 passwd_info.innerHTML='';
-        	 identity_info.innerHTML='';
-        	$.ajax({
-        	url:'{% url "SuperY:login_ajax" %}',
-        	type:'post',
-        	data:{'phone_number':phone_number,'passwd':passwd,'identity':identity.value},
-        	success:function(data){
-                data=JSON.parse(data)
-        		if (data.phone_number_error){
-                   phone_number_info.innerHTML=data.phone_number_error;
+            $.ajax({
+                url: '{% url "SuperY:login_ajax" %}',
+                type: 'post',
+             
+                data: { 'phone_number': phone_number, 'passwd': passwd, 'identity': identity.value},
+                success: function(data) {
+                    data = JSON.parse(data)
+                    if (data.phone_number_error) {
+                        phone_number_info.innerHTML = data.phone_number_error;
+                    } else if (data.passwd_error) {
+                        passwd_info.innerHTML = data.passwd_error;
+                    } else if (data.url) {
+                        window.location.replace(data.url)
+                    }
                 }
-                else if (data.passwd_error){
-                	 passwd_info.innerHTML=data.passwd_error;
-                }
-                else if (data.url){
-                    window.location.replace(data.url)
-                }
-        	}
-        })
+            })
         }
-	};
-
-</script>
+    };
+    </script>
 </body>
+
 </html>

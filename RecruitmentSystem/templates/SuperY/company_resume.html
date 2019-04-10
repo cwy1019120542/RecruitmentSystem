@@ -6,30 +6,28 @@
 {% block content %} 
 <div id="listContent" class="contentpile__content">
     <div class="contentpile__content__wrapper clearfix">
-    	{% for resume in resume_list %}
+         {% if receive %}
+    	{% for post,resume in resume_list %}
         <a href="{% url 'SuperY:company_resume_detail' user.id resume.id %}">
         <div class="contentpile_c_w_item clearfix">
             <div class="nameBox">
                 <div class="jobName">
                          <span class="contentpile_c_w_i_i_b_j_title">
                              <span style="color: #FF5959;"></span>
-                             {{resume.post_name}}
+                             {{resume.applicant_name}}
                          </span>
-                    <span class="contentpile_c_w_i_i_b_j_sale" style="display: none;"></span> <!---->
                 </div>
                 <div class="contentpile_c_w_i_i_b_cname">
-                        {{post.company.company_name}}
+                        {{resume.phone_number}}
                     <div class="job__comdec">
-                        <span class="job__comdec__item">{{resume.applicant_name}} |</span>
-                        <span class="job__comdec__item">{{resume.phone_number}} </span>
+                        <span class="job__comdec__item">投递的职位 |</span>
+                        <span class="job__comdec__item">{{post.post_name}} </span>
                     </div>
                 </div>
             </div>
             <div class="descBox">
                 <div class="jobDesc">
-                    {% if receive %}
-                     <p>{{resume.post_set}}</p>
-                    {% endif %}
+                     <p>{{resume.post_name}}</p>
                     <ul class="job__demand">
                         <li>{{resume.work_place}}</li>
                         <li>{{resume.experience}}</li>
@@ -49,6 +47,48 @@
         </div>
         </a>
         {% endfor %}
+        {% else %}
+        {% for resume in resume_list %}
+        <a href="{% url 'SuperY:company_resume_detail' user.id resume.id %}">
+        <div class="contentpile_c_w_item clearfix">
+            <div class="nameBox">
+                <div class="jobName">
+                         <span class="contentpile_c_w_i_i_b_j_title">
+                             <span style="color: #FF5959;"></span>
+                             {{resume.applicant_name}}
+                         </span>
+                    <span class="contentpile_c_w_i_i_b_j_sale" style="display: none;"></span> <!---->
+                </div>
+                <div class="contentpile_c_w_i_i_b_cname">
+                        {{resume.phone_number}}
+                    <div class="job__comdec">
+                        <span class="job__comdec__item">更新时间 |</span>
+                        <span class="job__comdec__item">{{resume.update_datetime}} </span>
+                    </div>
+                </div>
+            </div>
+            <div class="descBox">
+                <div class="jobDesc">
+                    <ul class="job__demand">
+                        <li>{{resume.work_place}}</li>
+                        <li>{{resume.experience}}</li>
+                        <li>{{resume.graduate}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="contentpile__content__wrapper__item__info__box itemBox">
+                <div class="contentpile__content__wrapper__item__info__box__welfare job_welfare">
+                    {% for skill in resume.skill_set.all %}
+                    <div class="contentpile__content__wrapper__item__info__box__welfare__item">
+                        {{skill.skill_name}}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        </a>
+        {% endfor %}
+        {% endif %}
         </div>
     </div>
 </div>

@@ -5,19 +5,21 @@
 	<meta charset="UTF-8">
 	<title>企业认证</title>
 	<link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
+	<link rel="shortcut icon" href="{% static 'SuperY/images/favicon.ico' %}" type="image/x-icon" />
 </head>
 <body>
 		<div class='topNav'>
 		<div class="topNav_c clearfix">
 			<span>欢迎回来  {{user.person_name}}</span>
 			<ul>
-				<li data-user-id={{user.id}} name='phone_number'>{{user.phone_number}}</li>
+				<li>{{user.phone_number}}</li>
 				<a href="{% url 'SuperY:company_logout' user.id %}"><li>注销</li></a>
 			</ul>
 		</div>
 	</div>
 <div class="center">
 	<div class='login_form register_form'>
+		{% csrf_token %}
 		<h4>企业名称 <span name="company_name_info"></span></h4>
 		<input type='text' name="company_name" placeholder="请输入企业名称，不超过50字符">
 		<h4>企业性质 <span name="company_type_info"></span></h4>
@@ -39,7 +41,19 @@
 </div>
 <div class="bottom">我是底部</div>
 	<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
+	<script src="{% static 'SuperY/js/jquery.cookie.js' %}"></script>
 	<script>
+		 function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", $.cookie("csrftoken"));
+            }
+        }
+    });
 		document.querySelector('[name="check_btn"]').onclick=function() {
 		var company_name=document.querySelector('[name="company_name"]').value;
 		var company_type=document.querySelector('[name="company_type"]:checked');
@@ -84,11 +98,9 @@
 			formData.append('staff_number',staff_number);
 			formData.append('address',address);
 			formData.append('business_licence',business_licence);
-			var user_id=document.querySelector('[name="phone_number"]').getAttribute('data-user-id');
-			formData.append('user_id',user_id);
 			$.ajax({
 				type:'post',
-				url:'{% url "SuperY:company_check_ajax" %}',
+				url:'{% url "SuperY:company_check_ajax" user.id %}',
 				data:formData,
 				processData:false,
                 contentType:false,

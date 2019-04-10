@@ -6,7 +6,6 @@ class Applicant(models.Model):
 	head_pic=models.ImageField(null=True,default='default.png')
 	passwd=models.CharField(max_length=255,help_text='密码',default='')						
 	register_datetime=models.DateTimeField(auto_now_add=True,help_text='注册时间',null=True)
-	login_random=models.CharField(max_length=255,help_text='登陆号',default='')
 	class Meta:
 		db_table='applicant'
 		ordering=['-register_datetime']
@@ -26,7 +25,6 @@ class Company(models.Model):
 	company_type=models.CharField(default='',max_length=255,help_text='公司类型')
 	staff_number=models.CharField(default='',max_length=255,help_text='员工数')
 	address=models.CharField(default='',max_length=255,help_text='公司地址')
-	login_random=models.CharField(max_length=255,help_text='登陆号',default='')
 	class Meta:
 		db_table='company'
 		ordering=['-register_datetime']
@@ -78,7 +76,7 @@ class Resume(models.Model):
 		db_table='resume'
 		ordering=['-update_datetime']
 	def __str__(self):
-		return self.resume_name
+		return self.applicant_name
 
 class Tag(models.Model):
 	tag_name=models.CharField(max_length=255,help_text='标签名称')

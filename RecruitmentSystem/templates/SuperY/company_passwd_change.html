@@ -9,7 +9,7 @@
         <h4>原密码 <span name="old_passwd_info"></span></h4>
         <input type='password' name="old_passwd" placeholder="请输入原密码">
         <h4>新密码 <span name="new_passwd_info"></span></h4>
-        <input name="new_passwd" placeholder="请输入新密码" type="password">
+        <input name="new_passwd" placeholder="请输入新密码,6-16个字符" type="password">
         <h4>确认新密码 <span name="passwd_again_info"></span></h4>
         <input name="passwd_again" placeholder="请确认新密码" type="password">
         <button name='save_btn'>保存</button>
@@ -31,7 +31,7 @@ document.querySelector('[name="save_btn"]').onclick = function() {
         is_post = false;
         old_passwd_info.innerHTML = "请您填写正确格式的原密码";
     };
-    if (!new_passwd) {
+    if (!new_passwd || new_passwd.length>16 || new_passwd.length<6) {
         is_post = false;
         new_passwd_info.innerHTML = "请您填写正确格式的新密码";
     };
@@ -47,12 +47,9 @@ document.querySelector('[name="save_btn"]').onclick = function() {
         var formData = new FormData();
         formData.append('old_passwd', old_passwd);
         formData.append('new_passwd', new_passwd);
-        var user_id = document.querySelector('[name="company_phone_number"]').getAttribute('data-user-id');
-        formData.append('user_id', user_id);
-        formData.append('identity', 'company')
         $.ajax({
             type: 'post',
-            url: '{% url "SuperY:passwd_change_ajax" %}',
+            url: '{% url "SuperY:passwd_change_ajax" "company" user.id %}',
             data: formData,
             processData: false,
             contentType: false,

@@ -16,7 +16,7 @@
 		<h4>期望职位 <span name="post_name_info"></span></h4>
 		<input name="post_name" placeholder="请输入期望职位" type="text" value='{{resume.post_name}}'>
 		<h4>期望薪资 <span name="salary_info"></span></h4>
-		<input name="salary" placeholder="请输入期望薪资" type="text" value="{{resume.salary}}">
+		<input name="salary" placeholder="请输入期望薪资,如15000元/月" type="text" value="{{resume.salary}}">
 		<h4>工作性质 <span name="work_nature_info"></span></h4>
 		<input type="radio" name="work_nature" value='全职' class='applicant' {% if resume.work_nature == '全职' %}checked="checked"{% endif %}>全职
 		<input type="radio" name="work_nature" value='兼职' class='bossRadio'  {% if resume.work_nature == '兼职' %}checked="checked"{% endif %}>兼职
@@ -49,19 +49,19 @@
 			is_post=false;
 			apply_status_info.innerHTML="请您选择求职状态";
 		};
-		if (!profession) {
+		if (!profession || profession.length>20) {
 			is_post=false;
 			profession_info.innerHTML="请您填写正确格式的从事行业";
 		};
-		if (!work_place) {
+		if (!work_place || work_place.length>20) {
 			is_post=false;
 			work_place_info.innerHTML="请您填写正确格式的期望工作地点";
 		};
-		if (!post_name) {
+		if (!post_name || post_name.length>20) {
 			is_post=false;
 			post_name_info.innerHTML="请您填写正确格式的期望职位 ";
 		};
-		if (!salary) {
+		if (!salary || salary.length>10) {
 			is_post=false;
 			salary_info.innerHTML="请您填写正确格式的期望薪资";
 		};
@@ -77,11 +77,9 @@
 			formData.append('post_name',post_name);
 			formData.append('salary',salary);
 			formData.append('work_nature',work_nature.value);
-			var user_id=document.querySelector('[name="applicant_phone_number"]').getAttribute('data-user-id');
-			formData.append('user_id',user_id);
 			$.ajax({
 				type:'post',
-				url:'{% url "SuperY:resume_hope_modify_ajax" %}',
+				url:'{% url "SuperY:resume_hope_modify_ajax" user.id %}',
 				data:formData,
 				processData:false,
                 contentType:false,

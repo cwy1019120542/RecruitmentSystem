@@ -100,11 +100,9 @@
             formData.append('post_info', post_info);
             formData.append('tag_id_list', tag_id_list);
             formData.append('post_id', post_id);
-            var user_id = document.querySelector('[name="company_phone_number"]').getAttribute('data-user-id');
-            formData.append('user_id', user_id);
             $.ajax({
                 type: 'post',
-                url: '{% url "SuperY:company_post_modify_ajax" %}',
+                url: '{% url "SuperY:company_post_modify_ajax" user.id %}',
                 data: formData,
                 processData: false,
                 contentType: false,

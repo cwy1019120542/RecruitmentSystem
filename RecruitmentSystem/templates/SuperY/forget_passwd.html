@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<title>忘记密码</title>
 	 <link rel="stylesheet" href="{% static 'SuperY/css/main.css' %}">
+	 <link rel="shortcut icon" href="{% static 'SuperY/images/favicon.ico' %}" type="image/x-icon" />
 </head>
 <body>
 <div class="top">
@@ -17,6 +18,7 @@
 </div>
 <div class="center">
 	<div class='login_form register_form'>
+		{% csrf_token %}
 		<h4>姓名 <span name="person_name_info"></span></h4>
 		<input type='password' name="person_name" placeholder="请输入您的真实姓名，不可超过20位">
 		<h4>手机号码 <span name="phone_number_info"></span></h4>
@@ -35,7 +37,19 @@
 </div>
 <div class="bottom">我是底部</div>
 	<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
+	 <script src="{% static 'SuperY/js/jquery.cookie.js' %}"></script>
 	<script>
+	 function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", $.cookie("csrftoken"));
+            }
+        }
+    });
 		document.querySelector('[name="register_btn"]').onclick=function() {
 		var person_name=document.querySelector('[name="person_name"]').value;
 		var phone_number=document.querySelector('[name="phone_number"]').value;

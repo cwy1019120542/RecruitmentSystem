@@ -62,12 +62,9 @@
 			formData.append('person_name',person_name);
 			formData.append('head_pic',head_pic);
 			formData.append('passwd',passwd);
-			var user_id=document.querySelector('[name="company_phone_number"]').getAttribute('data-user-id');
-			formData.append('user_id',user_id);
-			formData.append('identity','company');
 			$.ajax({
 				type:'post',
-				url:'{% url "SuperY:person_info_ajax" %}',
+				url:'{% url "SuperY:person_info_ajax" "company" user.id %}',
 				data:formData,
 				processData:false,
                 contentType:false,

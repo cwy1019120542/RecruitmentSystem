@@ -7,16 +7,16 @@
 <div class="center">
 	<div class='login_form register_form info_form'>
 		<h4>求职者名称 <span name="applicant_name_info"></span></h4>
-		<input type='text' name="applicant_name" placeholder="请输入求职者名称，不超过50字符" value="{{resume.applicant_name}}">
+		<input type='text' name="applicant_name" placeholder="请输入求职者的真实姓名" value="{{resume.applicant_name}}">
 		<h4>性别 <span name="sex_info"></span></h4>
 		<input type="radio" name="sex" value='男' class='applicant' {% if resume.sex == '男' %}checked="checked"{% endif %}>男
 		<input type="radio" name="sex" value='女'class='bossRadio'  {% if resume.sex == '女' %}checked="checked"{% endif %}>女
 		<h4 class='tate-owned'>年龄 <span name="age_info"></span></h4>
 		<input type='text' name="age" placeholder="请输入年龄" value='{{resume.age}}'>
 		<h4>出生地 <span name="birth_place_info"></span></h4>
-		<input name="birth_place" placeholder="请输入出生地" type="text" value='{{resume.birth_place}}'>
+		<input name="birth_place" placeholder="请输入出生地，如安徽省安庆市" type="text" value='{{resume.birth_place}}'>
 		<h4>工作经验 <span name="experience_info"></span></h4>
-		<input name="experience" placeholder="请输入工作经验" type="text" value="{{resume.experience}}">
+		<input name="experience" placeholder="请输入工作经验，如2年" type="text" value="{{resume.experience}}">
 		<h4>手机号 <span name="phone_number_info"></span></h4>
 		<input name="phone_number" placeholder="请输入手机号" type="text" value="{{resume.phone_number}}">
 		<h4>邮箱 <span name="mail_info"></span></h4>
@@ -76,7 +76,7 @@
 		mail_info.innerHTML='';
 		graduate_info.innerHTML='';
 		head_pic_info.innerHTML='';
-		if (!applicant_name) {
+		if (!applicant_name || applicant_name.length>20) {
 			is_post=false;
 			applicant_name_info.innerHTML="请您填写正确格式的姓名";
 		};
@@ -84,27 +84,27 @@
 			is_post=false;
 			sex_info.innerHTML="请您选择性别";
 		};
-		if (!age) {
+		if (!age || age.length>10) {
 			is_post=false;
 			age_info.innerHTML="请您填写正确格式的年龄";
 		};
-		if (!birth_place) {
+		if (!birth_place || birth_place.length>30) {
 			is_post=false;
 			birth_place_info.innerHTML="请您填写正确格式的出生地";
 		};
-		if (!experience) {
+		if (!experience || experience.length>10) {
 			is_post=false;
 			experience_info.innerHTML="请您填写正确格式的工作经验";
 		};
-		if (!phone_number) {
+		if (!phone_number || phone_number.length != 11 || phone_number.charAt(0) != '1') {
 			is_post=false;
 			phone_number_info.innerHTML="请您填写正确格式的手机号";
 		};
-		if (!mail) {
+		if (!mail || mail.length>30 || mail.indexOf('@')==-1) {
 			is_post=false;
 			mail_info.innerHTML="请您填写正确格式的邮箱";
 		};
-		if (!graduate) {
+		if (!graduate || graduate.length>20) {
 			is_post=false;
 			graduate_info.innerHTML="请您填写正确格式的毕业院校";
 		};
@@ -123,12 +123,9 @@
 			formData.append('mail',mail);
 			formData.append('graduate',graduate);
 			formData.append('head_pic',head_pic);
-			var user_id=document.querySelector('[name="applicant_phone_number"]').getAttribute('data-user-id');
-			console.log(user_id)
-			formData.append('user_id',user_id);
 			$.ajax({
 				type:'post',
-				url:'{% url "SuperY:resume_info_modify_ajax" %}',
+				url:'{% url "SuperY:resume_info_modify_ajax" user.id %}',
 				data:formData,
 				processData:false,
                 contentType:false,

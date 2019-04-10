@@ -1,7 +1,7 @@
 {% extends 'SuperY/applicant_base.html' %}
 {% load staticfiles %}
 {% block title %}
-职位期望
+教育经历
 {% endblock title %}
 {% block content %}
 <div class="center" data-experience-id={{experience.id}}>
@@ -11,11 +11,11 @@
 		<h4 class='tate-owned'>专业 <span name="profession_info"></span></h4>
 		<input type='text' name="profession" placeholder="请输入专业" value='{{experience.profession}}'>
 		<h4>学历 <span name="record_info"></span></h4>
-		<input name="record" placeholder="请输入学历" type="text" value='{{experience.record}}'>
+		<input name="record" placeholder="请输入学历，如本科、硕士" type="text" value='{{experience.record}}'>
 		<h4>开始时间 <span name="start_date_info"></span></h4>
-		<input name="start_date" placeholder="请输入开始时间" type="text" value="{{experience.start_date}}">
+		<input name="start_date" placeholder="请输入开始时间，如2018-8-8" type="text" value="{{experience.start_date}}">
 		<h4>结束时间 <span name="end_date_info"></span></h4>
-		<input name="end_date" placeholder="请输入结束时间" type="text" value="{{experience.end_date}}">
+		<input name="end_date" placeholder="请输入结束时间，如2018-8-8" type="text" value="{{experience.end_date}}">
 		<button name='save_btn'>保存</button>
 	</div>
 </div>
@@ -39,23 +39,23 @@
 		record_info.innerHTML='';
 		start_date_info.innerHTML='';
 		end_date_info.innerHTML='';
-		if (!school_name) {
+		if (!school_name || school_name.length>20) {
 			is_post=false;
 			school_name_info.innerHTML="请您填写正确格式的学校名称";
 		};
-		if (!profession) {
+		if (!profession || profession.length>20) {
 			is_post=false;
 			profession_info.innerHTML="请您填写正确格式的专业";
 		};
-		if (!record) {
+		if (!record || record.length>10) {
 			is_post=false;
 			record_info.innerHTML="请您填写正确格式的学历";
 		};
-		if (!start_date) {
+		if (!start_date || start_date.length>30) {
 			is_post=false;
 			start_date_info.innerHTML="请您填写正确格式的开始时间";
 		};
-		if (!end_date) {
+		if (!end_date || end_date.length>30) {
 			is_post=false;
 			end_date_info.innerHTML="请您填写正确格式的结束时间";
 		};
@@ -67,13 +67,11 @@
 			formData.append('record',record);
 			formData.append('start_date',start_date);
 			formData.append('end_date',end_date);
-			var user_id=document.querySelector('[name="applicant_phone_number"]').getAttribute('data-user-id');
-			formData.append('user_id',user_id);
 			formData.append('experience_id',experience_id);
 			formData.append('experience_name','EducateExperience');
 			$.ajax({
 				type:'post',
-				url:'{% url "SuperY:experience_ajax" %}',
+				url:'{% url "SuperY:experience_ajax" user.id %}',
 				data:formData,
 				processData:false,
                 contentType:false,

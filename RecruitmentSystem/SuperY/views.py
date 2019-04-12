@@ -37,7 +37,7 @@ def login_ajax(request):
 	request.session[key]=login_random			#session中存储的值更加合理化
 	user_id=same_user.id
 	response=HttpResponse(demjson.encode({'url':reverse(f'SuperY:{identity}_index',kwargs={'user_id':user_id})}))
-	response.set_cookie(key,login_random)
+	response.set_cookie(key,login_random,httponly=True)
 	return response
 
 def register(request):
@@ -45,6 +45,7 @@ def register(request):
 
 def register_ajax(request):
 	data=request.POST.copy()
+	print(data)
 	phone_number=data['phone_number']
 	deal_text=phone_number[:5]+data['passwd']+phone_number[6:]
 	data['passwd']=md5_passwd(deal_text)
@@ -500,5 +501,5 @@ def forget_passwd_ajax(request):
 		user[0].save()
 		return HttpResponse()
 
-def page_not_found(request,**kwargs):
+def page_not_found(request):
 	return render(request,'SuperY/404.html')

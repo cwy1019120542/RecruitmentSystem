@@ -48,6 +48,7 @@
         var address_info = document.querySelector('[name="address_info"]');
         var business_licence_info = document.querySelector('[name="business_licence_info"]');
         var company_info_info = document.querySelector('[name="company_info_info"]');
+        var file_type=['jpg','JPG','png','PNG','gif','GIF']
         var is_post = true;
         company_name_info.innerHTML = '';
         company_type_info.innerHTML = '';
@@ -75,6 +76,10 @@
             is_post = false;
             company_info_info.innerHTML = "请您填写正确格式的企业简介";
         };
+        if (business_licence && file_type.indexOf(business_licence.name.split('.')[1])==-1) {
+            is_post=false;
+            business_licence_info.innerHTML="请您上传正确格式的营业执照";
+        }
         if (is_post) {
             var formData = new FormData();
             formData.append('company_name', company_name);

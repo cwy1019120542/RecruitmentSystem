@@ -66,6 +66,7 @@
 		var graduate_info=document.querySelector('[name="graduate_info"]');
 		var head_pic_info=document.querySelector('[name="head_pic_info"]');
 		var pic_text=document.querySelector('[name="pic_text"]');
+		var file_type=['jpg','JPG','png','PNG','gif','GIF'];
 		var is_post=true;
 		applicant_name_info.innerHTML='';
 		sex_info.innerHTML='';
@@ -108,10 +109,10 @@
 			is_post=false;
 			graduate_info.innerHTML="请您填写正确格式的毕业院校";
 		};
-		if (pic_text == '请您上传头像') {
+		if (head_pic && file_type.indexOf(head_pic.name.split('.')[1])==-1) {
 			is_post=false;
-			head_pic_info.innerHTML="请您上传头像";
-		};
+			head_pic_info.innerHTML="请您上传正确格式的图片";
+		}
 		if (is_post){
 			var formData=new FormData();
 			formData.append('applicant_name',applicant_name);

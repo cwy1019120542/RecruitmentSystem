@@ -476,6 +476,7 @@ def logout(request,identity,user_id):
 	user=eval(f'models.{identity.capitalize()}.objects.get(id=user_id)')
 	key=identity+'-'+str(user_id)
 	request.session.pop(key)
+	request.COOKIES.pop(key)
 	return redirect(reverse('SuperY:login'))
 
 def forget_passwd(request):

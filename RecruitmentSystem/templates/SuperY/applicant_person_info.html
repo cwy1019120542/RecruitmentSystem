@@ -85,7 +85,10 @@
 						
 					}
 					else {
-						window.location.replace('{% url "SuperY:applicant_index" user.id %}');
+						layer.alert('修改成功', {icon: 6, yes:function() {
+							window.location.replace('{% url "SuperY:applicant_index" user.id %}');
+						}});
+						
 					}
 				}
 			}) 

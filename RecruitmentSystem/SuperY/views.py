@@ -59,8 +59,7 @@ def register_ajax(request):
 		if identity == 'applicant':
 			applicant=models.Applicant.objects.get(phone_number=phone_number)
 			models.Resume.objects.create(applicant=applicant)
-		url=reverse('SuperY:login')
-		return HttpResponse(demjson.encode({'url':url}))
+		return HttpResponse(demjson.encode({'success':''}))
 
 def is_login(func):
 	@wraps(func)
@@ -134,11 +133,13 @@ def deliver_post_ajax(request,identity,user_id):
 	resume=models.Resume.objects.get(applicant=applicant)
 	post_list=models.Post.objects.filter(resume=resume)
 	post=models.Post.objects.get(id=post_id)
+	if not resume.is_useful:
+		return HttpResponse(demjson.encode({'error':'您的简历不够完善哦'}))
 	if post in post_list:
-		return HttpResponse(demjson.encode({'message':'fail'}))
+		return HttpResponse(demjson.encode({'error':'你已经投递过了该职位了哦'}))
 	else: 
 		post.resume.add(resume)
-		return HttpResponse(demjson.encode({'message':'success'})) 
+		return HttpResponse(demjson.encode({'success':'投递成功'})) 
 
 @is_login
 def applicant_company_look(request,identity,user_id,page):

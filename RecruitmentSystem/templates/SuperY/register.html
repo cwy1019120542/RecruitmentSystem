@@ -36,9 +36,10 @@
             <button name="register_btn">注 册</button>
         </div>
     </div>
-    <div class="bottom">我是底部</div>
+    <div class="bottom">版权所有：超级无敌洋帅帅</div>
     <script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'SuperY/js/jquery.cookie.js' %}"></script>
+    <script src="{% static 'SuperY/layer/layer.js' %}"></script>
     <script>
     function csrfSafeMethod(method) {
         // these HTTP methods do not require CSRF protection
@@ -105,8 +106,10 @@
                     data = JSON.parse(data)
                     if (data.phone_number_error) {
                         phone_number_info.innerHTML = data.phone_number_error;
-                    } else if (data.url) {
-                        window.location.replace(data.url);
+                    } else {
+                        layer.alert('注册成功', {icon: 6, yes:function() {
+                           window.location.replace('{% url "SuperY:login" %}');
+                        }});
                     }
                 }
             })

@@ -58,7 +58,9 @@ document.querySelector('[name="save_btn"]').onclick = function() {
                     data = JSON.parse(data)
                     old_passwd_info.innerHTML = data.old_passwd_error;
                 } else {
-                    window.location.replace('{% url "SuperY:company_index" user.id %}');
+                    layer.alert('修改成功', {icon: 6, yes:function() {
+                            window.location.replace('{% url "SuperY:company_index" user.id %}');
+                        }});
                 }
             }
         })

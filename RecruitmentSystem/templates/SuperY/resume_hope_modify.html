@@ -84,7 +84,9 @@
 				processData:false,
                 contentType:false,
 				success:function() {
-						window.location.replace('{% url "SuperY:applicant_resume" user.id %}');
+						layer.alert('保存成功', {icon: 6, yes:function() {
+                           window.location.replace('{% url "SuperY:applicant_resume" user.id %}');
+                        }});
 				}
 			}) 
 		}

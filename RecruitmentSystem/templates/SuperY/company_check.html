@@ -39,9 +39,10 @@
 		<button name='check_btn'>认 证</button>
 	</div>
 </div>
-<div class="bottom">我是底部</div>
+<div class="bottom">版权所有：超级无敌洋帅帅</div>
 	<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
 	<script src="{% static 'SuperY/js/jquery.cookie.js' %}"></script>
+	 <script src="{% static 'SuperY/layer/layer.js' %}"></script>
 	<script>
 		 function csrfSafeMethod(method) {
         // these HTTP methods do not require CSRF protection
@@ -115,7 +116,9 @@
 						company_name_info.innerHTML=data.company_name_error;
 					}
 					else {
-						window.location.replace('{% url "SuperY:company_index" user.id %}');
+						layer.alert('认证成功', {icon: 6, yes:function() {
+                           window.location.replace('{% url "SuperY:company_index" user.id %}');
+                        }});
 					}
 				}
 			}) 

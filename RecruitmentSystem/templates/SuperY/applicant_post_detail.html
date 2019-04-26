@@ -100,8 +100,13 @@ document.querySelector('[name="deliver_btn"]').onclick = function() {
         url: '{% url "SuperY:deliver_post_ajax" user.id %}',
         data: { 'post_id': post_id },
         success: function(data) {
-            data = JSON.parse(data);
-            alert(data.message);
+            data=JSON.parse(data)
+            if (data.success) {
+                layer.alert(data.success, {icon: 6});
+            }
+            else {
+                layer.alert(data.error, {icon: 5});
+            }
         }
     })
 };

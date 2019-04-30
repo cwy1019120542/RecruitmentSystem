@@ -27,8 +27,8 @@
 			<div class="model_right">
 				<div class="userInfo clearfix">
 					<img src="/media/applicant/head_pic/{{user.head_pic}}" >
-					<h2>Hi，<span>{{user.person_name}}</span></h2>
-					欢迎回来！
+					<h2>求职者用户:<span>{{user.person_name}}</span></h2>
+					{% if resume.is_useful %}简历已完善可以投递{% else %}简历未完善不可投递{% endif %}
 				</div>
 				<ol class="clearfix">
 					<li>

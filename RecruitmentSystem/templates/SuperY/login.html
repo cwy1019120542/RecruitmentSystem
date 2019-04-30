@@ -29,24 +29,26 @@
             <input type="radio" name="identity" value='company' class='bossRadio'>我是BOSS
             <p name="identity_info"></p>
             <button name="login_btn">登 录</button>
-            <a href="{% url 'SuperY:register' %}">我要注册</a>
+            <div class='registerBtn'>
+                <a href="{% url 'SuperY:register' %}">我要注册</a>
+            </div>
         </div>
     </div>
     <div class="bottom">版权所有：超级无敌洋帅帅</div>
     <script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'SuperY/js/jquery.cookie.js' %}"></script>
     <script>
-     function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
-        $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", $.cookie("csrftoken"));
-                }
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", $.cookie("csrftoken"));
             }
-        });
+        }
+    });
     document.querySelector('[name="login_btn"]').onclick = function() {
         var phone_number = document.querySelector('[name="phone_number"]').value;
         var passwd = document.querySelector('[name="passwd"]').value;
@@ -74,8 +76,8 @@
             $.ajax({
                 url: '{% url "SuperY:login_ajax" %}',
                 type: 'post',
-             
-                data: { 'phone_number': phone_number, 'passwd': passwd, 'identity': identity.value},
+
+                data: { 'phone_number': phone_number, 'passwd': passwd, 'identity': identity.value },
                 success: function(data) {
                     data = JSON.parse(data)
                     if (data.phone_number_error) {

@@ -92,4 +92,16 @@
         </div>
     </div>
 </div>
+<div class='pages'>
+    {% if post_list.has_previous %}
+    <a href="{% url 'SuperY:applicant_resume' user.id rseume_list.previous_page_number %}">
+        <button>上页</button>
+    </a>
+    {% endif %}
+    {% if post_list.has_next %}
+    <a href="{% url 'SuperY:applicant_resume' user.id resume_list.next_page_number %}">
+        <button>下页</button>
+    </a>
+    {% endif %}
+</div>
 {% endblock content %}

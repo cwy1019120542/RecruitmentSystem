@@ -22,7 +22,8 @@ ul,ol{list-style: none;}
 .login_form input[type='radio']{display: inline-block;vertical-align: middle;margin:0 3px 0 10px;}
 .login_form input.bossRadio{margin-left:50px;}
 .login_form button{background: #ff6000;border-radius: 5px;width:100%;text-align: center;border:none;color:#fff;font-size: 16px;padding:10px 0;cursor:pointer;margin-top:10%;}
-.login_form a{display: block;text-align: right;padding-top:15px;font-size: 14px;}
+.login_form .registerBtn{text-align: right;}
+.login_form a{display: inline-block;padding:15px 15px 0 0;font-size: 14px;}
 .login_form P{font-size: 14px;color:red;padding:5px;height:15px;}
 .bottom{font-size: 14px;color:#999;text-align: center;height:40px;line-height: 40px;border-top:1px solid #f8f8f8;}
 /*注册*/
@@ -79,7 +80,15 @@ ul,ol{list-style: none;}
 .contentpile__content__wrapper{display:block;width:70%;margin:2% auto 0;background: #fff;}
 .contentpile_c_w_item{padding:0 15px 0 30px}
 .contentpile__content__wrapper__item__info{display:block;-webkit-box-sizing:border-box;box-sizing:border-box;padding:12px 0 18px;border-bottom:1px solid #eee;overflow: hidden;}
-.contentpile__content__wrapper__item__info__box{clear:both}.contentpile__content__wrapper__item__info__box__welfare{display:inline-block;overflow:hidden;clear:both;font-size:12px;color:#999}
+.contentpile__content__wrapper__item__info__box{clear:both;position: relative;}
+.contentpile__content__wrapper__item__info__box .jobBtn,
+.contentpile__content__wrapper__item__info__box .delBtn,
+ .pages button{cursor:pointer;z-index:4;background:#ff6000;border:none;color:#fff;font-size: 12px;padding:10px 20px;border-radius: 5px;position: absolute;bottom:0;right:20px;}
+ .pages{position:relative;text-align: center;padding-top: 40px;}
+ .pages button{background:#eee;color:#666;padding:8px 18px;position: inherit;}
+ .pages button:last-child{margin-left: 10px;}
+.contentpile__content__wrapper__item__info__box .delBtn{background:red;}
+.contentpile__content__wrapper__item__info__box__welfare{display:inline-block;overflow:hidden;clear:both;font-size:12px;color:#999}
 .contentpile__content__wrapper__item__info__box__welfare__item{float:left;margin-right:10px;padding:0 10px;line-height:25px;border:1px solid #eee}
 .contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info__box--name .contentpile__content__wrapper__item__info__box__cname__title{float:right;max-width:260px;overflow:hidden;-o-text-overflow:ellipsis;text-overflow:ellipsis;white-space:nowrap}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info__box--name .contentpile__content__wrapper__item__info__box__cname__title:hover{color:#1787fb}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info__box--name .contentpile__content__wrapper__item__info__box__cname__viplevel{float:right;margin-top:11px;margin-left:4px;max-width:50px;height:14px}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info--desc{margin-bottom:10px}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info--desc .contentpile__content__wrapper__item__info__box__job{height:26px;line-height:26px;display:inline-block;clear:both}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info--desc .contentpile__content__wrapper__item__info__box__job__saray{font-size:16px;color:#ff5959;margin-right:10px;float:left}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info--desc .contentpile__content__wrapper__item__info__box__job__demand{float:left;height:20px}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info--desc .contentpile__content__wrapper__item__info__box__job__demand__item{float:left;max-width:110px;overflow:hidden;-o-text-overflow:ellipsis;text-overflow:ellipsis;white-space:nowrap;border-right:1px solid #eee;font-size:12px;color:#666;letter-spacing:0;padding:0 8px}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info--desc .contentpile__content__wrapper__item__info__box__job__demand:last-child{border-right:none}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info--desc .contentpile__content__wrapper__item__info__box__job__comdec{float:right}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info--desc .contentpile__content__wrapper__item__info__box__job__comdec__item{padding:0 10px;border-left:1px solid #eee}.contentpile__content__wrapper__item__info .contentpile__content__wrapper__item__info--desc .contentpile__content__wrapper__item__info__box__job__comdec__item:first-child{border-left:none}.contentpile__content__wrapper__item__jobbtn{width:220px;background:#fff;position:absolute;top:50px;bottom:3px;right:0}.contentpile__content__wrapper__item__jobbtn__collect{width:auto;bottom:20px;right:135px;background:#fff;color:#666;border:none}.contentpile__content__wrapper__item__jobbtn__collect--true{color:#ffb433;letter-spacing:1.87px}.contentpile__content__wrapper__item__jobbtn__collect--true:hover{color:#ffb433!important}.contentpile__content__wrapper__item__jobbtn__collect:hover{color:#1787fb}.contentpile__content__wrapper__item__jobbtn__apply{color:#fff;background:#1787fb;bottom:20px;right:15px}.contentpile__content__wrapper__item__jobbtn__apply--true{border:1px solid #ccc;background:#ccc}.contentpile__content__wrapper__item__jobbtn__apply--true:hover{background:#ccc!important}.contentpile__content__wrapper__item__jobbtn__apply:hover{background:#1479e1}.contentpile__content__wrapper__eager-talents{color:#ff9804;border-color:#ffe0b3}
 .contentpile_c_w_item{border-bottom: 1px solid #eee;padding:10px 20px 25px;}
@@ -93,6 +102,8 @@ ul,ol{list-style: none;}
 .descBox .jobDesc .job__demand{display: inline-block;float: left;font-size: 12px;color:#999;padding:7px 5px;}
 .descBox .jobDesc .job__demand li{float: left;border-right:1px solid #999;padding:0 6px;}
 .descBox .jobDesc .job__demand li:last-child{border-right:0;}
-/*企业认证*/
+/*form*/
+.register_form textarea{width:96%;padding:2%;border:1px solid #ddd;height:70px;}
+.register_form .inforBtn{margin-top: 50px;}
 
 .info_form{padding:3% 2%;}

@@ -43,5 +43,17 @@
             {% endfor %}
         </div>
     </div>
+    <div class='pages'>
+    {% if company_list.has_previous %}
+            <a href="{% url 'SuperY:applicant_company_post' user.id post_list.previous_page_number %}">
+             <button>上页</button>
+            </a>
+    {% endif %}
+    {% if post_list.has_next %}
+            <a href="{% url 'SuperY:applicant_company_post' user.id post_list.next_page_number %}">
+             <button>下页</button>
+            </a>
+    {% endif %}
+</div>
     </div>
 {% endblock content %}

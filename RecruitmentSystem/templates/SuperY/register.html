@@ -32,7 +32,8 @@
             <h4>身份选择 <span name="identity_info"></span></h4>
             <input type="radio" name="identity" value='applicant' class='applicant'>我要求职
             <!-- <input type="radio" name="identity" value='company' class='bossRadio'>我是BOSS -->
-            <div class='protocolInfo'><input type="checkbox" name="is_read" class='protocol'>我接受用户协议和隐私政策</div><span name="is_read_info"></span>
+            <h4><span name="is_read_info"></span></h4>
+            <div class='protocolInfo'><input type="checkbox" name="is_read" class='protocol'>我接受用户协议和隐私政策</div>
             <button name="register_btn">注 册</button>
         </div>
     </div>
@@ -87,6 +88,10 @@
         if (passwd1 != passwd2) {
             passwd1_info.innerHTML = '两次输入的密码不匹配';
             is_post = false;
+        }
+        if (!passwd2) {
+            passwd2_info.innerHTML='请您填写正确格式的密码';
+            is_post=false;
         }
         if (!identity) {
             identity_info.innerHTML = '请您选择身份';

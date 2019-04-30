@@ -1,7 +1,7 @@
 {% extends 'SuperY/applicant_base.html' %}
 {% load staticfiles %}
 {% block title %}
-职位列表
+投递的职位
 {% endblock title %}
 {% block content %}
 <div id="listContent" class="contentpile__content">
@@ -48,7 +48,7 @@
                     </div>
                     {% endfor %}
                 </div>
-                <div class="jobBtn" name="deliver_btn" data-post-id={{post.id}}>申请职位</div>
+                <div class="delBtn" name="cancle_deliver_btn" data-post-id={{post.id}}>取消申请</div>
             </div>
         </div>
     </div>
@@ -56,45 +56,35 @@
 </div>
 <div class='pages'>
     {% if post_list.has_previous %}
-        {% if page_name == 'applicant_search' %}
-            <a href="{% url 'SuperY:applicant_search' user.id search_word post_list.previous_page_number %}">
-        {% elif page_name == 'applicant_company_post' %}
-            <a href="{% url 'SuperY:applicant_company_post' user.id company_id post_list.previous_page_number %}">
-        {% endif %}
-             <button>上页</button>
-            </a>
+    <a href="{% url 'SuperY:applicant_deliver_post' user.id post_list.previous_page_number %}">
+        <button>上页</button>
+    </a>
     {% endif %}
     {% if post_list.has_next %}
-         {% if page_name == 'applicant_search' %}
-            <a href="{% url 'SuperY:applicant_search' user.id search_word post_list.next_page_number %}">
-        {% elif page_name == 'applicant_company_post' %}
-            <a href="{% url 'SuperY:applicant_company_post' user.id company_id post_list.next_page_number %}">
-        {% endif %}
-             <button>下页</button>
-            </a>
+    <a href="{% url 'SuperY:applicant_deliver_post' user.id post_list.next_page_number %}">
+        <button>下页</button>
+    </a>
     {% endif %}
 </div>
 </div>
 </div>
 <script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
 <script>
-deliver_btn_list = document.querySelectorAll("div[name='deliver_btn']")
-for (var i = 0; i < deliver_btn_list.length; i++) {
-    let deliver_btn = deliver_btn_list[i]
-    deliver_btn.onclick = function() {
-        post_id = deliver_btn.getAttribute('data-post-id')
+cancle_deliver_btn_list = document.querySelectorAll("div[name='cancle_deliver_btn']")
+for (var i = 0; i < cancle_deliver_btn_list.length; i++) {
+    let cancle_deliver_btn = cancle_deliver_btn_list[i]
+    cancle_deliver_btn.onclick = function() {
+        post_id = cancle_deliver_btn.getAttribute('data-post-id')
         console.log(post_id)
         $.ajax({
             type: 'post',
-            url: '{% url "SuperY:deliver_post_ajax" user.id %}',
+            url: '{% url "SuperY:cancle_deliver_post_ajax" user.id %}',
             data: { 'post_id': post_id },
             success: function(data) {
                 data = JSON.parse(data)
-                if (data.success) {
-                    layer.alert(data.success, { icon: 6 });
-                } else {
-                    layer.alert(data.error, { icon: 5 });
-                }
+                layer.alert(data.success, { icon: 6 ,yes:function() {
+                    window.location.reload()
+                }});
             }
 
         })

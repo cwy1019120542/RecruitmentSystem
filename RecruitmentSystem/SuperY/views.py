@@ -99,22 +99,18 @@ def search_ajax(request,identity,user_id):
 	url=reverse(f'SuperY:{identity}_search',kwargs={'user_id':user_id,'search_word':search_word,'page':1})
 	return HttpResponse(demjson.encode({'url':url}))
 
-def my_paginator(data_all,page_data_number,aim_page):
-	paginator=Paginator(data_all,page_data_number)
-	all_page_number=paginator.num_pages
-	if int(aim_page)<1:
-		aim_page=1
-	elif int(aim_page)>all_page_number:
-		aim_page=all_page_number
-	data_list=paginator.page(aim_page)
-	return paginator.count,paginator.num_pages,data_list
-
 @is_login
 def applicant_search(request,identity,user_id,search_word,page):
 	applicant=models.Applicant.objects.get(id=user_id)
 	post_all=models.Post.objects.filter(Q(company__company_name__icontains=search_word)|Q(post_name__icontains=search_word)|Q(work_place__icontains=search_word))
-	post_number,page_all,post_list=my_paginator(post_all,5,page)
-	context_dict={'user':applicant,'post_number':post_number,'page_all':page_all,'post_list':post_list}
+	paginator=Paginator(post_all,4)
+	all_page_number=paginator.num_pages
+	if int(page)>all_page_number:
+		return redirect(reverse('SuperY:applicant_search',kwargs={'user_id':user_id,'search_word':search_word,'page':all_page_number}))
+	elif int(page)<1:
+		return redirect(reverse('SuperY:applicant_search',kwargs={'user_id':user_id,'search_word':search_word,'page':1}))
+	post_list=paginator.page(page)
+	context_dict={'user':applicant,'page':page,'post_list':post_list,'page_name':'applicant_search','search_word':search_word}
 	return render(request,'SuperY/applicant_post.html',context_dict)
 
 @is_login
@@ -142,12 +138,28 @@ def deliver_post_ajax(request,identity,user_id):
 		return HttpResponse(demjson.encode({'success':'投递成功'})) 
 
 @is_login
+def cancle_deliver_post_ajax(request,identity,user_id):
+	post_id=request.POST['post_id']
+	post=models.Post.objects.get(id=post_id)
+	applicant=models.Applicant.objects.get(id=user_id)
+	resume=models.Resume.objects.get(applicant=applicant)
+	resume.post_set.remove(post)
+	return HttpResponse(demjson.encode({'success':'取消投递成功'}))
+
+
+@is_login
 def applicant_company_look(request,identity,user_id,page):
 	applicant=models.Applicant.objects.get(id=user_id)
 	resume=models.Resume.objects.get(applicant=applicant)
 	company_all=resume.company_look.all()
-	company_number,page_all,company_list=my_paginator(company_all,5,page)
-	context_dict={'user':applicant,'company_list':company_list,'company_number':company_number,'page_all':page_all}
+	paginator=Paginator(company_all,4)
+	all_page_number=paginator.num_pages
+	if int(page)>all_page_number:
+		return redirect(reverse('SuperY:applicant_company_look',kwargs={'user_id':user_id,'page':all_page_number}))
+	elif int(page)<1:
+		return redirect(reverse('SuperY:applicant_company_look',kwargs={'user_id':user_id,'page':1}))
+	company_list=paginator.page(page)
+	context_dict={'user':applicant,'company_list':company_list}
 	return render(request,'SuperY/applicant_company_look.html',context_dict)
 
 @is_login
@@ -155,8 +167,14 @@ def applicant_company_post(request,identity,user_id,company_id,page):
 	applicant=models.Applicant.objects.get(id=user_id)
 	company=models.Company.objects.get(id=company_id)
 	post_all=models.Post.objects.filter(company=company)
-	post_number,page_all,post_list=my_paginator(post_all,5,page)
-	context_dict={'user':applicant,'post_list':post_list,'post_number':post_number,'page_all':page_all}
+	paginator=Paginator(post_all,4)
+	all_page_number=paginator.num_pages
+	if int(page)>all_page_number:
+		return redirect(reverse('SuperY:applicant_company_post',kwargs={'user_id':user_id,'company_id':company_id,'page':all_page_number}))
+	elif int(page)<1:
+		return redirect(reverse('SuperY:applicant_company_post',kwargs={'user_id':user_id,'company_id':company_id,'page':1}))
+	post_list=paginator.page(page)
+	context_dict={'user':applicant,'post_list':post_list,'company_id':company_id,'page_name':'applicant_company_post'}
 	return render(request,'SuperY/applicant_post.html',context_dict)
 
 @is_login
@@ -164,9 +182,15 @@ def applicant_deliver_post(request,identity,user_id,page):
 	applicant=models.Applicant.objects.get(id=user_id)
 	resume=models.Resume.objects.get(applicant=applicant)
 	post_all=models.Post.objects.filter(resume=resume)
-	post_number,page_all,post_list=my_paginator(post_all,5,page)
-	context_dict={'user':applicant,'post_list':post_list,'post_number':post_number,'page_all':page_all}
-	return render(request,'SuperY/applicant_post.html',context_dict)
+	paginator=Paginator(post_all,4)
+	all_page_number=paginator.num_pages
+	if int(page)>all_page_number:
+		return redirect(reverse('SuperY:applicant_deliver_post',kwargs={'user_id':user_id,'page':all_page_number}))
+	elif int(page)<1:
+		return redirect(reverse('SuperY:applicant_deliver_post',kwargs={'user_id':user_id,'page':1}))
+	post_list=paginator.page(page)
+	context_dict={'user':applicant,'post_list':post_list,'page_name':'applicant_deliver_post'}
+	return render(request,'SuperY/applicant_deliver_post.html',context_dict)
 
 @is_login
 def applicant_resume(request,identity,user_id):
@@ -181,6 +205,13 @@ def resume_info_modify(request,identity,user_id):
 	resume=models.Resume.objects.get(applicant=applicant)
 	context_dict={'user':applicant,'resume':resume}
 	return render(request,'SuperY/resume_info_modify.html',context_dict)
+
+@is_login
+def resume_self_judge_modify(request,identity,user_id):
+	applicant=models.Applicant.objects.get(id=user_id)
+	resume=models.Resume.objects.get(applicant=applicant)
+	context_dict={'user':applicant,'resume':resume}
+	return render(request,'SuperY/resume_self_judge_modify.html',context_dict)
 
 @is_login
 def resume_hope_modify(request,identity,user_id):
@@ -325,8 +356,14 @@ def company_info_ajax(request,identity,user_id):
 def company_search(request,identity,user_id,search_word,page):
 	company=models.Company.objects.get(id=user_id)
 	resume_all=models.Resume.objects.filter(Q(post_name__icontains=search_word)|Q(work_place__icontains=search_word)|Q(profession__icontains=search_word),is_useful=True)
-	resume_number,page_all,resume_list=my_paginator(resume_all,5,page)
-	context_dict={'user':company,'resume_number':resume_number,'page_all':page_all,'resume_list':resume_list}
+	paginator=Paginator(resume_all,4)
+	all_page_number=paginator.num_pages
+	if int(page)>all_page_number:
+		return redirect(reverse('SuperY:company_search',kwargs={'user_id':user_id,'search_word':search_word,'page':all_page_number}))
+	elif int(page)<1:
+		return redirect(reverse('SuperY:company_search',kwargs={'user_id':user_id,'search_word':search_word,'page':1}))
+	resume_list=paginator.page(page)
+	context_dict={'user':company,'resume_list':resume_list}
 	return render(request,'SuperY/company_resume.html',context_dict)
 
 @is_login
@@ -347,8 +384,14 @@ def company_resume_detail(request,identity,user_id,resume_id):
 def company_post(request,identity,user_id,page):
 	company=models.Company.objects.get(id=user_id)
 	post_all=models.Post.objects.filter(company=company)
-	post_number,page_all,post_list=my_paginator(post_all,5,page)
-	context_dict={'user':company,'post_list':post_list,'post_number':post_number,'page_all':page_all}
+	paginator=Paginator(post_all,4)
+	all_page_number=paginator.num_pages
+	if int(page)>all_page_number:
+		return redirect(reverse('SuperY:company_post',kwargs={'user_id':user_id,'page':all_page_number}))
+	elif int(page)<1:
+		return redirect(reverse('SuperY:company_post',kwargs={'user_id':user_id,'page':1}))
+	post_list=paginator.page(page)
+	context_dict={'user':company,'post_list':post_list}
 	return render(request,'SuperY/company_post.html',context_dict)
 
 @is_login
@@ -505,3 +548,9 @@ def forget_passwd_ajax(request):
 
 def page_not_found(request):
 	return render(request,'SuperY/404.html')
+
+@is_login
+def del_ajax(request,identity,user_id):
+	data=request.POST.copy().dict()
+	eval(f'models.{data["model_name"]}.objects.get(id={data["id"]}).delete()')
+	return HttpResponse(demjson.encode({'success':'删除成功'}))

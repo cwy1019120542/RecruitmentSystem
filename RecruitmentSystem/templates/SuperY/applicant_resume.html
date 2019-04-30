@@ -139,7 +139,7 @@
                         </div>
                     </div>
                     <div class="zp-evalution jump-to" module-num="9" number="9">
-                        <div class="zp-evalution-title clearfix"><span class="fl">自我评价</span> <span onselectstart="return false" class="iconfont icon-resume-edit fr">编辑</span></div>
+                        <div class="zp-evalution-title clearfix"><span class="fl">自我评价</span> <span onselectstart="return false" class="iconfont icon-resume-edit fr"><a href="{% url 'SuperY:resume_self_judge_modify' user.id %}">编辑</a></span></div>
                         <div class="zp-evalution-content">
                             <pre>{{resume.self_judge}}
 </pre>

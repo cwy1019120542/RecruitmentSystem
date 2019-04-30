@@ -1,0 +1,39 @@
+{% extends 'SuperY/applicant_base.html' %}
+{% load staticfiles %}
+{% block title %}
+职位期望
+{% endblock title %}
+{% block content %}
+<div class="center">
+	<div class='login_form register_form info_form'>
+		<h4>自我评价 <span name='self_judge_info'></span></h4>
+		<textarea name='self_judge' placeholder="请输入自我评价，不可超过1000字符">{{resume.self_judge}}</textarea>
+		<button name='save_btn'>保存</button>
+	</div>
+</div>
+	<script src="{% static 'SuperY/js/jquery-3.2.1.min.js' %}"></script>
+	<script>
+		document.querySelector('[name="save_btn"]').onclick=function() {
+		self_judge=document.querySelector('[name="self_judge"]').value;	
+		var self_judge_info=document.querySelector('[name="self_judge_info"]');
+		var is_post=true;
+		self_judge_info.innerHTML='';
+		if (!self_judge || self_judge.length>1000) {
+			is_post=false;
+			self_judge_info.innerHTML="请您输入正确格式的自我评价";
+		};
+		if (is_post){
+			$.ajax({
+				type:'post',
+				url:'{% url "SuperY:resume_hope_modify_ajax" user.id %}',
+				data:{'self_judge':self_judge},
+				success:function() {
+						layer.alert('保存成功', {icon: 6, yes:function() {
+                           window.location.replace('{% url "SuperY:applicant_resume" user.id %}');
+                        }});
+				}
+			}) 
+		}
+	};
+	</script>
+{% endblock content %}

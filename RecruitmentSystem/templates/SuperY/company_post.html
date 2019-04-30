@@ -48,11 +48,45 @@
                     </div>
                     {% endfor %}
                 </div>
+                <div class="delBtn" name="del_btn" data-post-id={{post.id}}>删除职位</div>
             </div>     
         </div>
         </a>
         {% endfor %}
         </div>
     </div>
+    <div class='pages'>
+    {% if post_list.has_previous %}
+    <a href="{% url 'SuperY:company_post' user.id post_list.previous_page_number %}">
+        <button>上页</button>
+    </a>
+    {% endif %}
+    {% if post_list.has_next %}
+    <a href="{% url 'SuperY:company_post' user.id post_list.next_page_number %}">
+        <button>下页</button>
+    </a>
+    {% endif %}
 </div>
+<script>
+del_btn_list = document.querySelectorAll("div[name='del_btn']")
+for (var i = 0; i < del_btn_list.length; i++) {
+    let del_btn = del_btn_list[i]
+    del_btn.onclick = function() {
+        post_id = del_btn.getAttribute('data-post-id')
+        console.log(post_id)
+        $.ajax({
+            type: 'post',
+            url: '{% url "SuperY:del_ajax" "company" user.id %}',
+            data: { 'id': post_id,'model_name':'Post' },
+            success: function(data) {
+                data = JSON.parse(data)
+                layer.alert(data.success, { icon: 6 ,yes:function() {
+                    window.location.reload()
+                }});
+            }
+
+        })
+    };
+};
+</script>
 {% endblock content %}

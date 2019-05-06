@@ -515,7 +515,10 @@
 }
 
 .summary-plane__right {
-    float: right
+    position:absolute;
+    top:50%;
+    right:20%;
+    margin-top:-14px;
 }
 
 .summary-plane__zhenai .summary-plane__collection {

@@ -6,7 +6,7 @@
 {% block content %}
 <div id="listContent" class="contentpile__content a-center-layout__content">
     <div class="job-summary">
-        <div class="summary-plane">
+        <div class="summary-plane" style='position:relative'>
             <div class="summary-plane__content">
                 <!---->
                 <div class="summary-plane__top"></div>
@@ -23,12 +23,12 @@
                             <li>{{post.recruit_number}}</li>
                         </ul>
                     </div>
-                    <div class="summary-plane__right">
-                        <div class="a-job-apply-button summary-plane__action">
-                            <button type="button" class="a-button a--bordered a--filled" name="deliver_btn">申请职位</button>
-                            <!---->
-                        </div>
-                    </div>
+                </div>
+            </div>
+            <div class="summary-plane__right">
+                <div class="a-job-apply-button summary-plane__action">
+                    <button type="button" class="a-button a--bordered a--filled" name="deliver_btn">申请职位</button>
+                    <!---->
                 </div>
             </div>
         </div>

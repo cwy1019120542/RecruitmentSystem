@@ -144,7 +144,7 @@ def cancle_deliver_post_ajax(request,identity,user_id):
 	applicant=models.Applicant.objects.get(id=user_id)
 	resume=models.Resume.objects.get(applicant=applicant)
 	resume.post_set.remove(post)
-	return HttpResponse(demjson.encode({'success':'取消投递成功'}))
+	return HttpResponse()
 
 
 @is_login
@@ -553,4 +553,4 @@ def page_not_found(request):
 def del_ajax(request,identity,user_id):
 	data=request.POST.copy().dict()
 	eval(f'models.{data["model_name"]}.objects.get(id={data["id"]}).delete()')
-	return HttpResponse(demjson.encode({'success':'删除成功'}))
+	return HttpResponse()

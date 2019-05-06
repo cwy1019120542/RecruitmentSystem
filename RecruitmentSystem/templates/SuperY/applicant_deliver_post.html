@@ -51,8 +51,8 @@
                 <div class="delBtn" name="cancle_deliver_btn" data-post-id={{post.id}}>取消申请</div>
             </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 <div class='pages'>
     {% if post_list.has_previous %}
@@ -74,20 +74,19 @@ cancle_deliver_btn_list = document.querySelectorAll("div[name='cancle_deliver_bt
 for (var i = 0; i < cancle_deliver_btn_list.length; i++) {
     let cancle_deliver_btn = cancle_deliver_btn_list[i]
     cancle_deliver_btn.onclick = function() {
-        post_id = cancle_deliver_btn.getAttribute('data-post-id')
-        console.log(post_id)
-        $.ajax({
-            type: 'post',
-            url: '{% url "SuperY:cancle_deliver_post_ajax" user.id %}',
-            data: { 'post_id': post_id },
-            success: function(data) {
-                data = JSON.parse(data)
-                layer.alert(data.success, { icon: 6 ,yes:function() {
-                    window.location.reload()
-                }});
-            }
+        layer.confirm("确认要取消投递吗？", { btn: ['确定', '取消'] }, function() {
+            post_id = cancle_deliver_btn.getAttribute('data-post-id')
+            $.ajax({
+                type: 'post',
+                url: '{% url "SuperY:cancle_deliver_post_ajax" user.id %}',
+                data: { 'post_id': post_id },
+                success: function() {
+                    window.location.reload();
+                }
 
+            })
         })
+
     };
 };
 </script>
